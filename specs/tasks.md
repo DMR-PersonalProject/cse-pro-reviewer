@@ -28,7 +28,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-04 Pin compatible versions** · S · Deps: M1-03
   Pick the latest Livewire and Filament majors that support the installed Laravel (suggestion #5), install `livewire/livewire`, `filament/filament`, `pestphp/pest-plugin-livewire`, Tailwind and the typography plugin, and record the exact versions in plan §1.3 (tracked) and `CLAUDE.md` (local copy).
   *Tests:* the app boots; `GET /admin/login` returns 200.
-- [ ] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
+- [x] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
   `pint.json` (Laravel preset); composer scripts `test`, `lint` (`pint --test`), `fix`; the first `tests/Arch` rules: no `env()` outside `config/`, no `dd`/`dump`/`ray`, strict types in `app/Domain`.
   *Tests:* the arch suite passes; `composer lint` exits 0.
 - [ ] **M1-06 Users schema and model** · M · Deps: M1-05
