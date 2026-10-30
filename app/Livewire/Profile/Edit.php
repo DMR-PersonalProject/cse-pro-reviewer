@@ -6,6 +6,7 @@ use App\Domain\Identity\RemovePin;
 use App\Domain\Identity\SetPin;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
@@ -21,6 +22,8 @@ class Edit extends Component
 
     public string $current_pin = '';
 
+    public string $change_current_pin = '';
+
     public ?string $status = null;
 
     #[Computed]
@@ -32,9 +35,19 @@ class Edit extends Component
     public function savePin(SetPin $setPin): void
     {
         try {
-            $setPin->handle($this->user, $this->pin, $this->pin_confirmation);
+            $setPin->handle($this->user, $this->pin, $this->pin_confirmation, $this->change_current_pin);
+        } catch (ValidationException $e) {
+            // The remove form owns `current_pin`; this form's current-PIN field has its own key.
+            $errors = $e->errors();
+
+            if (isset($errors['current_pin'])) {
+                $errors['change_current_pin'] = $errors['current_pin'];
+                unset($errors['current_pin']);
+            }
+
+            throw ValidationException::withMessages($errors);
         } finally {
-            $this->reset('pin', 'pin_confirmation');
+            $this->reset('pin', 'pin_confirmation', 'change_current_pin');
         }
 
         $this->status = __('PIN saved.');

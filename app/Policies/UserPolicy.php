@@ -5,7 +5,8 @@ namespace App\Policies;
 use App\Models\User;
 
 /**
- * Base rules; M2-13 extends these for the Filament UserResource.
+ * Who may manage accounts. The finer guards (own role, last active admin) live in the
+ * Domain\Identity actions, so they hold outside Filament too.
  */
 class UserPolicy
 {

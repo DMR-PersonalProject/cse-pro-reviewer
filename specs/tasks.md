@@ -9,7 +9,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - **Tests:** written first and failing before the code (constitution §3). AC-x refers to `spec.md`.
 - Each milestone ends with **What to try** (your manual check) and a **STOP**. After the stop I summarize in under 10 lines and wait.
 - **Git** (full rules in `CLAUDE.md` → Git workflow): each milestone runs on its own branch (`m1-foundation`, `m2-question-bank`, …). One Conventional Commit per task or small group, task ID in the scope, e.g. `feat(M2-04): add question model and factory`. Tests and Pint green before every commit. On `approved: start M(n+1)` the finished branch is merged into `main` (merge commit), tagged `m<n>-done`, and the next branch is created. No remote pushes without your say-so.
-- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually.
+- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually. Careful: checking out a commit older than `9654f68` (which still tracks it) silently overwrites the local file; back it up first.
 
 ---
 
@@ -58,7 +58,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-14 Base pages** · S · Deps: M1-09, M1-13
   A dashboard stub (with the PIN nudge when there's no PIN), `/privacy` with the spec §8 text, and a 403/404 page in the app layout.
   *Tests:* guests are redirected from `/` to `/start`; the PIN nudge shows only without a PIN; `/privacy` lists what's stored and what's public.
-- [ ] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so
+- [x] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so (done 2026-10-30: https://github.com/DMR-PersonalProject/cse-pro-reviewer, private; `main` + `m1-done` pushed)
   Only when you ask: create a **private** repo `cse-pro-reviewer` with `gh repo create cse-pro-reviewer --private --source . --remote origin` (or manual steps if `gh` isn't available), push `main` and all tags. From then on, push only after each milestone approval.
   *Tests:* `git remote -v` shows `origin`; `gh repo view cse-pro-reviewer --json visibility` reports `PRIVATE`.
   *Note:* `CLAUDE.md` is gitignored, so a fresh clone won't have it. You'd recreate it from `specs/` (constitution, plan, tasks) and the decisions in `clarifications.md`/`SUGGESTIONS.md`, or from your manual backup. Before pushing, decide about the old `CLAUDE.md` copy still in commit `d90dcc1` (history is not rewritten unless you say so). Optional: add `docs/CLAUDE.example.md`, a copy with no private details, as a template in the repo. Only created if you ask.
@@ -77,54 +77,57 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M2 — Question bank and admin
 
-- [ ] **M2-01 Taxonomy** · S · Deps: M1 done
+- [x] **M2-01 Taxonomy** · S · Deps: M1 done
   `subtests` and `topics` migrations and models, plus `TaxonomySeeder` (4 subtests, 17 topics, fixed codes and positions).
   *Tests:* 4 subtests and 17 topics with the expected codes; the seeder is idempotent.
-- [ ] **M2-02 Content enums** · S · Deps: M2-01
+- [x] **M2-02 Content enums** · S · Deps: M2-01
   `QuestionStatus`, `SourceVisibility`, `SourceType`, `Difficulty`, `Language`, `NeedsReviewReason` (each with a label).
   *Tests:* the allowed status transitions are listed on the enum (`canTransitionTo`) and unit-tested against FR-Q2.
-- [ ] **M2-03 Content schema and models** · M · Deps: M2-02
+- [x] **M2-03 Content schema and models** · M · Deps: M2-02
   Migrations, models, factories and relations for `sources`, `passages`, `questions`, `choices`, `tags`/`question_tag` and `media` (polymorphic), with the indexes from plan §3.2.
   *Tests:* a new source defaults to `private`; a question's choices are ordered by `position`; a passage's questions are ordered by `passage_position`; deleting a question deletes its choices; factory states `published()`, `private()`, `inPassage()`.
-- [ ] **M2-04 Markdown rendering** · S · Deps: M2-03
+- [x] **M2-04 Markdown rendering** · S · Deps: M2-03
   A safe Markdown renderer (`html_input: strip`, no unsafe links) and a Blade component used by stems, passages and explanations. Supports tables.
   *Tests:* `<script>` is stripped; `javascript:` links are removed; a Markdown table renders as `<table>`.
-- [ ] **M2-05 Media validation and storage** · M · Deps: M2-03
+- [x] **M2-05 Media validation and storage** · M · Deps: M2-03
   `MediaValidator` (real MIME via `finfo`, PNG/JPG/WebP only, ≤ 2 MB, alt text required) and an `AttachMedia` action (random name, `public` disk, `media/`).
   *Tests:* PNG, JPG and WebP accepted; SVG rejected; a `.png` file that is really SVG or HTML rejected; 2.1 MB rejected; missing alt text rejected (the editor side of AC-21a).
-- [ ] **M2-06 Normalizer and duplicate detector** · M · Deps: M1-07, M2-03
+- [x] **M2-06 Normalizer and duplicate detector** · M · Deps: M1-07, M2-03
   `StemNormalizer` and `DuplicateDetector` (same subtest, ±30% length prefilter, `similar_text`, threshold from settings).
   *Tests:* normalization cases; a 95% match is flagged and a 70% match isn't at the default 0.90; changing the threshold setting changes the result; other subtests are ignored.
-- [ ] **M2-07 Publish and archive** · M · Deps: M1-08, M2-05
+- [x] **M2-07 Publish and archive** · M · Deps: M1-08, M2-05
   The `PublishQuestion` (gates from FR-Q2), `ArchiveQuestion` and `UnarchiveQuestion` actions, with audit entries.
   *Tests:* AC-24; publishing is blocked with no correct choice, with media missing alt text, or with a passage that has no body and no media; archive followed by publish works; each action writes an audit row.
-- [ ] **M2-08 SourceResource** · S · Deps: M2-03, M1-12
+- [x] **M2-08 SourceResource** · S · Deps: M2-03, M1-12
   A Filament CRUD with a visibility toggle and a count of items.
   *Tests:* an admin can list, create and edit; a user gets a 403; a new source defaults to private.
-- [ ] **M2-09 QuestionResource: form and table** · M · Deps: M2-04, M2-05, M2-06
+- [x] **M2-09 QuestionResource: form and table** · M · Deps: M2-04, M2-05, M2-06
   Form fields: subtest, topic, passage, stem, a choices repeater (2–5, exactly one correct), explanation, difficulty, language, tags, media upload with alt text, provenance, `lock_choice_order`. Table filters: subtest, topic, status, source, visibility, needs-review, possible duplicate. A duplicate warning appears on save.
   *Tests:* create and edit via Filament Livewire tests; saving with 0 or 2 correct choices fails; topic options depend on the subtest; the duplicate warning appears for a near-identical stem.
-- [ ] **M2-10 QuestionResource: actions** · S · Deps: M2-07, M2-09
+- [x] **M2-10 QuestionResource: actions** · S · Deps: M2-07, M2-09
   Publish, archive and unarchive (single and bulk), and a needs-review panel that lists reasons with a "Resolve" action per reason.
   *Tests:* a bulk publish skips blocked items and reports why; resolving the last reason lets the item be published.
-- [ ] **M2-11 Hard delete with typed confirmation** · S · Deps: M2-10
+- [x] **M2-11 Hard delete with typed confirmation** · S · Deps: M2-10
   `DeleteQuestion` and `DeleteSource` (the source together with its items). The confirmation modal requires typing the item ID or the source name, and an audit entry is written. The purge option arrives in M4-17, once snapshots exist.
   *Tests:* the wrong confirmation text refuses; the right text deletes the item, its choices and its media rows; deleting a source removes all its items; an audit row is written.
-- [ ] **M2-12 PassageResource** · M · Deps: M2-09
+- [x] **M2-12 PassageResource** · M · Deps: M2-09
   Passage CRUD with a relation manager for its questions (ordered, drag to reorder).
   *Tests:* create a passage with 3 questions; reordering updates `passage_position`; the questions inherit the passage's subtest and topic.
-- [ ] **M2-13 UserResource** · M · Deps: M1-12, M1-08
+- [x] **M2-13 UserResource** · M · Deps: M1-12, M1-08
   A list (username, IGN, full name, role, active, has PIN) with actions: change IGN, change role, deactivate/activate, reset PIN, delete (typed confirmation, cascades). Every action is audited.
   *Tests:* each action works and is audited; an admin can't demote or deactivate themselves if they are the last active admin.
-- [ ] **M2-14 Exam settings page** · M · Deps: M1-07
+- [x] **M2-14 Exam settings page** · M · Deps: M1-07
   A Filament page for every FR-C1 setting, with the **"unverified"** badge on the item split, a live total, validation and an audit entry on save.
   *Tests:* invalid values are rejected; the total is shown; the "unverified" label is rendered; saving writes the audit entry and clears the cache.
-- [ ] **M2-15 Audit log viewer and review queue widget** · S · Deps: M2-10
+- [x] **M2-15 Audit log viewer and review queue widget** · S · Deps: M2-10
   A read-only `AuditLogResource`, and a dashboard widget showing counts of drafts, needs-review items and possible duplicates.
   *Tests:* the resource is read-only (no create or edit routes); the widget counts match the factory data.
-- [ ] **M2-16 Sample content seeder** · M · Deps: M2-12, M2-05
+- [x] **M2-16 Sample content seeder** · M · Deps: M2-12, M2-05
   `SampleContentSeeder`: at least 2 **original** items for each of the 17 topics, including a reading passage with 3 sub-items, a data-interpretation item with a Markdown table, an abstract-reasoning item with a PNG figure (alt text included), and Filipino word-meaning items. All published, under the public source "Original — seed".
   *Tests:* each topic has ≥ 2 published public items; the passage has 3 items; every media file exists and has alt text; every item has a correct choice and an explanation.
+- [x] **M2-17 Current PIN to change a PIN (suggestion #17)** · S · Deps: M1-11
+  `SetPin` requires the current PIN when the user already has one; setting a first PIN doesn't. `Profile\Edit` shows a "Current PIN" field on the change form. FR-I2 is updated to match.
+  *Tests:* changing a PIN with the right current PIN works; a wrong or empty current PIN is refused and the PIN is unchanged; setting a first PIN needs no current PIN.
 
 **What to try (M2)**
 - [ ] Run `php artisan migrate:fresh --seed`, open `/admin`, and browse questions with each filter.
@@ -141,10 +144,13 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M3 — Content import pipeline
 
+- [ ] **M3-00 Rate-limit the current-PIN check (suggestion #19)** · S · Deps: M2-17
+  Throttle the current-PIN check in `SetPin` and `RemovePin` (profile change and remove forms) per user, like sign-in (FR-I4, same lockout settings).
+  *Tests:* repeated wrong current PINs get locked out on both forms; the right PIN after the lockout window works; a successful check clears the counter.
 - [ ] **M3-01 Content folder and docs** · S · Deps: M2 done
   Create `content/{inbox,staged,staged/media,schema}`, `content/README.md` (naming, what to send, what Claude does with each type of file, the never-guess rule, privacy and copyright note), `schema/question-import.schema.json`, `schema/example.json` and `schema/example.csv`.
   *Tests:* none yet; M3-03 and M3-04 validate both example files.
-- [ ] **M3-02 Import tables** · S · Deps: M3-01
+- [ ] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
   Migrations and models for `import_batches` and `import_rows`.
   *Tests:* rows cascade with their batch; `decision` defaults to `pending`.
 - [ ] **M3-03 Parser** · M · Deps: M3-02
@@ -229,7 +235,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
   A resume card with the time left; a "resume or abandon" prompt when starting a new test; lazy finalization on load.
   *Tests:* an expired attempt is finalized when the dashboard loads; abandoning sets the status and frees the slot.
-- [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01
+- [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
   Add "Also remove this content from past attempts" to `DeleteQuestion` and `DeleteSource` (FR-Q5a): replace the snapshot content, set `purged_at`, remove media files referenced only by snapshots, and record an audit entry.
   *Tests:* AC-15 at the data level (the score is unchanged, the content is a placeholder, `purged_at` is set); without purge the snapshot stays intact; the audit `meta` records whether a purge was done.
 

@@ -35,6 +35,16 @@
 
     <form wire:submit="savePin" class="space-y-4" novalidate>
         <h2 class="text-lg font-semibold">{{ $this->user->hasPin() ? __('Change your PIN') : __('Set a PIN') }}</h2>
+        @if ($this->user->hasPin())
+            <div>
+                <label for="change_current_pin" class="block text-sm font-medium">{{ __('Current PIN') }}</label>
+                <input id="change_current_pin" type="password" wire:model="change_current_pin" inputmode="numeric"
+                       autocomplete="current-password" maxlength="6"
+                       @error('change_current_pin') aria-invalid="true" aria-describedby="change_current_pin-error" @enderror
+                       class="mt-1 block w-full rounded border border-line bg-canvas px-3 py-2">
+                @error('change_current_pin') <p id="change_current_pin-error" class="mt-1 text-sm text-danger" role="alert">{{ $message }}</p> @enderror
+            </div>
+        @endif
         <div>
             <label for="pin" class="block text-sm font-medium">{{ __('New PIN (4–6 digits)') }}</label>
             <input id="pin" type="password" wire:model="pin" inputmode="numeric" autocomplete="new-password" maxlength="6"

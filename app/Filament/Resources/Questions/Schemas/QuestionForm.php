@@ -1,0 +1,171 @@
+<?php
+
+namespace App\Filament\Resources\Questions\Schemas;
+
+use App\Domain\Content\ResolveReviewReason;
+use App\Enums\Difficulty;
+use App\Enums\Language;
+use App\Enums\NeedsReviewReason;
+use App\Filament\Forms\MediaRepeater;
+use App\Filament\Forms\TaxonomyFields;
+use App\Models\Passage;
+use App\Models\Question;
+use Closure;
+use Filament\Actions\Action;
+use Filament\Forms\Components\MarkdownEditor;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+
+/**
+ * Question editor (FR-Q1). Choices are saved by SaveQuestion; tags and media by their relationships.
+ */
+class QuestionForm
+{
+    public static function configure(Schema $schema): Schema
+    {
+        return $schema
+            ->columns(1)
+            ->components([
+                self::needsReview(),
+                self::classification(),
+                self::item(),
+                self::details(),
+                MediaRepeater::section(),
+                self::provenance(),
+            ]);
+    }
+
+    /**
+     * Lists the open review reasons, each with its own Resolve action (M2-10).
+     */
+    private static function needsReview(): Section
+    {
+        return Section::make(__('Needs review'))
+            ->description(__('This item can’t be published until every reason is resolved.'))
+            ->icon('heroicon-o-exclamation-triangle')
+            ->iconColor('warning')
+            ->visible(fn (?Question $record) => (bool) $record?->needs_review_reasons->isNotEmpty())
+            ->schema(fn (?Question $record) => [
+                Actions::make(
+                    collect($record?->needs_review_reasons ?? [])
+                        ->map(fn (NeedsReviewReason $reason) => Action::make('resolve_'.$reason->value)
+                            ->label(__('Resolve: :reason', ['reason' => $reason->label()]))
+                            ->color('warning')
+                            ->requiresConfirmation()
+                            ->modalDescription(__('Confirm that you have checked: :reason', ['reason' => $reason->label()]))
+                            ->action(function (Question $record) use ($reason) {
+                                app(ResolveReviewReason::class)->handle($record, $reason);
+                                Notification::make()->success()->title(__('Resolved: :reason', ['reason' => $reason->label()]))->send();
+                            }))
+                        ->all(),
+                )->key('needs_review_actions'),
+            ]);
+    }
+
+    private static function classification(): Section
+    {
+        return Section::make(__('Classification'))
+            ->columns(3)
+            ->schema([
+                // In a passage, the passage decides both (the model enforces it on save).
+                TaxonomyFields::subtest()->disabled(fn (Get $get) => filled($get('passage_id')))->dehydrated(),
+                TaxonomyFields::topic(skipCheckWhen: fn (Get $get) => filled($get('passage_id')))
+                    ->disabled(fn (Get $get) => filled($get('passage_id')))->dehydrated(),
+                Select::make('passage_id')
+                    ->label(__('Passage (optional)'))
+                    ->options(fn () => Passage::orderByDesc('id')->get()->mapWithKeys(
+                        fn (Passage $passage) => [$passage->id => $passage->title ?: __('Passage #:id', ['id' => $passage->id])],
+                    ))
+                    ->searchable()
+                    ->live()
+                    ->afterStateUpdated(function (?string $state, Set $set) {
+                        if ($passage = Passage::find($state)) {
+                            $set('subtest_id', $passage->subtest_id);
+                            $set('topic_id', $passage->topic_id);
+                        }
+                    })
+                    ->helperText(__('An item in a passage uses the passage’s subtest and topic.')),
+            ]);
+    }
+
+    private static function item(): Section
+    {
+        return Section::make(__('Item'))
+            ->schema([
+                MarkdownEditor::make('stem')
+                    ->label(__('Stem'))
+                    ->required()
+                    ->toolbarButtons([['bold', 'italic', 'link'], ['bulletList', 'orderedList', 'table'], ['undo', 'redo']]),
+                Repeater::make('choices')
+                    ->label(__('Choices'))
+                    ->schema([
+                        Textarea::make('body')->label(__('Choice text'))->required()->rows(1)->autosize(),
+                        Toggle::make('is_correct')->label(__('Correct')),
+                    ])
+                    ->columns(['default' => 1, 'md' => 4])
+                    ->defaultItems(4)
+                    ->minItems(2)
+                    ->maxItems(5)
+                    ->reorderable()
+                    ->addActionLabel(__('Add choice'))
+                    ->rules([
+                        fn (): Closure => function (string $attribute, mixed $value, Closure $fail) {
+                            $correct = collect($value)->filter(fn ($choice) => (bool) ($choice['is_correct'] ?? false))->count();
+
+                            if ($correct !== 1) {
+                                $fail(__('Mark exactly one choice as correct.'));
+                            }
+                        },
+                    ]),
+                MarkdownEditor::make('explanation')
+                    ->label(__('Explanation'))
+                    ->toolbarButtons([['bold', 'italic', 'link'], ['bulletList', 'orderedList', 'table'], ['undo', 'redo']]),
+            ]);
+    }
+
+    private static function details(): Section
+    {
+        return Section::make(__('Details'))
+            ->columns(2)
+            ->schema([
+                Select::make('difficulty')->label(__('Difficulty'))->options(Difficulty::class),
+                Select::make('language')->label(__('Language'))->options(Language::class)->default(Language::En)->required(),
+                Select::make('tags')
+                    ->label(__('Tags'))
+                    ->relationship('tags', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->createOptionForm([TextInput::make('name')->label(__('Name'))->required()->maxLength(50)->unique('tags', 'name')]),
+                Toggle::make('lock_choice_order')
+                    ->label(__('Keep choice order'))
+                    ->helperText(__('For choices like “All of the above”: choices are not shuffled.')),
+            ]);
+    }
+
+    private static function provenance(): Section
+    {
+        return Section::make(__('Provenance'))
+            ->columns(3)
+            ->collapsible()
+            ->schema([
+                Select::make('source_id')
+                    ->label(__('Source'))
+                    ->relationship('source', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
+                TextInput::make('source_file')->label(__('File'))->maxLength(255),
+                TextInput::make('source_page')->label(__('Page'))->maxLength(50),
+                Textarea::make('source_notes')->label(__('Notes'))->columnSpanFull(),
+            ]);
+    }
+}
