@@ -127,15 +127,15 @@ Roles are a `role` column backed by an enum and enforced through policies and ga
 
   | Setting | Default | Notes |
   |---|---|---|
-  | Item count per subtest | 50 / 40 / 40 / 40 | Labeled **unverified**, total shown |
-  | Total minutes | 190 | |
-  | Passing grade | 80.00 | |
-  | Repeat window (attempts) | 3 | FR-G6 |
-  | Autosave grace (seconds) | 10 | FR-T6 |
+  | Item count per subtest | 50 / 40 / 40 / 40 | 1–100 each. Labeled **unverified**, total shown (not forced to 170) |
+  | Total minutes | 190 | 10–600 |
+  | Passing grade | 80.00 | 0.00–100.00, 2 decimals |
+  | Repeat window (attempts) | 3 | 0–20 (0 = off), FR-G6 |
+  | Autosave grace (seconds) | 10 | 0–60, FR-T6 |
   | `duplicate_similarity_threshold` | 0.90 | 0.50–1.00, FR-Q6 |
   | `lockout_max_attempts` | 5 | 1–20, FR-I4 |
   | `lockout_window_minutes` | 15 | 1–1440, FR-I4 |
-  | `suspicious_seconds_per_item` | 5 | 0 turns it off, FR-L4 |
+  | `suspicious_seconds_per_item` | 5 | 0–60, 0 turns it off, FR-L4 |
   | `leaderboard_include_private` | OFF | Admin only. Lets attempts with private items rank, for single-user testing |
 - FR-C2. A setting change applies only to attempts created afterwards. Existing attempts keep the values stored on them.
 

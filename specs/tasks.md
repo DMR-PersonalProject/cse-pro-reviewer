@@ -1,6 +1,6 @@
 # Tasks — CSE Reviewer (MVP)
 
-Status: **draft for review** · Implements `plan.md` · Nothing starts until `approved: start M1`.
+Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 **How to read this**
 - `[ ]` means not started and `[x]` means done. A task is done only when its tests pass, `pint --test` is clean, and the box is ticked here.
@@ -9,57 +9,59 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - **Tests:** written first and failing before the code (constitution §3). AC-x refers to `spec.md`.
 - Each milestone ends with **What to try** (your manual check) and a **STOP**. After the stop I summarize in under 10 lines and wait.
 - **Git** (full rules in `CLAUDE.md` → Git workflow): each milestone runs on its own branch (`m1-foundation`, `m2-question-bank`, …). One Conventional Commit per task or small group, task ID in the scope, e.g. `feat(M2-04): add question model and factory`. Tests and Pint green before every commit. On `approved: start M(n+1)` the finished branch is merged into `main` (merge commit), tagged `m<n>-done`, and the next branch is created. No remote pushes without your say-so.
+- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually.
 
 ---
 
 ## M1 — Foundation, roles and theming
 
-- [ ] **M1-01 Verify the toolchain** · S · Deps: —
+- [x] **M1-01 Verify the toolchain** · S · Deps: —
   You install Herd (steps in `CLAUDE.md`). I check `php -v` (≥ 8.3), `composer -V`, `laravel --version`, `node -v` and `npm -v`, and record the versions in `CLAUDE.md`.
   *Tests:* none (environment). The outcome is the recorded version output.
 - [x] **M1-02 git init** · S · Deps: — (done 2026-10-30, before M1 approval, at your request)
   `git init` on `main`; commits `docs: add project specs and memory files` then `chore: add .gitignore`. `.gitignore` covers `.env`, `vendor/`, `node_modules/`, `database/*.sqlite`, storage logs and compiled files, `content/inbox/`, `content/staged/` and uploaded media.
   *Tests:* `git status` is clean after the commit; `git check-ignore content/inbox/x.pdf` matches.
-- [ ] **M1-03 Create the Laravel project** · M · Deps: M1-01, M1-02
+- [x] **M1-03 Create the Laravel project** · M · Deps: M1-01, M1-02 (Laravel 13, pinned in M1-04; http://cse.test returns 200)
   Commit on `m1-foundation` as its own commit: `chore: scaffold Laravel project` (before M1-04).
   Run `laravel new` in a temporary sibling folder (the installer needs an empty folder): no starter kit, Pest, SQLite. Then move the files into the repo root **without overwriting** `CLAUDE.md`, `SUGGESTIONS.md` or `specs/` (any generated AI-guideline files are reviewed and merged by hand). Set `APP_TIMEZONE=UTC`, add `config/cse.php` with `display_timezone = Asia/Manila`, and check `herd link cse` → http://cse.test.
   *Tests:* the default Pest suite passes (`php artisan test`); a test that the `cse.display_timezone` config is `Asia/Manila`.
-- [ ] **M1-04 Pin compatible versions** · S · Deps: M1-03
-  Pick the latest Livewire and Filament majors that support the installed Laravel (suggestion #5), install `livewire/livewire`, `filament/filament`, `pestphp/pest-plugin-livewire`, Tailwind and the typography plugin, and record the exact versions in `CLAUDE.md` and plan §1.3.
+- [x] **M1-04 Pin compatible versions** · S · Deps: M1-03
+  Pick the latest Livewire and Filament majors that support the installed Laravel (suggestion #5), install `livewire/livewire`, `filament/filament`, `pestphp/pest-plugin-livewire`, Tailwind and the typography plugin, and record the exact versions in plan §1.3 (tracked) and `CLAUDE.md` (local copy).
   *Tests:* the app boots; `GET /admin/login` returns 200.
-- [ ] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
+- [x] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
   `pint.json` (Laravel preset); composer scripts `test`, `lint` (`pint --test`), `fix`; the first `tests/Arch` rules: no `env()` outside `config/`, no `dd`/`dump`/`ray`, strict types in `app/Domain`.
   *Tests:* the arch suite passes; `composer lint` exits 0.
-- [ ] **M1-06 Users schema and model** · M · Deps: M1-05
+- [x] **M1-06 Users schema and model** · M · Deps: M1-05
   Change the default users migration to add `username`, `ign`, `ign_normalized`, `full_name`, nullable `email` and `password`, `role` (default `user`), `is_active`, `pin_set_at`. Add the `Role` enum, casts (`password` hashed), `isAdmin()`, `hasPin()`, a mutator that lowercases `username` and sets `ign_normalized`, and factory states `admin()`, `withPin()`, `inactive()`.
   *Tests:* duplicate usernames that differ only in case are rejected by the DB (AC-2 at DB level); IGN uniqueness also ignores case; two users with null email are allowed; `hasPin()` is false for null password.
-- [ ] **M1-07 Settings store** · M · Deps: M1-05
+- [x] **M1-07 Settings store** · M · Deps: M1-05
   `settings` migration, a `SettingKey` enum (key, type, default, validation rules) for all FR-C1 settings, a `Settings` service (typed getters, cache, cache cleared on write), and `SettingsSeeder`.
   *Tests:* defaults are returned when no row exists; set then get returns the right type; out-of-range values are rejected (for example a similarity of 0.3, or 0 lockout attempts); the cache is cleared on update; the item split defaults add up to 170.
-- [ ] **M1-08 Audit log** · S · Deps: M1-06
+- [x] **M1-08 Audit log** · S · Deps: M1-06
   `audit_logs` migration and model, plus an `Audit::record($action, $subject, $reason, $meta)` helper.
   *Tests:* a call writes one row with the acting user and the subject's type and ID.
-- [ ] **M1-09 Registration** · M · Deps: M1-06
+- [x] **M1-09 Registration** · M · Deps: M1-06
   The `RegisterUser` action plus the `Auth\Register` component at `/start` (username, IGN, full name, optional PIN with confirmation) and a privacy summary.
   *Tests:* AC-1, AC-2; validation (length, character set, PIN must be 4–6 digits); the PIN is stored hashed and `pin_set_at` is set; the user is signed in and redirected to the dashboard.
-- [ ] **M1-10 Sign-in and throttle** · M · Deps: M1-07, M1-09
+- [x] **M1-10 Sign-in and throttle** · M · Deps: M1-07, M1-09
   `SignInWithUsername`, `LoginThrottle` (limits from settings) and the `Auth\SignIn` component at `/login`. Admins are refused on this path. Inactive users are refused.
   *Tests:* AC-3, including after changing `lockout_max_attempts`; a user without a PIN signs in with username only; an admin username is refused here; an inactive user is refused; the session is regenerated.
-- [ ] **M1-11 Profile and PIN management** · S · Deps: M1-10
+- [x] **M1-11 Profile and PIN management** · S · Deps: M1-10
   `SetPin`, `RemovePin` (needs the current PIN) and the `Profile\Edit` component.
   *Tests:* set, change and remove a PIN; removing it with the wrong PIN fails; the IGN can't be edited by a user.
-- [ ] **M1-12 Admin access and roles** · M · Deps: M1-08, M1-10
+- [x] **M1-12 Admin access and roles** · M · Deps: M1-08, M1-10
   A Filament panel at `/admin` (`canAccessPanel` = active admin), indigo primary color, dark mode on; `EnsureUserIsActive` middleware; base `UserPolicy`; the `cse:make-admin` command (prompts, no defaults).
   *Tests:* AC-4; an admin reaches the dashboard; an inactive admin is refused; the command creates an admin with a hashed password and refuses a duplicate email; a deactivated user mid-session is logged out on the next request.
-- [ ] **M1-13 Layout and theming** · M · Deps: M1-04
+- [x] **M1-13 Layout and theming** · M · Deps: M1-04
   An app layout with skip link, header and nav; CSS tokens for light and dark; the Tailwind dark variant by class; server-side `dark` class from the cookie; the blocking inline head script for `system`; a `theme-toggle` component (light/dark/system) that writes the cookie and localStorage using the same key as Filament.
   *Tests:* with the cookie `theme=dark`, `<html>` has `class="dark"`; with `theme=light` it doesn't; the inline script appears before the stylesheet link; the toggle has an accessible name and pressed state. Manual: no flash (What to try).
-- [ ] **M1-14 Base pages** · S · Deps: M1-09, M1-13
+- [x] **M1-14 Base pages** · S · Deps: M1-09, M1-13
   A dashboard stub (with the PIN nudge when there's no PIN), `/privacy` with the spec §8 text, and a 403/404 page in the app layout.
   *Tests:* guests are redirected from `/` to `/start`; the PIN nudge shows only without a PIN; `/privacy` lists what's stored and what's public.
 - [ ] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so
   Only when you ask: create a **private** repo `cse-pro-reviewer` with `gh repo create cse-pro-reviewer --private --source . --remote origin` (or manual steps if `gh` isn't available), push `main` and all tags. From then on, push only after each milestone approval.
   *Tests:* `git remote -v` shows `origin`; `gh repo view cse-pro-reviewer --json visibility` reports `PRIVATE`.
+  *Note:* `CLAUDE.md` is gitignored, so a fresh clone won't have it. You'd recreate it from `specs/` (constitution, plan, tasks) and the decisions in `clarifications.md`/`SUGGESTIONS.md`, or from your manual backup. Before pushing, decide about the old `CLAUDE.md` copy still in commit `d90dcc1` (history is not rewritten unless you say so). Optional: add `docs/CLAUDE.example.md`, a copy with no private details, as a template in the repo. Only created if you ask.
 
 **What to try (M1)**
 - [ ] Open http://cse.test, register with a username, IGN and full name and no PIN; you land on the dashboard and see the PIN nudge.
@@ -69,7 +71,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] Tab through the start page: the skip link is visible and focus is always visible.
 - [ ] `composer test` and `composer lint` are green.
 
-**⏸ STOP — wait for `approved: start M2`.**
+**⏸ STOP — wait for `approved: start M2`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -133,7 +135,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] Hard-delete a test question: typing the wrong ID is refused; then check the audit log.
 - [ ] Switch the admin panel to dark mode and back.
 
-**⏸ STOP — wait for `approved: start M3`.**
+**⏸ STOP — wait for `approved: start M3`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -173,7 +175,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] In `/admin`, upload `example.csv`, check the errors on a broken row, approve the valid rows, and confirm they arrive as draft or needs-review under a **private** source.
 - [ ] Optional: drop a small real file in `content/inbox/`, ask me to extract it, and walk the whole flow.
 
-**⏸ STOP — wait for `approved: start M4`.**
+**⏸ STOP — wait for `approved: start M4`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -239,7 +241,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] Close the tab on a short timed test, wait past the deadline, open the dashboard: it is finalized as timeout.
 - [ ] Try starting a second test while one is in progress: you get the resume-or-abandon prompt.
 
-**⏸ STOP — wait for `approved: start M5`.**
+**⏸ STOP — wait for `approved: start M5`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -270,7 +272,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] Submit with items unanswered: the dialog counts them correctly.
 - [ ] Change the split in admin settings, start a new mock, and check the new counts (then change it back).
 
-**⏸ STOP — wait for `approved: start M6`.**
+**⏸ STOP — wait for `approved: start M6`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -306,7 +308,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] Turn on "Include private sources in leaderboard" with your own material, see your rank, then turn it off.
 - [ ] Hide an entry in admin with a reason, check it's gone, then check the audit log.
 
-**⏸ STOP — wait for `approved: start M7`.**
+**⏸ STOP — wait for `approved: start M7`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -340,4 +342,4 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 - [ ] Let your session expire during a test, sign back in, and resume.
 - [ ] Read the portability results in `CLAUDE.md`.
 
-**⏸ STOP — MVP complete. Wait for your review; next phases come from `SUGGESTIONS.md`.**
+**⏸ STOP — MVP complete. Wait for your review; next phases come from `SUGGESTIONS.md`.** Reminder: back up your local `CLAUDE.md` manually (it is gitignored).

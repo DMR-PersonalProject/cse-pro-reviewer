@@ -29,15 +29,19 @@ Browser (admin) ──►  Filament panel at /admin (Livewire)      ┘         
 ### 1.3 Versions and dependencies
 Exact versions are pinned at M1 (O-9, suggestion #5). The rule is the latest stable Laravel, plus the Livewire and Filament majors that are compatible with it.
 
-| Package | Purpose |
-|---|---|
-| `laravel/framework` | Core |
-| `livewire/livewire` | User app UI (Filament also requires it) |
-| `filament/filament` | Admin panel |
-| `pestphp/pest`, `pestphp/pest-plugin-laravel`, `pestphp/pest-plugin-livewire` | Tests |
-| `laravel/pint` (dev) | Code style |
-| `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/typography` (npm) | Styling; typography for passages and explanations |
-| `league/commonmark` (comes with Laravel) | Markdown in passages, stems and explanations, with HTML input disabled |
+| Package | Pinned at M1-04 (2026-10-30) | Purpose |
+|---|---|---|
+| `laravel/framework` | 13.39.0 (`^13.17`) | Core |
+| `livewire/livewire` | 4.4.8 (`^4.4.8`) | User app UI (Filament also requires it) |
+| `filament/filament` | 5.11.0 (`^5.11`) | Admin panel |
+| `pestphp/pest`, `pestphp/pest-plugin-laravel`, `pestphp/pest-plugin-livewire` | 5.3.4, 5.0.1, 5.0.0 | Tests |
+| `laravel/pint` (dev) | 1.32.1 | Code style |
+| `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/typography` (npm) | 4.3.3, 4.3.3, 0.5.20 | Styling; typography for passages and explanations |
+| `league/commonmark` (comes with Laravel) | via Laravel | Markdown in passages, stems and explanations, with HTML input disabled |
+
+Runtime at pin time: PHP 8.4.26, Composer 2.10.3, Node 26.11.1, npm 11.20.0, Vite 8.3.5. `composer.lock` and `package-lock.json` hold the exact tree. Known: `npm audit` reports a moderate advisory in `postcss-selector-parser` via `@tailwindcss/typography` (build-time only, parses our own CSS); the `--force` fix downgrades typography, so it's accepted until upstream updates.
+
+Skeleton defaults kept as shipped by `laravel new`: `laravel/tinker`, `laravel/pail`, `laravel/pao`, `nunomaduro/collision`, `mockery/mockery`, `fakerphp/faker`, `pestphp/pest-plugin-drift` (composer) and `concurrently`, `laravel-vite-plugin`, `@laravel/multiplex` (npm).
 
 No other packages without a justification line added here.
 
@@ -251,7 +255,7 @@ Admin edits/resolves → PublishQuestion (blocked while reasons or missing alt t
 
 ## 9. Theming and UI
 - **Tailwind dark mode by class:** `@custom-variant dark (&:where(.dark, .dark *));` in `app.css` (Tailwind v4 syntax; adjust if M1 resolves to v3).
-- **No flash:** the server reads the `theme` cookie (`light|dark|system`) and renders `<html class="dark">` when it's explicitly dark. A blocking inline `<script>` in `<head>` (before CSS) handles `system` through `matchMedia`, and keeps listening for OS changes while the preference is `system`. The toggle writes both localStorage and the cookie. Filament uses the same `theme` localStorage key, so both apps follow one choice (verified in M1).
+- **No flash:** the server reads the `theme` cookie (`light|dark|system`) and renders `<html class="dark">` when it's explicitly dark. A blocking inline `<script>` in `<head>` (before CSS) handles `system` through `matchMedia`, and keeps listening for OS changes while the preference is `system`. The toggle writes both localStorage and the cookie. Both apps share Filament's localStorage key `filament:theme:mode` (verified in M1-13; Filament 5 does not use `theme`), so they follow one choice. localStorage is the source of truth; the inline script re-syncs the cookie on every page, so a change made in the admin panel reaches the server on the next user-app request.
 - **Tokens** (CSS variables on `:root` and `.dark`): `--bg`, `--surface`, `--fg`, `--muted`, `--border`, `--accent`, `--accent-fg`, `--danger`, `--success`, `--focus`. One accent color (proposed: **indigo**, `#4f46e5` light / `#818cf8` dark). An M7 test checks every token pair against AA.
 - **Typography:** system font stack, 16–18 px body, line length ≤ 70 characters for passages, `font-variant-numeric: tabular-nums` for the timer and scores.
 - **Motion:** only transitions under 150 ms, and none when `prefers-reduced-motion` is set.
@@ -266,7 +270,7 @@ Admin edits/resolves → PublishQuestion (blocked while reasons or missing alt t
 - `AttemptPolicy`: the owner can view and update their own attempt. Admins can view any attempt and moderate. Nobody can update a finalized attempt.
 - `EnsureUserIsActive` middleware logs out deactivated users.
 - **Throttle:** `LoginThrottle` uses `RateLimiter` with the key `login:{username}|{ip}` and the limits from settings.
-- **First admin:** `php artisan cse:make-admin` asks for email, username, IGN, full name and password (A-18).
+- **First admin:** `php artisan cse:make-admin` asks for email, username, IGN, full name and password (A-18). The password uses Laravel's `Password::defaults()` (min 8 characters), chosen in M1-12.
 - **Audit log:** publish, archive, delete (with or without purge), leaderboard hide/unhide, role change, PIN reset and settings change.
 
 ## 11. Testing strategy
