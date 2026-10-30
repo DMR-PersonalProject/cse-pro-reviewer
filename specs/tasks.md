@@ -86,7 +86,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-03 Content schema and models** · M · Deps: M2-02
   Migrations, models, factories and relations for `sources`, `passages`, `questions`, `choices`, `tags`/`question_tag` and `media` (polymorphic), with the indexes from plan §3.2.
   *Tests:* a new source defaults to `private`; a question's choices are ordered by `position`; a passage's questions are ordered by `passage_position`; deleting a question deletes its choices; factory states `published()`, `private()`, `inPassage()`.
-- [ ] **M2-04 Markdown rendering** · S · Deps: M2-03
+- [x] **M2-04 Markdown rendering** · S · Deps: M2-03
   A safe Markdown renderer (`html_input: strip`, no unsafe links) and a Blade component used by stems, passages and explanations. Supports tables.
   *Tests:* `<script>` is stripped; `javascript:` links are removed; a Markdown table renders as `<table>`.
 - [ ] **M2-05 Media validation and storage** · M · Deps: M2-03
