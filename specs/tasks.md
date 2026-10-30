@@ -144,6 +144,9 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M3 — Content import pipeline
 
+- [ ] **M3-00 Rate-limit the current-PIN check (suggestion #19)** · S · Deps: M2-17
+  Throttle the current-PIN check in `SetPin` and `RemovePin` (profile change and remove forms) per user, like sign-in (FR-I4, same lockout settings).
+  *Tests:* repeated wrong current PINs get locked out on both forms; the right PIN after the lockout window works; a successful check clears the counter.
 - [ ] **M3-01 Content folder and docs** · S · Deps: M2 done
   Create `content/{inbox,staged,staged/media,schema}`, `content/README.md` (naming, what to send, what Claude does with each type of file, the never-guess rule, privacy and copyright note), `schema/question-import.schema.json`, `schema/example.json` and `schema/example.csv`.
   *Tests:* none yet; M3-03 and M3-04 validate both example files.
