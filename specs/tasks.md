@@ -80,7 +80,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-01 Taxonomy** · S · Deps: M1 done
   `subtests` and `topics` migrations and models, plus `TaxonomySeeder` (4 subtests, 17 topics, fixed codes and positions).
   *Tests:* 4 subtests and 17 topics with the expected codes; the seeder is idempotent.
-- [ ] **M2-02 Content enums** · S · Deps: M2-01
+- [x] **M2-02 Content enums** · S · Deps: M2-01
   `QuestionStatus`, `SourceVisibility`, `SourceType`, `Difficulty`, `Language`, `NeedsReviewReason` (each with a label).
   *Tests:* the allowed status transitions are listed on the enum (`canTransitionTo`) and unit-tested against FR-Q2.
 - [ ] **M2-03 Content schema and models** · M · Deps: M2-02
