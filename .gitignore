@@ -39,6 +39,17 @@ auth.json
 /content/staged/
 
 # Tooling and OS
+/storage/pail
+/public/fonts-manifest.dev.json
+.phpactor.json
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+*.log
+/.codex
+/.cursor/
+/.nova
+/.zed
 .phpunit.result.cache
 /.phpunit.cache/
 .php-cs-fixer.cache
