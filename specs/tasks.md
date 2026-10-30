@@ -46,7 +46,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-10 Sign-in and throttle** · M · Deps: M1-07, M1-09
   `SignInWithUsername`, `LoginThrottle` (limits from settings) and the `Auth\SignIn` component at `/login`. Admins are refused on this path. Inactive users are refused.
   *Tests:* AC-3, including after changing `lockout_max_attempts`; a user without a PIN signs in with username only; an admin username is refused here; an inactive user is refused; the session is regenerated.
-- [ ] **M1-11 Profile and PIN management** · S · Deps: M1-10
+- [x] **M1-11 Profile and PIN management** · S · Deps: M1-10
   `SetPin`, `RemovePin` (needs the current PIN) and the `Profile\Edit` component.
   *Tests:* set, change and remove a PIN; removing it with the wrong PIN fails; the IGN can't be edited by a user.
 - [ ] **M1-12 Admin access and roles** · M · Deps: M1-08, M1-10
