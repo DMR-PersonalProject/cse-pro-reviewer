@@ -9,7 +9,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - **Tests:** written first and failing before the code (constitution §3). AC-x refers to `spec.md`.
 - Each milestone ends with **What to try** (your manual check) and a **STOP**. After the stop I summarize in under 10 lines and wait.
 - **Git** (full rules in `CLAUDE.md` → Git workflow): each milestone runs on its own branch (`m1-foundation`, `m2-question-bank`, …). One Conventional Commit per task or small group, task ID in the scope, e.g. `feat(M2-04): add question model and factory`. Tests and Pint green before every commit. On `approved: start M(n+1)` the finished branch is merged into `main` (merge commit), tagged `m<n>-done`, and the next branch is created. No remote pushes without your say-so.
-- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually.
+- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually. Careful: checking out a commit older than `9654f68` (which still tracks it) silently overwrites the local file; back it up first.
 
 ---
 
@@ -58,7 +58,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-14 Base pages** · S · Deps: M1-09, M1-13
   A dashboard stub (with the PIN nudge when there's no PIN), `/privacy` with the spec §8 text, and a 403/404 page in the app layout.
   *Tests:* guests are redirected from `/` to `/start`; the PIN nudge shows only without a PIN; `/privacy` lists what's stored and what's public.
-- [ ] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so
+- [x] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so (done 2026-10-30: https://github.com/DMR-PersonalProject/cse-pro-reviewer, private; `main` + `m1-done` pushed)
   Only when you ask: create a **private** repo `cse-pro-reviewer` with `gh repo create cse-pro-reviewer --private --source . --remote origin` (or manual steps if `gh` isn't available), push `main` and all tags. From then on, push only after each milestone approval.
   *Tests:* `git remote -v` shows `origin`; `gh repo view cse-pro-reviewer --json visibility` reports `PRIVATE`.
   *Note:* `CLAUDE.md` is gitignored, so a fresh clone won't have it. You'd recreate it from `specs/` (constitution, plan, tasks) and the decisions in `clarifications.md`/`SUGGESTIONS.md`, or from your manual backup. Before pushing, decide about the old `CLAUDE.md` copy still in commit `d90dcc1` (history is not rewritten unless you say so). Optional: add `docs/CLAUDE.example.md`, a copy with no private details, as a template in the repo. Only created if you ask.
@@ -125,6 +125,9 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M2-16 Sample content seeder** · M · Deps: M2-12, M2-05
   `SampleContentSeeder`: at least 2 **original** items for each of the 17 topics, including a reading passage with 3 sub-items, a data-interpretation item with a Markdown table, an abstract-reasoning item with a PNG figure (alt text included), and Filipino word-meaning items. All published, under the public source "Original — seed".
   *Tests:* each topic has ≥ 2 published public items; the passage has 3 items; every media file exists and has alt text; every item has a correct choice and an explanation.
+- [ ] **M2-17 Current PIN to change a PIN (suggestion #17)** · S · Deps: M1-11
+  `SetPin` requires the current PIN when the user already has one; setting a first PIN doesn't. `Profile\Edit` shows a "Current PIN" field on the change form. FR-I2 is updated to match.
+  *Tests:* changing a PIN with the right current PIN works; a wrong or empty current PIN is refused and the PIN is unchanged; setting a first PIN needs no current PIN.
 
 **What to try (M2)**
 - [ ] Run `php artisan migrate:fresh --seed`, open `/admin`, and browse questions with each filter.
