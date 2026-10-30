@@ -24,6 +24,10 @@
         {{ $slot }}
     </main>
 
+    <footer class="border-t border-line px-4 py-6 text-center text-sm text-muted">
+        <a href="{{ route('privacy') }}" class="underline">{{ __('Privacy') }}</a>
+    </footer>
+
     @livewireScripts
 </body>
 </html>

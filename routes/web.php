@@ -2,10 +2,13 @@
 
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\SignIn;
+use App\Livewire\Dashboard;
 use App\Livewire\Profile\Edit as ProfileEdit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+
+Route::view('/privacy', 'privacy')->name('privacy');
 
 Route::middleware('guest')->group(function () {
     Route::get('/start', Register::class)->name('start');
@@ -13,7 +16,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-    Route::view('/', 'dashboard')->name('dashboard');
+    Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('/profile', ProfileEdit::class)->name('profile');
 
     Route::post('/logout', function (Request $request) {
