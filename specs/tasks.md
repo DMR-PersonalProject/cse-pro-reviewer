@@ -9,6 +9,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - **Tests:** written first and failing before the code (constitution §3). AC-x refers to `spec.md`.
 - Each milestone ends with **What to try** (your manual check) and a **STOP**. After the stop I summarize in under 10 lines and wait.
 - **Git** (full rules in `CLAUDE.md` → Git workflow): each milestone runs on its own branch (`m1-foundation`, `m2-question-bank`, …). One Conventional Commit per task or small group, task ID in the scope, e.g. `feat(M2-04): add question model and factory`. Tests and Pint green before every commit. On `approved: start M(n+1)` the finished branch is merged into `main` (merge commit), tagged `m<n>-done`, and the next branch is created. No remote pushes without your say-so.
+- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually.
 
 ---
 
@@ -20,12 +21,12 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-02 git init** · S · Deps: — (done 2026-10-30, before M1 approval, at your request)
   `git init` on `main`; commits `docs: add project specs and memory files` then `chore: add .gitignore`. `.gitignore` covers `.env`, `vendor/`, `node_modules/`, `database/*.sqlite`, storage logs and compiled files, `content/inbox/`, `content/staged/` and uploaded media.
   *Tests:* `git status` is clean after the commit; `git check-ignore content/inbox/x.pdf` matches.
-- [ ] **M1-03 Create the Laravel project** · M · Deps: M1-01, M1-02
+- [x] **M1-03 Create the Laravel project** · M · Deps: M1-01, M1-02 (Laravel 13.17; http://cse.test returns 200)
   Commit on `m1-foundation` as its own commit: `chore: scaffold Laravel project` (before M1-04).
   Run `laravel new` in a temporary sibling folder (the installer needs an empty folder): no starter kit, Pest, SQLite. Then move the files into the repo root **without overwriting** `CLAUDE.md`, `SUGGESTIONS.md` or `specs/` (any generated AI-guideline files are reviewed and merged by hand). Set `APP_TIMEZONE=UTC`, add `config/cse.php` with `display_timezone = Asia/Manila`, and check `herd link cse` → http://cse.test.
   *Tests:* the default Pest suite passes (`php artisan test`); a test that the `cse.display_timezone` config is `Asia/Manila`.
 - [ ] **M1-04 Pin compatible versions** · S · Deps: M1-03
-  Pick the latest Livewire and Filament majors that support the installed Laravel (suggestion #5), install `livewire/livewire`, `filament/filament`, `pestphp/pest-plugin-livewire`, Tailwind and the typography plugin, and record the exact versions in `CLAUDE.md` and plan §1.3.
+  Pick the latest Livewire and Filament majors that support the installed Laravel (suggestion #5), install `livewire/livewire`, `filament/filament`, `pestphp/pest-plugin-livewire`, Tailwind and the typography plugin, and record the exact versions in plan §1.3 (tracked) and `CLAUDE.md` (local copy).
   *Tests:* the app boots; `GET /admin/login` returns 200.
 - [ ] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
   `pint.json` (Laravel preset); composer scripts `test`, `lint` (`pint --test`), `fix`; the first `tests/Arch` rules: no `env()` outside `config/`, no `dd`/`dump`/`ray`, strict types in `app/Domain`.
@@ -60,6 +61,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so
   Only when you ask: create a **private** repo `cse-pro-reviewer` with `gh repo create cse-pro-reviewer --private --source . --remote origin` (or manual steps if `gh` isn't available), push `main` and all tags. From then on, push only after each milestone approval.
   *Tests:* `git remote -v` shows `origin`; `gh repo view cse-pro-reviewer --json visibility` reports `PRIVATE`.
+  *Note:* `CLAUDE.md` is gitignored, so a fresh clone won't have it. You'd recreate it from `specs/` (constitution, plan, tasks) and the decisions in `clarifications.md`/`SUGGESTIONS.md`, or from your manual backup. Before pushing, decide about the old `CLAUDE.md` copy still in commit `d90dcc1` (history is not rewritten unless you say so). Optional: add `docs/CLAUDE.example.md`, a copy with no private details, as a template in the repo. Only created if you ask.
 
 **What to try (M1)**
 - [ ] Open http://cse.test, register with a username, IGN and full name and no PIN; you land on the dashboard and see the PIN nudge.
@@ -69,7 +71,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Tab through the start page: the skip link is visible and focus is always visible.
 - [ ] `composer test` and `composer lint` are green.
 
-**⏸ STOP — wait for `approved: start M2`.**
+**⏸ STOP — wait for `approved: start M2`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -133,7 +135,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Hard-delete a test question: typing the wrong ID is refused; then check the audit log.
 - [ ] Switch the admin panel to dark mode and back.
 
-**⏸ STOP — wait for `approved: start M3`.**
+**⏸ STOP — wait for `approved: start M3`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -173,7 +175,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] In `/admin`, upload `example.csv`, check the errors on a broken row, approve the valid rows, and confirm they arrive as draft or needs-review under a **private** source.
 - [ ] Optional: drop a small real file in `content/inbox/`, ask me to extract it, and walk the whole flow.
 
-**⏸ STOP — wait for `approved: start M4`.**
+**⏸ STOP — wait for `approved: start M4`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -239,7 +241,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Close the tab on a short timed test, wait past the deadline, open the dashboard: it is finalized as timeout.
 - [ ] Try starting a second test while one is in progress: you get the resume-or-abandon prompt.
 
-**⏸ STOP — wait for `approved: start M5`.**
+**⏸ STOP — wait for `approved: start M5`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -270,7 +272,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Submit with items unanswered: the dialog counts them correctly.
 - [ ] Change the split in admin settings, start a new mock, and check the new counts (then change it back).
 
-**⏸ STOP — wait for `approved: start M6`.**
+**⏸ STOP — wait for `approved: start M6`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -306,7 +308,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Turn on "Include private sources in leaderboard" with your own material, see your rank, then turn it off.
 - [ ] Hide an entry in admin with a reason, check it's gone, then check the audit log.
 
-**⏸ STOP — wait for `approved: start M7`.**
+**⏸ STOP — wait for `approved: start M7`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
 
 ---
 
@@ -340,4 +342,4 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Let your session expire during a test, sign back in, and resume.
 - [ ] Read the portability results in `CLAUDE.md`.
 
-**⏸ STOP — MVP complete. Wait for your review; next phases come from `SUGGESTIONS.md`.**
+**⏸ STOP — MVP complete. Wait for your review; next phases come from `SUGGESTIONS.md`.** Reminder: back up your local `CLAUDE.md` manually (it is gitignored).
