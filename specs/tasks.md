@@ -95,7 +95,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-06 Normalizer and duplicate detector** · M · Deps: M1-07, M2-03
   `StemNormalizer` and `DuplicateDetector` (same subtest, ±30% length prefilter, `similar_text`, threshold from settings).
   *Tests:* normalization cases; a 95% match is flagged and a 70% match isn't at the default 0.90; changing the threshold setting changes the result; other subtests are ignored.
-- [ ] **M2-07 Publish and archive** · M · Deps: M1-08, M2-05
+- [x] **M2-07 Publish and archive** · M · Deps: M1-08, M2-05
   The `PublishQuestion` (gates from FR-Q2), `ArchiveQuestion` and `UnarchiveQuestion` actions, with audit entries.
   *Tests:* AC-24; publishing is blocked with no correct choice, with media missing alt text, or with a passage that has no body and no media; archive followed by publish works; each action writes an audit row.
 - [ ] **M2-08 SourceResource** · S · Deps: M2-03, M1-12

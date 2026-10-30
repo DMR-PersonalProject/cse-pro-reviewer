@@ -37,7 +37,7 @@ class QuestionFactory extends Factory
     public function withChoices(int $count = 4, int $correct = 1): static
     {
         return $this->afterCreating(function (Question $question) use ($count, $correct) {
-            foreach (range(1, $count) as $position) {
+            for ($position = 1; $position <= $count; $position++) {
                 $question->choices()->create([
                     'position' => $position,
                     'body' => fake()->words(3, true),
