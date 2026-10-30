@@ -34,7 +34,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-06 Users schema and model** · M · Deps: M1-05
   Change the default users migration to add `username`, `ign`, `ign_normalized`, `full_name`, nullable `email` and `password`, `role` (default `user`), `is_active`, `pin_set_at`. Add the `Role` enum, casts (`password` hashed), `isAdmin()`, `hasPin()`, a mutator that lowercases `username` and sets `ign_normalized`, and factory states `admin()`, `withPin()`, `inactive()`.
   *Tests:* duplicate usernames that differ only in case are rejected by the DB (AC-2 at DB level); IGN uniqueness also ignores case; two users with null email are allowed; `hasPin()` is false for null password.
-- [ ] **M1-07 Settings store** · M · Deps: M1-05
+- [x] **M1-07 Settings store** · M · Deps: M1-05
   `settings` migration, a `SettingKey` enum (key, type, default, validation rules) for all FR-C1 settings, a `Settings` service (typed getters, cache, cache cleared on write), and `SettingsSeeder`.
   *Tests:* defaults are returned when no row exists; set then get returns the right type; out-of-range values are rejected (for example a similarity of 0.3, or 0 lockout attempts); the cache is cleared on update; the item split defaults add up to 170.
 - [ ] **M1-08 Audit log** · S · Deps: M1-06
