@@ -29,15 +29,19 @@ Browser (admin) ──►  Filament panel at /admin (Livewire)      ┘         
 ### 1.3 Versions and dependencies
 Exact versions are pinned at M1 (O-9, suggestion #5). The rule is the latest stable Laravel, plus the Livewire and Filament majors that are compatible with it.
 
-| Package | Purpose |
-|---|---|
-| `laravel/framework` | Core |
-| `livewire/livewire` | User app UI (Filament also requires it) |
-| `filament/filament` | Admin panel |
-| `pestphp/pest`, `pestphp/pest-plugin-laravel`, `pestphp/pest-plugin-livewire` | Tests |
-| `laravel/pint` (dev) | Code style |
-| `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/typography` (npm) | Styling; typography for passages and explanations |
-| `league/commonmark` (comes with Laravel) | Markdown in passages, stems and explanations, with HTML input disabled |
+| Package | Pinned at M1-04 (2026-10-30) | Purpose |
+|---|---|---|
+| `laravel/framework` | 13.39.0 (`^13.17`) | Core |
+| `livewire/livewire` | 4.4.8 (`^4.4.8`) | User app UI (Filament also requires it) |
+| `filament/filament` | 5.11.0 (`^5.11`) | Admin panel |
+| `pestphp/pest`, `pestphp/pest-plugin-laravel`, `pestphp/pest-plugin-livewire` | 5.3.4, 5.0.1, 5.0.0 | Tests |
+| `laravel/pint` (dev) | 1.32.1 | Code style |
+| `tailwindcss`, `@tailwindcss/vite`, `@tailwindcss/typography` (npm) | 4.3.3, 4.3.3, 0.5.20 | Styling; typography for passages and explanations |
+| `league/commonmark` (comes with Laravel) | via Laravel | Markdown in passages, stems and explanations, with HTML input disabled |
+
+Runtime at pin time: PHP 8.4.26, Composer 2.10.3, Node 26.11.1, npm 11.20.0, Vite 8.3.5. `composer.lock` and `package-lock.json` hold the exact tree. Known: `npm audit` reports a moderate advisory in `postcss-selector-parser` via `@tailwindcss/typography` (build-time only, parses our own CSS); the `--force` fix downgrades typography, so it's accepted until upstream updates.
+
+Skeleton defaults kept as shipped by `laravel new`: `laravel/tinker`, `laravel/pail`, `laravel/pao`, `nunomaduro/collision`, `mockery/mockery`, `fakerphp/faker`, `pestphp/pest-plugin-drift` (composer) and `concurrently`, `laravel-vite-plugin`, `@laravel/multiplex` (npm).
 
 No other packages without a justification line added here.
 

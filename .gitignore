@@ -32,7 +32,9 @@ auth.json
 
 # Built assets
 /public/build/
+/public/css/filament
 /public/hot
+/public/js/filament
 
 # Local-only agent memory (back it up manually)
 /CLAUDE.md
@@ -44,6 +46,7 @@ auth.json
 # Tooling and OS
 /storage/pail
 /public/fonts-manifest.dev.json
+/public/fonts/filament
 .phpactor.json
 _ide_helper.php
 Homestead.json

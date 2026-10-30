@@ -21,11 +21,11 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-02 git init** · S · Deps: — (done 2026-10-30, before M1 approval, at your request)
   `git init` on `main`; commits `docs: add project specs and memory files` then `chore: add .gitignore`. `.gitignore` covers `.env`, `vendor/`, `node_modules/`, `database/*.sqlite`, storage logs and compiled files, `content/inbox/`, `content/staged/` and uploaded media.
   *Tests:* `git status` is clean after the commit; `git check-ignore content/inbox/x.pdf` matches.
-- [x] **M1-03 Create the Laravel project** · M · Deps: M1-01, M1-02 (Laravel 13.17; http://cse.test returns 200)
+- [x] **M1-03 Create the Laravel project** · M · Deps: M1-01, M1-02 (Laravel 13, pinned in M1-04; http://cse.test returns 200)
   Commit on `m1-foundation` as its own commit: `chore: scaffold Laravel project` (before M1-04).
   Run `laravel new` in a temporary sibling folder (the installer needs an empty folder): no starter kit, Pest, SQLite. Then move the files into the repo root **without overwriting** `CLAUDE.md`, `SUGGESTIONS.md` or `specs/` (any generated AI-guideline files are reviewed and merged by hand). Set `APP_TIMEZONE=UTC`, add `config/cse.php` with `display_timezone = Asia/Manila`, and check `herd link cse` → http://cse.test.
   *Tests:* the default Pest suite passes (`php artisan test`); a test that the `cse.display_timezone` config is `Asia/Manila`.
-- [ ] **M1-04 Pin compatible versions** · S · Deps: M1-03
+- [x] **M1-04 Pin compatible versions** · S · Deps: M1-03
   Pick the latest Livewire and Filament majors that support the installed Laravel (suggestion #5), install `livewire/livewire`, `filament/filament`, `pestphp/pest-plugin-livewire`, Tailwind and the typography plugin, and record the exact versions in plan §1.3 (tracked) and `CLAUDE.md` (local copy).
   *Tests:* the app boots; `GET /admin/login` returns 200.
 - [ ] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
