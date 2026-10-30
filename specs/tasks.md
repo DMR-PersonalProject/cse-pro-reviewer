@@ -89,7 +89,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-04 Markdown rendering** · S · Deps: M2-03
   A safe Markdown renderer (`html_input: strip`, no unsafe links) and a Blade component used by stems, passages and explanations. Supports tables.
   *Tests:* `<script>` is stripped; `javascript:` links are removed; a Markdown table renders as `<table>`.
-- [ ] **M2-05 Media validation and storage** · M · Deps: M2-03
+- [x] **M2-05 Media validation and storage** · M · Deps: M2-03
   `MediaValidator` (real MIME via `finfo`, PNG/JPG/WebP only, ≤ 2 MB, alt text required) and an `AttachMedia` action (random name, `public` disk, `media/`).
   *Tests:* PNG, JPG and WebP accepted; SVG rejected; a `.png` file that is really SVG or HTML rejected; 2.1 MB rejected; missing alt text rejected (the editor side of AC-21a).
 - [ ] **M2-06 Normalizer and duplicate detector** · M · Deps: M1-07, M2-03
