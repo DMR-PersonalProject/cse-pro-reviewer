@@ -52,7 +52,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-12 Admin access and roles** · M · Deps: M1-08, M1-10
   A Filament panel at `/admin` (`canAccessPanel` = active admin), indigo primary color, dark mode on; `EnsureUserIsActive` middleware; base `UserPolicy`; the `cse:make-admin` command (prompts, no defaults).
   *Tests:* AC-4; an admin reaches the dashboard; an inactive admin is refused; the command creates an admin with a hashed password and refuses a duplicate email; a deactivated user mid-session is logged out on the next request.
-- [ ] **M1-13 Layout and theming** · M · Deps: M1-04
+- [x] **M1-13 Layout and theming** · M · Deps: M1-04
   An app layout with skip link, header and nav; CSS tokens for light and dark; the Tailwind dark variant by class; server-side `dark` class from the cookie; the blocking inline head script for `system`; a `theme-toggle` component (light/dark/system) that writes the cookie and localStorage using the same key as Filament.
   *Tests:* with the cookie `theme=dark`, `<html>` has `class="dark"`; with `theme=light` it doesn't; the inline script appears before the stylesheet link; the toggle has an accessible name and pressed state. Manual: no flash (What to try).
 - [ ] **M1-14 Base pages** · S · Deps: M1-09, M1-13
