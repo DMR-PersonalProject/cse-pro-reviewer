@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Content\DuplicateDetector;
 use App\Domain\Content\StemNormalizer;
 use App\Enums\Difficulty;
 use App\Enums\Language;
@@ -55,6 +56,7 @@ class Question extends Model
             'needs_review_reasons' => AsEnumCollection::of(NeedsReviewReason::class),
             'lock_choice_order' => 'boolean',
             'extraction_confidence' => 'decimal:2',
+            'duplicate_similarity' => 'decimal:4',
             'published_at' => 'datetime',
             'archived_at' => 'datetime',
         ];
@@ -64,7 +66,22 @@ class Question extends Model
     {
         static::saving(function (Question $question) {
             $question->stem_normalized = app(StemNormalizer::class)->normalize($question->stem);
+
+            if (! $question->exists || $question->isDirty(['stem', 'subtest_id'])) {
+                $match = app(DuplicateDetector::class)->find($question->stem, $question->subtest_id, $question->getKey());
+
+                $question->duplicate_of_question_id = $match?->question->id;
+                $question->duplicate_similarity = $match?->similarity;
+            }
         });
+    }
+
+    /**
+     * @return BelongsTo<Question, $this>
+     */
+    public function duplicateOf(): BelongsTo
+    {
+        return $this->belongsTo(Question::class, 'duplicate_of_question_id');
     }
 
     public function correctChoice(): ?Choice

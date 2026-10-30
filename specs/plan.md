@@ -102,6 +102,7 @@ erDiagram
   sources ||--o{ questions : provides
   sources ||--o{ passages : provides
   passages ||--o{ questions : groups
+  questions |o--o{ questions : "possible duplicate of (nullOnDelete)"
   questions ||--|{ choices : has
   questions }o--o{ tags : tagged
   questions ||--o{ media : "has (polymorphic)"
@@ -124,7 +125,7 @@ erDiagram
 | `topics` | `subtest_id`, `code`, `name`, `position`. Codes (chosen M2-01): verbal `word_meaning`, `sentence_completion`, `error_recognition`, `sentence_structure`, `paragraph_organization`, `reading_comprehension`; numerical `basic_operations`, `number_sequences`, `word_problems`; analytical `word_analogy`, `abstract_reasoning` (symbolic logic and abstract reasoning), `assumptions_conclusions`, `data_interpretation`; general_info `philippine_constitution`, `ra_6713`, `peace_human_rights`, `environment` | unique (`subtest_id`, `code`) |
 | `sources` | `name`, `type`, `visibility` (default `private`), `notes`, `created_by` | index `visibility` |
 | `passages` | `subtest_id`, `topic_id`, `source_id`, `title` null, `body` (markdown) null, `language`, `status` | |
-| `questions` | `subtest_id`, `topic_id`, `passage_id` null, `passage_position` null, `source_id`, `import_batch_id` null, `stem` (markdown), `stem_normalized`, `explanation` null, `difficulty` null, `language`, `status`, `needs_review_reasons` (json), `lock_choice_order`, `extraction_confidence` decimal(3,2) null, `source_file`, `source_page`, `source_notes`, `published_at`, `archived_at` | index (`status`, `subtest_id`, `topic_id`); index `source_id`; index `passage_id` |
+| `questions` | `subtest_id`, `topic_id`, `passage_id` null, `passage_position` null, `source_id`, `import_batch_id` null, `stem` (markdown), `stem_normalized`, `explanation` null, `difficulty` null, `language`, `status`, `needs_review_reasons` (json), `lock_choice_order`, `extraction_confidence` decimal(3,2) null, `source_file`, `source_page`, `source_notes`, `published_at`, `archived_at`, `duplicate_of_question_id` null (FK `questions`, **nullOnDelete**), `duplicate_similarity` decimal(5,4) null (both recomputed whenever the stem or subtest changes; a warning only, M2-09) | index (`status`, `subtest_id`, `topic_id`); index `source_id`; index `passage_id`; index `duplicate_of_question_id` |
 | `choices` | `question_id` (cascade), `position`, `body`, `is_correct` | unique (`question_id`, `position`) |
 | `tags`, `question_tag` | `name` (unique) / pivot | |
 | `media` | `mediable_type`, `mediable_id`, `disk`, `path`, `mime`, `size`, `width`, `height`, `alt_text`, `position` | index on the morph pair |

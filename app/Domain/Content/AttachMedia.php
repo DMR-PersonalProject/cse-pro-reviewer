@@ -26,6 +26,35 @@ class AttachMedia
     public function __construct(private readonly MediaValidator $validator) {}
 
     /**
+     * A random stored name with the extension of the file's real type (never the uploaded name).
+     */
+    public static function storageName(string $mime): string
+    {
+        return Str::random(40).'.'.(MediaValidator::TYPES[$mime] ?? 'bin');
+    }
+
+    /**
+     * Media columns for a file already stored on the public disk (used by the Filament editor).
+     *
+     * @return array{disk: string, mime: string, size: int, width: int, height: int, alt_text: string}
+     *
+     * @throws ValidationException
+     */
+    public function metadataFor(string $path, ?string $altText): array
+    {
+        $image = $this->validator->validate(Storage::disk(self::DISK)->path($path), $altText);
+
+        return [
+            'disk' => self::DISK,
+            'mime' => $image->mime,
+            'size' => $image->size,
+            'width' => $image->width,
+            'height' => $image->height,
+            'alt_text' => $image->altText,
+        ];
+    }
+
+    /**
      * @throws ValidationException
      */
     public function handle(Question|Passage|Choice $mediable, UploadedFile|string $file, ?string $altText): Media
@@ -35,7 +64,7 @@ class AttachMedia
         $path = Storage::disk(self::DISK)->putFileAs(
             self::DIRECTORY,
             new File($image->path),
-            Str::random(40).'.'.$image->extension,
+            self::storageName($image->mime),
         );
 
         return $mediable->media()->create([

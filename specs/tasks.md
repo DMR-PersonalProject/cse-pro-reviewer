@@ -101,7 +101,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-08 SourceResource** · S · Deps: M2-03, M1-12
   A Filament CRUD with a visibility toggle and a count of items.
   *Tests:* an admin can list, create and edit; a user gets a 403; a new source defaults to private.
-- [ ] **M2-09 QuestionResource: form and table** · M · Deps: M2-04, M2-05, M2-06
+- [x] **M2-09 QuestionResource: form and table** · M · Deps: M2-04, M2-05, M2-06
   Form fields: subtest, topic, passage, stem, a choices repeater (2–5, exactly one correct), explanation, difficulty, language, tags, media upload with alt text, provenance, `lock_choice_order`. Table filters: subtest, topic, status, source, visibility, needs-review, possible duplicate. A duplicate warning appears on save.
   *Tests:* create and edit via Filament Livewire tests; saving with 0 or 2 correct choices fails; topic options depend on the subtest; the duplicate warning appears for a near-identical stem.
 - [ ] **M2-10 QuestionResource: actions** · S · Deps: M2-07, M2-09
