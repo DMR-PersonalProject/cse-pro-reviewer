@@ -122,7 +122,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-15 Audit log viewer and review queue widget** · S · Deps: M2-10
   A read-only `AuditLogResource`, and a dashboard widget showing counts of drafts, needs-review items and possible duplicates.
   *Tests:* the resource is read-only (no create or edit routes); the widget counts match the factory data.
-- [ ] **M2-16 Sample content seeder** · M · Deps: M2-12, M2-05
+- [x] **M2-16 Sample content seeder** · M · Deps: M2-12, M2-05
   `SampleContentSeeder`: at least 2 **original** items for each of the 17 topics, including a reading passage with 3 sub-items, a data-interpretation item with a Markdown table, an abstract-reasoning item with a PNG figure (alt text included), and Filipino word-meaning items. All published, under the public source "Original — seed".
   *Tests:* each topic has ≥ 2 published public items; the passage has 3 items; every media file exists and has alt text; every item has a correct choice and an explanation.
 - [ ] **M2-17 Current PIN to change a PIN (suggestion #17)** · S · Deps: M1-11
