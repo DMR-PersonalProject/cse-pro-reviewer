@@ -110,7 +110,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-11 Hard delete with typed confirmation** · S · Deps: M2-10
   `DeleteQuestion` and `DeleteSource` (the source together with its items). The confirmation modal requires typing the item ID or the source name, and an audit entry is written. The purge option arrives in M4-17, once snapshots exist.
   *Tests:* the wrong confirmation text refuses; the right text deletes the item, its choices and its media rows; deleting a source removes all its items; an audit row is written.
-- [ ] **M2-12 PassageResource** · M · Deps: M2-09
+- [x] **M2-12 PassageResource** · M · Deps: M2-09
   Passage CRUD with a relation manager for its questions (ordered, drag to reorder).
   *Tests:* create a passage with 3 questions; reordering updates `passage_position`; the questions inherit the passage's subtest and topic.
 - [ ] **M2-13 UserResource** · M · Deps: M1-12, M1-08

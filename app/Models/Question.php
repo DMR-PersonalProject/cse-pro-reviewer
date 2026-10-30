@@ -65,6 +65,7 @@ class Question extends Model
     protected static function booted(): void
     {
         static::saving(function (Question $question) {
+            $question->placeInPassage();
             $question->stem_normalized = app(StemNormalizer::class)->normalize($question->stem);
 
             if (! $question->exists || $question->isDirty(['stem', 'subtest_id'])) {
@@ -74,6 +75,29 @@ class Question extends Model
                 $question->duplicate_similarity = $match?->similarity;
             }
         });
+    }
+
+    /**
+     * An item in a passage takes the passage's subtest and topic (FR-Q3). Joining a passage puts it
+     * last unless a position is given; leaving one clears the position.
+     */
+    private function placeInPassage(): void
+    {
+        if (! $this->passage_id) {
+            $this->passage_position = null;
+
+            return;
+        }
+
+        $passage = Passage::findOrFail($this->passage_id);
+        $this->subtest_id = $passage->subtest_id;
+        $this->topic_id = $passage->topic_id;
+
+        $joining = $this->exists && $this->isDirty('passage_id') && ! $this->isDirty('passage_position');
+
+        if ($this->passage_position === null || $joining) {
+            $this->passage_position = ($passage->questions()->max('passage_position') ?? 0) + 1;
+        }
     }
 
     /**

@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Domain\Content;
 
-use App\Models\Passage;
 use App\Models\Question;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 
 /**
  * Saves an item's own fields and its choices from the admin editor. Status is not touched here.
- * An item in a passage takes the passage's subtest and topic (FR-Q3).
+ * Passage placement (subtest, topic, position) is handled by the Question model.
  */
 class SaveQuestion
 {
@@ -29,7 +28,6 @@ class SaveQuestion
 
         return DB::transaction(function () use ($question, $data) {
             $question->fill(Arr::only($data, self::FIELDS));
-            $this->placeInPassage($question);
             $question->save();
 
             if (array_key_exists('choices', $data)) {
@@ -38,23 +36,6 @@ class SaveQuestion
 
             return $question;
         });
-    }
-
-    private function placeInPassage(Question $question): void
-    {
-        if (! $question->passage_id) {
-            $question->passage_position = null;
-
-            return;
-        }
-
-        $passage = Passage::findOrFail($question->passage_id);
-        $question->subtest_id = $passage->subtest_id;
-        $question->topic_id = $passage->topic_id;
-
-        if (! $question->exists || $question->isDirty('passage_id') || $question->passage_position === null) {
-            $question->passage_position = ($passage->questions()->max('passage_position') ?? 0) + 1;
-        }
     }
 
     /**

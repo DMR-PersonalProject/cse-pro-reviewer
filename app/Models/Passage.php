@@ -42,6 +42,20 @@ class Passage extends Model
         ];
     }
 
+    protected static function booted(): void
+    {
+        // Its items follow the passage's subtest and topic (FR-Q3). Saved one by one so each
+        // item's duplicate check re-runs for its new subtest.
+        static::updated(function (Passage $passage) {
+            if ($passage->wasChanged(['subtest_id', 'topic_id'])) {
+                $passage->questions()->get()->each->update([
+                    'subtest_id' => $passage->subtest_id,
+                    'topic_id' => $passage->topic_id,
+                ]);
+            }
+        });
+    }
+
     /**
      * @return BelongsTo<Subtest, $this>
      */

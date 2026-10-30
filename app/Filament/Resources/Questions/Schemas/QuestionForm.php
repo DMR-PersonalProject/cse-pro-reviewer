@@ -2,20 +2,16 @@
 
 namespace App\Filament\Resources\Questions\Schemas;
 
-use App\Domain\Content\AttachMedia;
-use App\Domain\Content\MediaValidator;
 use App\Domain\Content\ResolveReviewReason;
 use App\Enums\Difficulty;
 use App\Enums\Language;
 use App\Enums\NeedsReviewReason;
+use App\Filament\Forms\MediaRepeater;
+use App\Filament\Forms\TaxonomyFields;
 use App\Models\Passage;
 use App\Models\Question;
-use App\Models\Subtest;
-use App\Models\Topic;
-use App\Rules\ValidImage;
 use Closure;
 use Filament\Actions\Action;
-use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -28,7 +24,6 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
-use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 /**
  * Question editor (FR-Q1). Choices are saved by SaveQuestion; tags and media by their relationships.
@@ -44,7 +39,7 @@ class QuestionForm
                 self::classification(),
                 self::item(),
                 self::details(),
-                self::images(),
+                MediaRepeater::section(),
                 self::provenance(),
             ]);
     }
@@ -81,27 +76,10 @@ class QuestionForm
         return Section::make(__('Classification'))
             ->columns(3)
             ->schema([
-                Select::make('subtest_id')
-                    ->label(__('Subtest'))
-                    ->options(fn () => Subtest::orderBy('position')->pluck('name', 'id'))
-                    ->required()
-                    ->live()
-                    ->afterStateUpdated(fn (Set $set) => $set('topic_id', null))
-                    ->disabled(fn (Get $get) => filled($get('passage_id')))
-                    ->dehydrated(),
-                Select::make('topic_id')
-                    ->label(__('Topic'))
-                    ->options(fn (Get $get) => Topic::where('subtest_id', $get('subtest_id'))->orderBy('position')->pluck('name', 'id'))
-                    ->required()
-                    ->rules([
-                        fn (Get $get): Closure => function (string $attribute, mixed $value, Closure $fail) use ($get) {
-                            if (blank($get('passage_id')) && ! Topic::whereKey($value)->where('subtest_id', $get('subtest_id'))->exists()) {
-                                $fail(__('Pick a topic from the selected subtest.'));
-                            }
-                        },
-                    ])
-                    ->disabled(fn (Get $get) => filled($get('passage_id')))
-                    ->dehydrated(),
+                // In a passage, the passage decides both (the model enforces it on save).
+                TaxonomyFields::subtest()->disabled(fn (Get $get) => filled($get('passage_id')))->dehydrated(),
+                TaxonomyFields::topic(skipCheckWhen: fn (Get $get) => filled($get('passage_id')))
+                    ->disabled(fn (Get $get) => filled($get('passage_id')))->dehydrated(),
                 Select::make('passage_id')
                     ->label(__('Passage (optional)'))
                     ->options(fn () => Passage::orderByDesc('id')->get()->mapWithKeys(
@@ -170,41 +148,6 @@ class QuestionForm
                 Toggle::make('lock_choice_order')
                     ->label(__('Keep choice order'))
                     ->helperText(__('For choices like “All of the above”: choices are not shuffled.')),
-            ]);
-    }
-
-    private static function images(): Section
-    {
-        return Section::make(__('Images'))
-            ->description(__('PNG, JPG or WebP, up to 2 MB each. Alt text is required.'))
-            ->collapsible()
-            ->schema([
-                Repeater::make('media')
-                    ->hiddenLabel()
-                    ->relationship()
-                    ->orderColumn('position')
-                    ->defaultItems(0)
-                    ->addActionLabel(__('Add image'))
-                    ->columns(2)
-                    ->schema([
-                        FileUpload::make('path')
-                            ->label(__('Image'))
-                            ->disk(AttachMedia::DISK)
-                            ->directory(AttachMedia::DIRECTORY)
-                            ->visibility('public')
-                            ->acceptedFileTypes(array_keys(MediaValidator::TYPES))
-                            ->maxSize(MediaValidator::MAX_BYTES / 1024)
-                            ->rules([new ValidImage])
-                            ->getUploadedFileNameForStorageUsing(fn (TemporaryUploadedFile $file) => AttachMedia::storageName((string) $file->getMimeType()))
-                            ->required(),
-                        TextInput::make('alt_text')
-                            ->label(__('Alt text'))
-                            ->helperText(__('Describe what the image shows, for screen readers.'))
-                            ->required()
-                            ->maxLength(500),
-                    ])
-                    ->mutateRelationshipDataBeforeCreateUsing(fn (array $data) => [...$data, ...app(AttachMedia::class)->metadataFor($data['path'], $data['alt_text'])])
-                    ->mutateRelationshipDataBeforeSaveUsing(fn (array $data) => [...$data, ...app(AttachMedia::class)->metadataFor($data['path'], $data['alt_text'])]),
             ]);
     }
 
