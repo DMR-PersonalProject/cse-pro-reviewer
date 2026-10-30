@@ -34,6 +34,9 @@ auth.json
 /public/build/
 /public/hot
 
+# Local-only agent memory (back it up manually)
+/CLAUDE.md
+
 # Source material (yours, never committed)
 /content/inbox/
 /content/staged/
