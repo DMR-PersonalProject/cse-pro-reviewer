@@ -57,7 +57,7 @@ Roles are a `role` column backed by an enum and enforced through policies and ga
 
 ### 4.1 Identity (FR-I)
 - FR-I1. **Username:** 3–20 characters `[a-z0-9_]`, stored lowercase, unique without regard to case. **IGN:** 3–20 characters (letters, digits, spaces, `_` and `-`), unique without regard to case, and an admin can change it. **Full name:** 2–100 characters, required, never shown publicly.
-- FR-I2. The PIN is optional, 4–6 digits, hashed in `users.password`. It can be set, changed or removed from the profile; removing it needs the current PIN.
+- FR-I2. The PIN is optional, 4–6 digits, hashed in `users.password`. It can be set, changed or removed from the profile; changing or removing it needs the current PIN, while setting a first PIN doesn't (#17, M2-17).
 - FR-I3. Without a PIN, the username alone signs in. The profile shows a persistent notice recommending a PIN.
 - FR-I4. Sign-in is rate-limited per username plus IP. The limits are settings: `lockout_max_attempts` (default 5) and `lockout_window_minutes` (default 15) **[A]**.
 - FR-I5. `email` and `password` are nullable on `users`. Admins must have both, enforced in application code. Making them required for users later is a validation change, not a schema rewrite.
