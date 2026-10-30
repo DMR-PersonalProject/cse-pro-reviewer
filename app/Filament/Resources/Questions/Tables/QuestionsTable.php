@@ -4,6 +4,9 @@ namespace App\Filament\Resources\Questions\Tables;
 
 use App\Enums\QuestionStatus;
 use App\Enums\SourceVisibility;
+use App\Filament\Resources\Questions\Actions\QuestionActions;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\BulkActionGroup;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -59,6 +62,18 @@ class QuestionsTable
             ])
             ->recordActions([
                 EditAction::make(),
+                ActionGroup::make([
+                    QuestionActions::publish(),
+                    QuestionActions::archive(),
+                    QuestionActions::unarchive(),
+                ]),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    QuestionActions::bulkPublish(),
+                    QuestionActions::bulkArchive(),
+                    QuestionActions::bulkUnarchive(),
+                ]),
             ]);
     }
 }

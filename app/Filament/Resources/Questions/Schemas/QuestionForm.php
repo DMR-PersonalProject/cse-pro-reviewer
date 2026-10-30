@@ -4,13 +4,17 @@ namespace App\Filament\Resources\Questions\Schemas;
 
 use App\Domain\Content\AttachMedia;
 use App\Domain\Content\MediaValidator;
+use App\Domain\Content\ResolveReviewReason;
 use App\Enums\Difficulty;
 use App\Enums\Language;
+use App\Enums\NeedsReviewReason;
 use App\Models\Passage;
+use App\Models\Question;
 use App\Models\Subtest;
 use App\Models\Topic;
 use App\Rules\ValidImage;
 use Closure;
+use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\MarkdownEditor;
 use Filament\Forms\Components\Repeater;
@@ -18,6 +22,8 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
@@ -34,11 +40,39 @@ class QuestionForm
         return $schema
             ->columns(1)
             ->components([
+                self::needsReview(),
                 self::classification(),
                 self::item(),
                 self::details(),
                 self::images(),
                 self::provenance(),
+            ]);
+    }
+
+    /**
+     * Lists the open review reasons, each with its own Resolve action (M2-10).
+     */
+    private static function needsReview(): Section
+    {
+        return Section::make(__('Needs review'))
+            ->description(__('This item can’t be published until every reason is resolved.'))
+            ->icon('heroicon-o-exclamation-triangle')
+            ->iconColor('warning')
+            ->visible(fn (?Question $record) => (bool) $record?->needs_review_reasons->isNotEmpty())
+            ->schema(fn (?Question $record) => [
+                Actions::make(
+                    collect($record?->needs_review_reasons ?? [])
+                        ->map(fn (NeedsReviewReason $reason) => Action::make('resolve_'.$reason->value)
+                            ->label(__('Resolve: :reason', ['reason' => $reason->label()]))
+                            ->color('warning')
+                            ->requiresConfirmation()
+                            ->modalDescription(__('Confirm that you have checked: :reason', ['reason' => $reason->label()]))
+                            ->action(function (Question $record) use ($reason) {
+                                app(ResolveReviewReason::class)->handle($record, $reason);
+                                Notification::make()->success()->title(__('Resolved: :reason', ['reason' => $reason->label()]))->send();
+                            }))
+                        ->all(),
+                )->key('needs_review_actions'),
             ]);
     }
 

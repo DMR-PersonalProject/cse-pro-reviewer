@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Questions\Pages;
 
 use App\Domain\Content\SaveQuestion;
+use App\Filament\Resources\Questions\Actions\QuestionActions;
 use App\Filament\Resources\Questions\Pages\Concerns\WarnsAboutDuplicates;
 use App\Filament\Resources\Questions\QuestionResource;
 use App\Models\Choice;
@@ -18,6 +19,15 @@ class EditQuestion extends EditRecord
     use WarnsAboutDuplicates;
 
     protected static string $resource = QuestionResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            QuestionActions::publish(),
+            QuestionActions::archive(),
+            QuestionActions::unarchive(),
+        ];
+    }
 
     /**
      * @param  array<string, mixed>  $data
