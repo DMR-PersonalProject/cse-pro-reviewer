@@ -119,7 +119,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-14 Exam settings page** · M · Deps: M1-07
   A Filament page for every FR-C1 setting, with the **"unverified"** badge on the item split, a live total, validation and an audit entry on save.
   *Tests:* invalid values are rejected; the total is shown; the "unverified" label is rendered; saving writes the audit entry and clears the cache.
-- [ ] **M2-15 Audit log viewer and review queue widget** · S · Deps: M2-10
+- [x] **M2-15 Audit log viewer and review queue widget** · S · Deps: M2-10
   A read-only `AuditLogResource`, and a dashboard widget showing counts of drafts, needs-review items and possible duplicates.
   *Tests:* the resource is read-only (no create or edit routes); the widget counts match the factory data.
 - [ ] **M2-16 Sample content seeder** · M · Deps: M2-12, M2-05
