@@ -3,8 +3,8 @@
 > Read this first every session. Keep it short and current. Update the Decisions log whenever a decision changes.
 
 ## Status
-**Phase: PLANNING. No application code until the user replies exactly `approved: start M1`.**
-Approved: constitution, spec, clarifications, plan. Done: `specs/tasks.md` (awaiting review). Next: wait for `approved: start M1`. Deliverable order: `constitution.md` → `spec.md` → `clarifications.md` → `plan.md` → `tasks.md`. Stop after each one and summarize in under 10 lines, listing any new `SUGGESTIONS.md` entries.
+**Phase: M1 in progress on branch `m1-foundation`** (approved 2026-10-30). Do only M1 tasks; stop after M1 and wait for `approved: start M2`. M1-15 (remote) only when asked.
+All planning docs approved. Deliverable order: `constitution.md` → `spec.md` → `clarifications.md` → `plan.md` → `tasks.md`. Stop after each one and summarize in under 10 lines, listing any new `SUGGESTIONS.md` entries.
 
 ## Project summary
 Web app for practicing the Philippine CSC **Career Service Professional Examination**. Individual tests (one subtest, optional topic filter, item count, timed or untimed) and a combined full mock exam, with scoring, answer review with explanations, progress tracking and a leaderboard (IGN only). Personal project first, designed for other users later.
@@ -29,6 +29,8 @@ Environment: Windows 11 with Laravel Herd.
 3. Open a **new** terminal and verify: `php -v`, `composer -V`, `laravel --version`.
 4. In the project folder run `herd link cse`, then open http://cse.test (or run `php artisan serve`).
 5. First run (after M1 scaffolding): `composer install`, `npm install`, `cp .env.example .env`, `php artisan key:generate`, `php artisan migrate --seed`, `npm run dev`.
+
+**Recorded toolchain (M1-01, 2026-10-30):** PHP 8.4.26 NTS x64 (Herd), Composer 2.10.3, Laravel installer 5.31.1, Node 26.11.1, npm 11.20.0. Extensions include pdo_sqlite, pdo_mysql, pdo_pgsql, intl, gd, mbstring, zip. Herd's `php`/`composer` are on the PowerShell PATH but not on Git Bash's, so run PHP commands from PowerShell.
 
 ## Conventions
 - Spec-driven: every feature traces to a story in `specs/spec.md` and a task in `specs/tasks.md`. Tick tasks when done.

@@ -1,6 +1,6 @@
 # Tasks — CSE Reviewer (MVP)
 
-Status: **draft for review** · Implements `plan.md` · Nothing starts until `approved: start M1`.
+Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 **How to read this**
 - `[ ]` means not started and `[x]` means done. A task is done only when its tests pass, `pint --test` is clean, and the box is ticked here.
@@ -14,7 +14,7 @@ Status: **draft for review** · Implements `plan.md` · Nothing starts until `ap
 
 ## M1 — Foundation, roles and theming
 
-- [ ] **M1-01 Verify the toolchain** · S · Deps: —
+- [x] **M1-01 Verify the toolchain** · S · Deps: —
   You install Herd (steps in `CLAUDE.md`). I check `php -v` (≥ 8.3), `composer -V`, `laravel --version`, `node -v` and `npm -v`, and record the versions in `CLAUDE.md`.
   *Tests:* none (environment). The outcome is the recorded version output.
 - [x] **M1-02 git init** · S · Deps: — (done 2026-10-30, before M1 approval, at your request)
