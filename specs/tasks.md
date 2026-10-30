@@ -40,7 +40,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-08 Audit log** · S · Deps: M1-06
   `audit_logs` migration and model, plus an `Audit::record($action, $subject, $reason, $meta)` helper.
   *Tests:* a call writes one row with the acting user and the subject's type and ID.
-- [ ] **M1-09 Registration** · M · Deps: M1-06
+- [x] **M1-09 Registration** · M · Deps: M1-06
   The `RegisterUser` action plus the `Auth\Register` component at `/start` (username, IGN, full name, optional PIN with confirmation) and a privacy summary.
   *Tests:* AC-1, AC-2; validation (length, character set, PIN must be 4–6 digits); the PIN is stored hashed and `pin_set_at` is set; the user is signed in and redirected to the dashboard.
 - [ ] **M1-10 Sign-in and throttle** · M · Deps: M1-07, M1-09

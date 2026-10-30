@@ -1,7 +1,7 @@
 <?php
 
 it('boots the app', function () {
-    $this->get('/')->assertOk();
+    $this->get('/start')->assertOk();
 });
 
 it('serves the admin login page', function () {
