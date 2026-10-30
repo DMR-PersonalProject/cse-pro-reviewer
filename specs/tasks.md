@@ -107,7 +107,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-10 QuestionResource: actions** · S · Deps: M2-07, M2-09
   Publish, archive and unarchive (single and bulk), and a needs-review panel that lists reasons with a "Resolve" action per reason.
   *Tests:* a bulk publish skips blocked items and reports why; resolving the last reason lets the item be published.
-- [ ] **M2-11 Hard delete with typed confirmation** · S · Deps: M2-10
+- [x] **M2-11 Hard delete with typed confirmation** · S · Deps: M2-10
   `DeleteQuestion` and `DeleteSource` (the source together with its items). The confirmation modal requires typing the item ID or the source name, and an audit entry is written. The purge option arrives in M4-17, once snapshots exist.
   *Tests:* the wrong confirmation text refuses; the right text deletes the item, its choices and its media rows; deleting a source removes all its items; an audit row is written.
 - [ ] **M2-12 PassageResource** · M · Deps: M2-09
@@ -232,7 +232,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
   A resume card with the time left; a "resume or abandon" prompt when starting a new test; lazy finalization on load.
   *Tests:* an expired attempt is finalized when the dashboard loads; abandoning sets the status and frees the slot.
-- [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01
+- [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
   Add "Also remove this content from past attempts" to `DeleteQuestion` and `DeleteSource` (FR-Q5a): replace the snapshot content, set `purged_at`, remove media files referenced only by snapshots, and record an audit entry.
   *Tests:* AC-15 at the data level (the score is unchanged, the content is a placeholder, `purged_at` is set); without purge the snapshot stays intact; the audit `meta` records whether a purge was done.
 
