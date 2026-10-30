@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Database\Factories\SubtestFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -12,6 +14,9 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable(['code', 'name', 'position'])]
 class Subtest extends Model
 {
+    /** @use HasFactory<SubtestFactory> */
+    use HasFactory;
+
     /**
      * @return HasMany<Topic, $this>
      */

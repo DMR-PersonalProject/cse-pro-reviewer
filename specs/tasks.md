@@ -83,7 +83,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-02 Content enums** · S · Deps: M2-01
   `QuestionStatus`, `SourceVisibility`, `SourceType`, `Difficulty`, `Language`, `NeedsReviewReason` (each with a label).
   *Tests:* the allowed status transitions are listed on the enum (`canTransitionTo`) and unit-tested against FR-Q2.
-- [ ] **M2-03 Content schema and models** · M · Deps: M2-02
+- [x] **M2-03 Content schema and models** · M · Deps: M2-02
   Migrations, models, factories and relations for `sources`, `passages`, `questions`, `choices`, `tags`/`question_tag` and `media` (polymorphic), with the indexes from plan §3.2.
   *Tests:* a new source defaults to `private`; a question's choices are ordered by `position`; a passage's questions are ordered by `passage_position`; deleting a question deletes its choices; factory states `published()`, `private()`, `inPassage()`.
 - [ ] **M2-04 Markdown rendering** · S · Deps: M2-03
@@ -147,7 +147,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M3-01 Content folder and docs** · S · Deps: M2 done
   Create `content/{inbox,staged,staged/media,schema}`, `content/README.md` (naming, what to send, what Claude does with each type of file, the never-guess rule, privacy and copyright note), `schema/question-import.schema.json`, `schema/example.json` and `schema/example.csv`.
   *Tests:* none yet; M3-03 and M3-04 validate both example files.
-- [ ] **M3-02 Import tables** · S · Deps: M3-01
+- [ ] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
   Migrations and models for `import_batches` and `import_rows`.
   *Tests:* rows cascade with their batch; `decision` defaults to `pending`.
 - [ ] **M3-03 Parser** · M · Deps: M3-02
