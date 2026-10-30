@@ -9,6 +9,8 @@ use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -86,6 +88,19 @@ class User extends Authenticatable implements FilamentUser, HasName
     public function hasPin(): bool
     {
         return $this->hasRole(Role::User) && $this->password !== null;
+    }
+
+    /**
+     * The account part of leaderboard eligibility (FR-L2): active, and has a PIN or is an admin.
+     * M6's Eligibility adds the attempt conditions on top.
+     */
+    #[Scope]
+    protected function leaderboardEligible(Builder $query): void
+    {
+        $query->where('is_active', true)
+            ->where(fn (Builder $query) => $query
+                ->where('role', Role::Admin)
+                ->orWhereNotNull('password'));
     }
 
     public function canAccessPanel(Panel $panel): bool

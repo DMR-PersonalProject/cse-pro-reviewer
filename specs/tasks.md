@@ -113,7 +113,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-12 PassageResource** · M · Deps: M2-09
   Passage CRUD with a relation manager for its questions (ordered, drag to reorder).
   *Tests:* create a passage with 3 questions; reordering updates `passage_position`; the questions inherit the passage's subtest and topic.
-- [ ] **M2-13 UserResource** · M · Deps: M1-12, M1-08
+- [x] **M2-13 UserResource** · M · Deps: M1-12, M1-08
   A list (username, IGN, full name, role, active, has PIN) with actions: change IGN, change role, deactivate/activate, reset PIN, delete (typed confirmation, cascades). Every action is audited.
   *Tests:* each action works and is audited; an admin can't demote or deactivate themselves if they are the last active admin.
 - [ ] **M2-14 Exam settings page** · M · Deps: M1-07
