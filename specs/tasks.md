@@ -37,7 +37,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-07 Settings store** · M · Deps: M1-05
   `settings` migration, a `SettingKey` enum (key, type, default, validation rules) for all FR-C1 settings, a `Settings` service (typed getters, cache, cache cleared on write), and `SettingsSeeder`.
   *Tests:* defaults are returned when no row exists; set then get returns the right type; out-of-range values are rejected (for example a similarity of 0.3, or 0 lockout attempts); the cache is cleared on update; the item split defaults add up to 170.
-- [ ] **M1-08 Audit log** · S · Deps: M1-06
+- [x] **M1-08 Audit log** · S · Deps: M1-06
   `audit_logs` migration and model, plus an `Audit::record($action, $subject, $reason, $meta)` helper.
   *Tests:* a call writes one row with the acting user and the subject's type and ID.
 - [ ] **M1-09 Registration** · M · Deps: M1-06
