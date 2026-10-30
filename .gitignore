@@ -1,0 +1,52 @@
+# Environment and secrets (commit .env.example only)
+.env
+.env.*
+!.env.example
+*.key
+auth.json
+
+# Dependencies
+/vendor/
+/node_modules/
+
+# Local databases
+/database/*.sqlite
+/database/*.sqlite-journal
+*.sqlite
+
+# Storage: logs, compiled files, caches, sessions
+/storage/logs/*
+/storage/framework/cache/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/storage/framework/testing/*
+/storage/*.key
+/bootstrap/cache/*.php
+
+# Uploaded media and public storage link
+/storage/app/public/*
+/storage/app/private/*
+/storage/app/livewire-tmp/
+/public/storage
+/public/media/
+
+# Built assets
+/public/build/
+/public/hot
+
+# Source material (yours, never committed)
+/content/inbox/
+/content/staged/
+
+# Tooling and OS
+.phpunit.result.cache
+/.phpunit.cache/
+.php-cs-fixer.cache
+/coverage/
+npm-debug.log
+yarn-error.log
+.idea/
+.vscode/
+.fleet/
+.DS_Store
+Thumbs.db
