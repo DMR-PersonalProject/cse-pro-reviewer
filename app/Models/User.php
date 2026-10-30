@@ -2,20 +2,31 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Enums\Role;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['username', 'ign', 'full_name', 'email', 'password', 'role', 'is_active', 'pin_set_at'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
+
+    /**
+     * Default attribute values, so a new model matches the DB defaults before it is saved.
+     *
+     * @var array<string, mixed>
+     */
+    protected $attributes = [
+        'role' => 'user',
+        'is_active' => true,
+    ];
 
     /**
      * Get the attributes that should be cast.
@@ -27,6 +38,50 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => Role::class,
+            'is_active' => 'boolean',
+            'pin_set_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Usernames are stored lowercase, so the unique index ignores case.
+     */
+    protected function username(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => mb_strtolower($value),
+        );
+    }
+
+    /**
+     * The IGN keeps its casing; a lowercase copy carries the unique index.
+     */
+    protected function ign(): Attribute
+    {
+        return Attribute::make(
+            set: fn (string $value) => [
+                'ign' => $value,
+                'ign_normalized' => mb_strtolower($value),
+            ],
+        );
+    }
+
+    public function hasRole(Role $role): bool
+    {
+        return $this->role === $role;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->hasRole(Role::Admin);
+    }
+
+    /**
+     * A user's PIN lives in the nullable password column. Admin passwords are not PINs.
+     */
+    public function hasPin(): bool
+    {
+        return $this->hasRole(Role::User) && $this->password !== null;
     }
 }

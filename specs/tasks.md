@@ -31,7 +31,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-05 Tooling and arch baseline** · S · Deps: M1-04
   `pint.json` (Laravel preset); composer scripts `test`, `lint` (`pint --test`), `fix`; the first `tests/Arch` rules: no `env()` outside `config/`, no `dd`/`dump`/`ray`, strict types in `app/Domain`.
   *Tests:* the arch suite passes; `composer lint` exits 0.
-- [ ] **M1-06 Users schema and model** · M · Deps: M1-05
+- [x] **M1-06 Users schema and model** · M · Deps: M1-05
   Change the default users migration to add `username`, `ign`, `ign_normalized`, `full_name`, nullable `email` and `password`, `role` (default `user`), `is_active`, `pin_set_at`. Add the `Role` enum, casts (`password` hashed), `isAdmin()`, `hasPin()`, a mutator that lowercases `username` and sets `ign_normalized`, and factory states `admin()`, `withPin()`, `inactive()`.
   *Tests:* duplicate usernames that differ only in case are rejected by the DB (AC-2 at DB level); IGN uniqueness also ignores case; two users with null email are allowed; `hasPin()` is false for null password.
 - [ ] **M1-07 Settings store** · M · Deps: M1-05
