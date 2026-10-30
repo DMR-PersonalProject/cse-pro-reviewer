@@ -74,6 +74,37 @@ enum SettingKey: string
         };
     }
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::ItemSplitVerbal => __('Verbal ability'),
+            self::ItemSplitNumerical => __('Numerical ability'),
+            self::ItemSplitAnalytical => __('Analytical ability'),
+            self::ItemSplitGeneralInfo => __('General information'),
+            self::TotalMinutes => __('Total minutes (full mock exam)'),
+            self::PassingGrade => __('Passing grade'),
+            self::RepeatWindowAttempts => __('Repeat window (attempts, 0 = off)'),
+            self::AutosaveGraceSeconds => __('Autosave grace (seconds)'),
+            self::DuplicateSimilarityThreshold => __('Duplicate similarity threshold'),
+            self::LockoutMaxAttempts => __('Sign-in attempts before lockout'),
+            self::LockoutWindowMinutes => __('Lockout window (minutes)'),
+            self::SuspiciousSecondsPerItem => __('Suspicious speed (seconds per item, 0 = off)'),
+            self::LeaderboardIncludePrivate => __('Let attempts with private items rank on the leaderboard'),
+        };
+    }
+
+    /**
+     * A value as the admin reads it: decimals with 2 places, flags as On/Off.
+     */
+    public function format(int|float|bool $value): string
+    {
+        return match ($this->type()) {
+            SettingType::Decimal => number_format((float) $value, 2, '.', ''),
+            SettingType::Boolean => $value ? __('On') : __('Off'),
+            SettingType::Integer => (string) $value,
+        };
+    }
+
     public function isUnverified(): bool
     {
         return in_array($this, self::itemSplit(), true);

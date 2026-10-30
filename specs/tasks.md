@@ -116,7 +116,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-13 UserResource** · M · Deps: M1-12, M1-08
   A list (username, IGN, full name, role, active, has PIN) with actions: change IGN, change role, deactivate/activate, reset PIN, delete (typed confirmation, cascades). Every action is audited.
   *Tests:* each action works and is audited; an admin can't demote or deactivate themselves if they are the last active admin.
-- [ ] **M2-14 Exam settings page** · M · Deps: M1-07
+- [x] **M2-14 Exam settings page** · M · Deps: M1-07
   A Filament page for every FR-C1 setting, with the **"unverified"** badge on the item split, a live total, validation and an audit entry on save.
   *Tests:* invalid values are rejected; the total is shown; the "unverified" label is rendered; saving writes the audit entry and clears the cache.
 - [ ] **M2-15 Audit log viewer and review queue widget** · S · Deps: M2-10
