@@ -92,7 +92,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M2-05 Media validation and storage** · M · Deps: M2-03
   `MediaValidator` (real MIME via `finfo`, PNG/JPG/WebP only, ≤ 2 MB, alt text required) and an `AttachMedia` action (random name, `public` disk, `media/`).
   *Tests:* PNG, JPG and WebP accepted; SVG rejected; a `.png` file that is really SVG or HTML rejected; 2.1 MB rejected; missing alt text rejected (the editor side of AC-21a).
-- [ ] **M2-06 Normalizer and duplicate detector** · M · Deps: M1-07, M2-03
+- [x] **M2-06 Normalizer and duplicate detector** · M · Deps: M1-07, M2-03
   `StemNormalizer` and `DuplicateDetector` (same subtest, ±30% length prefilter, `similar_text`, threshold from settings).
   *Tests:* normalization cases; a 95% match is flagged and a 70% match isn't at the default 0.90; changing the threshold setting changes the result; other subtests are ignored.
 - [ ] **M2-07 Publish and archive** · M · Deps: M1-08, M2-05

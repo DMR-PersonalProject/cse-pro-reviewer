@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Domain\Content\StemNormalizer;
 use App\Enums\Difficulty;
 use App\Enums\Language;
 use App\Enums\NeedsReviewReason;
@@ -57,6 +58,13 @@ class Question extends Model
             'published_at' => 'datetime',
             'archived_at' => 'datetime',
         ];
+    }
+
+    protected static function booted(): void
+    {
+        static::saving(function (Question $question) {
+            $question->stem_normalized = app(StemNormalizer::class)->normalize($question->stem);
+        });
     }
 
     public function correctChoice(): ?Choice
