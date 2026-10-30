@@ -49,7 +49,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-11 Profile and PIN management** · S · Deps: M1-10
   `SetPin`, `RemovePin` (needs the current PIN) and the `Profile\Edit` component.
   *Tests:* set, change and remove a PIN; removing it with the wrong PIN fails; the IGN can't be edited by a user.
-- [ ] **M1-12 Admin access and roles** · M · Deps: M1-08, M1-10
+- [x] **M1-12 Admin access and roles** · M · Deps: M1-08, M1-10
   A Filament panel at `/admin` (`canAccessPanel` = active admin), indigo primary color, dark mode on; `EnsureUserIsActive` middleware; base `UserPolicy`; the `cse:make-admin` command (prompts, no defaults).
   *Tests:* AC-4; an admin reaches the dashboard; an inactive admin is refused; the command creates an admin with a hashed password and refuses a duplicate email; a deactivated user mid-session is logged out on the next request.
 - [ ] **M1-13 Layout and theming** · M · Deps: M1-04

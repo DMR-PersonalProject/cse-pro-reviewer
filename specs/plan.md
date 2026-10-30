@@ -270,7 +270,7 @@ Admin edits/resolves → PublishQuestion (blocked while reasons or missing alt t
 - `AttemptPolicy`: the owner can view and update their own attempt. Admins can view any attempt and moderate. Nobody can update a finalized attempt.
 - `EnsureUserIsActive` middleware logs out deactivated users.
 - **Throttle:** `LoginThrottle` uses `RateLimiter` with the key `login:{username}|{ip}` and the limits from settings.
-- **First admin:** `php artisan cse:make-admin` asks for email, username, IGN, full name and password (A-18).
+- **First admin:** `php artisan cse:make-admin` asks for email, username, IGN, full name and password (A-18). The password uses Laravel's `Password::defaults()` (min 8 characters), chosen in M1-12.
 - **Audit log:** publish, archive, delete (with or without purge), leaderboard hide/unhide, role change, PIN reset and settings change.
 
 ## 11. Testing strategy

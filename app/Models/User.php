@@ -4,6 +4,9 @@ namespace App\Models;
 
 use App\Enums\Role;
 use Database\Factories\UserFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -13,7 +16,7 @@ use Illuminate\Notifications\Notifiable;
 
 #[Fillable(['username', 'ign', 'full_name', 'email', 'password', 'role', 'is_active', 'pin_set_at'])]
 #[Hidden(['password', 'remember_token'])]
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser, HasName
 {
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
@@ -83,5 +86,15 @@ class User extends Authenticatable
     public function hasPin(): bool
     {
         return $this->hasRole(Role::User) && $this->password !== null;
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->isAdmin() && $this->is_active;
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->full_name;
     }
 }

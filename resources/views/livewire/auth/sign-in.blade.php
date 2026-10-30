@@ -1,6 +1,10 @@
 <div class="mx-auto max-w-md space-y-8">
     <h1 class="text-2xl font-semibold">{{ __('Sign in') }}</h1>
 
+    @if (session('status'))
+        <p role="status" class="rounded border px-3 py-2 text-sm">{{ session('status') }}</p>
+    @endif
+
     <form wire:submit="signIn" class="space-y-5" novalidate>
         <div>
             <label for="username" class="block text-sm font-medium">{{ __('Username') }}</label>
