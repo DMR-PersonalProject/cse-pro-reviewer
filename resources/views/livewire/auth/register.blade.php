@@ -54,7 +54,7 @@
     </form>
 
     <p class="text-sm">
-        {{ __('Already registered?') }} <a href="{{ url('/login') }}" class="underline">{{ __('Sign in') }}</a>
+        {{ __('Already registered?') }} <a href="{{ route('login') }}" class="underline">{{ __('Sign in') }}</a>
     </p>
 
     @include('partials.privacy-summary')

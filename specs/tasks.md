@@ -43,7 +43,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-09 Registration** · M · Deps: M1-06
   The `RegisterUser` action plus the `Auth\Register` component at `/start` (username, IGN, full name, optional PIN with confirmation) and a privacy summary.
   *Tests:* AC-1, AC-2; validation (length, character set, PIN must be 4–6 digits); the PIN is stored hashed and `pin_set_at` is set; the user is signed in and redirected to the dashboard.
-- [ ] **M1-10 Sign-in and throttle** · M · Deps: M1-07, M1-09
+- [x] **M1-10 Sign-in and throttle** · M · Deps: M1-07, M1-09
   `SignInWithUsername`, `LoginThrottle` (limits from settings) and the `Auth\SignIn` component at `/login`. Admins are refused on this path. Inactive users are refused.
   *Tests:* AC-3, including after changing `lockout_max_attempts`; a user without a PIN signs in with username only; an admin username is refused here; an inactive user is refused; the session is regenerated.
 - [ ] **M1-11 Profile and PIN management** · S · Deps: M1-10
