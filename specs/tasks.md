@@ -77,7 +77,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M2 — Question bank and admin
 
-- [ ] **M2-01 Taxonomy** · S · Deps: M1 done
+- [x] **M2-01 Taxonomy** · S · Deps: M1 done
   `subtests` and `topics` migrations and models, plus `TaxonomySeeder` (4 subtests, 17 topics, fixed codes and positions).
   *Tests:* 4 subtests and 17 topics with the expected codes; the seeder is idempotent.
 - [ ] **M2-02 Content enums** · S · Deps: M2-01
