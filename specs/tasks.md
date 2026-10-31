@@ -168,7 +168,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-07 Approve and reject rows** · M · Deps: M3-06, M2-07
   `ApproveImportRows` (one transaction per call: source defaulting to private, passages, questions, choices, tags, media, provenance; status `draft` or `needs_review`) and `RejectImportRows`.
   *Tests:* AC-23; rows with errors can't be approved; an approved row links to its question; a missing answer key leads to `needs_review` with no `is_correct` choice; nothing is ever `published` by an import; a rollback on failure leaves no partial records.
-- [ ] **M3-08 `cse:import` command** · M · Deps: M3-07
+- [x] **M3-08 `cse:import` command** · M · Deps: M3-07
   `php artisan cse:import {path} {--dry-run} {--approve-valid}`. Media is read from `content/staged/`. It prints a summary table of errors and flags for each row.
   *Tests:* a dry run writes nothing; a normal run creates a pending batch; `--approve-valid` creates draft items only; media files are copied and validated; the exit code is non-zero on a file-level error.
 - [ ] **M3-09 ImportBatchResource and ImportWizard** · M · Deps: M3-07

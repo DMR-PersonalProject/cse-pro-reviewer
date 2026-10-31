@@ -78,7 +78,7 @@ class CreateImportBatch
      * @param  array{name: string, type: ?string, visibility: ?string}|null  $source
      * @return list<string>
      */
-    private function sourceWarnings(?array $source): array
+    public function sourceWarnings(?array $source): array
     {
         if ($source === null) {
             return [];
