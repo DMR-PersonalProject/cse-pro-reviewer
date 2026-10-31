@@ -199,7 +199,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-04 Choice shuffler and snapshot builder** · S · Deps: M4-03
   `ChoiceShuffler` (honors `lock_choice_order`, assigns A–E) and `SnapshotBuilder`.
   *Tests:* AC-11; the snapshot holds the stem, passage, choices in shown order, explanation and source visibility; `correct_key` matches the shuffled position.
-- [ ] **M4-05 Clock and scorer** · S · Deps: M4-01
+- [x] **M4-05 Clock and scorer** · S · Deps: M4-01
   `AttemptClock` (remaining time, grace, guard) and `Scorer` v1 (GR, subtest and topic percentages, pass check in integer hundredths).
   *Tests:* AC-13 (136/170 → 80.00 pass, 135/170 → 79.41 fail); an unanswered item counts as wrong; `remainingMs` is never negative; grace boundaries at exactly +10 s and +11 s.
 - [ ] **M4-06 Start attempt** · M · Deps: M4-04, M4-05
