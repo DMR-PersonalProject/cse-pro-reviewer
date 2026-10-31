@@ -153,7 +153,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
   Migrations and models for `import_batches` and `import_rows`.
   *Tests:* rows cascade with their batch; `decision` defaults to `pending`.
-- [ ] **M3-03 Parser** · M · Deps: M3-02
+- [x] **M3-03 Parser** · M · Deps: M3-02
   `ImportParser` with JSON (schema v1, passages with `ref`) and CSV (header check, `|` tags) variants that produce normalized row arrays.
   *Tests:* both example files parse; malformed JSON, a wrong `schema_version` and a missing CSV header give a file-level error; row numbers are kept.
 - [ ] **M3-04 Row validator** · M · Deps: M3-03, M2-05

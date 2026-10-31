@@ -79,6 +79,9 @@ subtest,topic,language,stem,choice_a,choice_b,choice_c,choice_d,choice_e,answer,
 Leave unused choice columns empty. `tags` are separated by `|`. An empty `answer` or `explanation`
 is flagged like `null` in JSON.
 
+Row numbers in errors: for JSON, the item's position in `items` (1 = first item); for CSV, the
+line in the file (the header is line 1, so the first item is row 2).
+
 ## 6. Privacy and copyright
 
 - Raw files and staged output stay on your machine: `inbox/` and `staged/` are gitignored. Never
