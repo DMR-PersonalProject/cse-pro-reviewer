@@ -186,6 +186,7 @@ it('redirects any action on an expired attempt to the results', function (string
     'goTo' => ['goTo', [2]],
     'next' => ['next', []],
     'submit' => ['submit', []],
+    'sync' => ['sync', []],
 ]);
 
 it('submits and redirects to the results', function () {

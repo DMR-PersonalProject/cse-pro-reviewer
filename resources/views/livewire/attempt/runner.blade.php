@@ -5,6 +5,7 @@
     $passage = $item->snapshot['passage'] ?? null;
     $unanswered = collect($this->navigator)->where('answered', false)->count();
     $flagged = collect($this->navigator)->where('flagged', true)->count();
+    $clock = $this->clock();
 @endphp
 <div class="mx-auto max-w-6xl space-y-6" x-data x-init="$store.keyboard.bind($wire)"
      x-on:keydown.window="$store.keyboard.handle($event)">
@@ -14,7 +15,12 @@
             <span class="text-muted">·</span>
             {{ __('Item :position of :total', ['position' => $position, 'total' => $attempt->item_count]) }}
         </h1>
-        <x-attempt.save-indicator />
+        <div class="flex items-center gap-4">
+            <x-attempt.save-indicator />
+            <x-attempt.clock :remaining-ms="$clock['remainingMs']" :elapsed-ms="$clock['elapsedMs']"
+                             :text="$this->clockText($clock['remainingMs'] ?? $clock['elapsedMs'])" />
+        </div>
+        <div wire:poll.60s="sync" class="hidden"></div>
     </div>
 
     @if ($notice)

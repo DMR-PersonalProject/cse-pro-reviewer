@@ -166,16 +166,43 @@ class Runner extends Component
     }
 
     /**
+     * The 60-second keep-alive: finalizes an expired attempt, and the render resyncs the clock.
+     */
+    public function sync(): void
+    {
+        $this->guard();
+    }
+
+    /**
+     * Server time only: remaining time when timed (null otherwise) and elapsed time.
+     *
+     * @return array{remainingMs: ?int, elapsedMs: int}
+     */
+    public function clock(): array
+    {
+        return [
+            'remainingMs' => app(AttemptClock::class)->remainingMs($this->attempt),
+            'elapsedMs' => (int) $this->attempt->started_at->diffInMilliseconds(now()),
+        ];
+    }
+
+    /**
+     * mm:ss, or h:mm:ss from one hour; the clock store uses the same format.
+     */
+    public function clockText(int $ms): string
+    {
+        $seconds = intdiv($ms, 1000);
+        $text = sprintf('%02d:%02d', intdiv($seconds % 3600, 60), $seconds % 60);
+
+        return $seconds >= 3600 ? intdiv($seconds, 3600).':'.$text : $text;
+    }
+
+    /**
      * Every response resyncs the client clock (plan §5).
      */
     public function rendering(): void
     {
-        $attempt = $this->attempt;
-
-        $this->dispatch('clock-sync',
-            remainingMs: app(AttemptClock::class)->remainingMs($attempt),
-            elapsedMs: (int) $attempt->started_at->diffInMilliseconds(now()),
-        );
+        $this->dispatch('clock-sync', ...$this->clock());
     }
 
     /**

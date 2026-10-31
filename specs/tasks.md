@@ -223,7 +223,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-12 Keyboard store** · S · Deps: M4-11
   An Alpine `keyboard` store: `1–5`/`A–E`, `←/→`, `F`, `N`; ignored while typing in inputs; focus moves to the stem on navigation.
   *Tests:* AC-12 at the server level (selecting `B` saves the second shown choice); keys are listed in the help dialog markup. Manual keyboard check in What to try.
-- [ ] **M4-13 Timer** · M · Deps: M4-10
+- [x] **M4-13 Timer** · M · Deps: M4-10
   An Alpine `clock` store using `remainingMs` from each response and `performance.now()`; live announcements at 10 and 1 minutes; `timeUp()` at 0; `wire:poll.60s` resync; untimed shows elapsed time.
   *Tests:* AC-6 (travel forward 5 minutes, reload: the remaining time comes from the server); the live region exists with `aria-live="polite"`.
 - [ ] **M4-14 Autosave queue and offline** · M · Deps: M4-13
