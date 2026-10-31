@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -101,6 +102,14 @@ class User extends Authenticatable implements FilamentUser, HasName
             ->where(fn (Builder $query) => $query
                 ->where('role', Role::Admin)
                 ->orWhereNotNull('password'));
+    }
+
+    /**
+     * @return HasMany<Attempt, $this>
+     */
+    public function attempts(): HasMany
+    {
+        return $this->hasMany(Attempt::class);
     }
 
     public function canAccessPanel(Panel $panel): bool

@@ -187,7 +187,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M4 — Individual tests
 
-- [ ] **M4-01 Attempt schema** · M · Deps: M3 done
+- [x] **M4-01 Attempt schema** · M · Deps: M3 done
   Migrations, models, factories and enums for `attempts`, `attempt_answers` (`question_id` **nullOnDelete**), `attempt_results` and `attempt_subtest_scores`; `AttemptPolicy`.
   *Tests:* deleting a question nulls `question_id` and keeps the snapshot; the policy lets the owner update an in-progress attempt only; an admin can view.
 - [ ] **M4-02 Item pool** · M · Deps: M4-01
