@@ -202,7 +202,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-05 Clock and scorer** · S · Deps: M4-01
   `AttemptClock` (remaining time, grace, guard) and `Scorer` v1 (GR, subtest and topic percentages, pass check in integer hundredths).
   *Tests:* AC-13 (136/170 → 80.00 pass, 135/170 → 79.41 fail); an unanswered item counts as wrong; `remainingMs` is never negative; grace boundaries at exactly +10 s and +11 s.
-- [ ] **M4-06 Start attempt** · M · Deps: M4-04, M4-05
+- [x] **M4-06 Start attempt** · M · Deps: M4-04, M4-05
   `StartAttempt`: duration ⌈190 × n ÷ 170⌉, `config` snapshot, `has_private_items`, `is_partial`, `is_standard`, all answer rows in one transaction, and the one-active-attempt guard (user row lock).
   *Tests:* AC-5 (23-minute deadline); a second start while one is in progress is refused with a "resume or abandon" result; settings changed after the start don't affect the attempt (FR-C2); `is_standard` is true only for a full-length, unfiltered, timed test.
 - [ ] **M4-07 Answer actions** · S · Deps: M4-06
