@@ -1,13 +1,12 @@
 # Handoff (overwrite each session, max 20 lines)
 Updated: 2026-10-31
-- PAUSED (not a milestone stop). Branch: m4-individual-tests.
-- M4 done and ticked: M4-01..05 (see git log), M4-06 StartAttempt (5437a18), M4-07 answer actions (9afec80), M4-08 FinalizeAttempt + sweep + schedule (c8b6c0c).
-- tests/Feature/Attempts and tests/Arch are green. Full suite not run since M4-01 (502 green then); run it before the next migration or at the M4 stop.
-- API: `StartAttempt::individual(user, subtest, topicIds, count, timing, allowShortfall)` returns `StartResult` (attempt | active | available). Answer actions take (user, attempt, position[, key]) via `AttemptItems::change()`; they raise `AuthorizationException` or `AnswerRefused`.
-- `AttemptClock::guard()` finalizes an expired attempt as timeout and returns true (caller stops and redirects). `FinalizeExpiredAttempts::forUser()` is the lazy sweep for Dashboard, Runner mount and sign-in (wire it up in M4-10/M4-16).
-- Abandon goes through FinalizeAttempt, so it stores a result with end_reason abandoned.
-- Decisions for M4-06..08 are logged in specs/decisions.md (2026-10-31).
-- Next: M4-09 ConfigureIndividual at /practice (preview the available count with ItemPool/TestAssembler, offer the shortfall, then call StartAttempt with allowShortfall; on `active`, offer resume or abandon), then M4-10 and M4-11.
-- Planned pauses: group 2 ends after M4-11, group 3 = M4-12 to M4-17.
-- Don't edit text files with PowerShell Set-Content (it adds a BOM and mangles UTF-8); use sed or Edit.
+- Stopped after M4-13 (not a milestone stop). Branch: m4-individual-tests. Full suite: 621 green.
+- Done and ticked: M4-01..13. This session: M4-09 setup page /practice (3c2ea5f), M4-10 Runner server side (a325be5), M4-11 runner Blade components (212d527), M4-12 keyboard store (8b5973b), M4-13 clock store (fe0783c).
+- Runner: `App\Livewire\Attempt\Runner` at /attempts/{attempt} (route `attempts.show`). Every action calls `guard()` (owner, in progress, `AttemptClock::guard`); ended attempts redirect to `/attempts/{id}/results`, which doesn't exist yet (M4-15 adds `Results\Show`; switch the path to a named route then).
+- JS: resources/js/keyboard.js (`$store.keyboard`, `go()` focuses #stem) and resources/js/clock.js (`$store.clock`, listens to `clock-sync`). Run `npm run build` after JS/Blade class changes.
+- Components: resources/views/components/attempt/{stem,passage,choices,media,navigator,save-indicator,keyboard-help,clock}.blade.php.
+- Save indicator is wire:loading only; M4-14 adds the Alpine queue, localStorage stash and offline state (select currently fires via `wire:change`).
+- Decisions for M4-09..13 logged in specs/decisions.md.
+- Next: M4-14 autosave queue, then M4-15 results, M4-16 dashboard resume/abandon + lazy sweep, M4-17 purge.
+- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. Bash has no php: run php/pint in PowerShell.
 - At the M4 stop: full suite, 10-line summary, What to try (M4) checklist in specs/tasks.md, wait for `approved: start M5`.
