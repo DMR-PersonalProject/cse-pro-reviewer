@@ -144,34 +144,34 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M3 — Content import pipeline
 
-- [ ] **M3-00 Rate-limit the current-PIN check (suggestion #19)** · S · Deps: M2-17
+- [x] **M3-00 Rate-limit the current-PIN check (suggestion #19)** · S · Deps: M2-17
   Throttle the current-PIN check in `SetPin` and `RemovePin` (profile change and remove forms) per user, like sign-in (FR-I4, same lockout settings).
   *Tests:* repeated wrong current PINs get locked out on both forms; the right PIN after the lockout window works; a successful check clears the counter.
-- [ ] **M3-01 Content folder and docs** · S · Deps: M2 done
+- [x] **M3-01 Content folder and docs** · S · Deps: M2 done
   Create `content/{inbox,staged,staged/media,schema}`, `content/README.md` (naming, what to send, what Claude does with each type of file, the never-guess rule, privacy and copyright note), `schema/question-import.schema.json`, `schema/example.json` and `schema/example.csv`.
   *Tests:* none yet; M3-03 and M3-04 validate both example files.
-- [ ] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
+- [x] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
   Migrations and models for `import_batches` and `import_rows`.
   *Tests:* rows cascade with their batch; `decision` defaults to `pending`.
-- [ ] **M3-03 Parser** · M · Deps: M3-02
+- [x] **M3-03 Parser** · M · Deps: M3-02
   `ImportParser` with JSON (schema v1, passages with `ref`) and CSV (header check, `|` tags) variants that produce normalized row arrays.
   *Tests:* both example files parse; malformed JSON, a wrong `schema_version` and a missing CSV header give a file-level error; row numbers are kept.
-- [ ] **M3-04 Row validator** · M · Deps: M3-03, M2-05
+- [x] **M3-04 Row validator** · M · Deps: M3-03, M2-05
   `RowValidator` covering every error in plan §8.3, including media type and size checked through `MediaValidator`.
   *Tests:* AC-21 (1 choice), AC-21a (SVG and > 2 MB), unknown topic, an answer that doesn't match a choice, an unknown `passage_ref`, a duplicate `ref`; the example files have 0 errors.
-- [ ] **M3-05 Row flagger** · M · Deps: M3-04, M2-06
+- [x] **M3-05 Row flagger** · M · Deps: M3-04, M2-06
   `RowFlagger`: missing key, missing explanation, low confidence (< 0.8), media missing, missing alt text, possible duplicate (against the bank **and** within the batch), and flags set by the extractor.
   *Tests:* AC-20 (no correct choice is set); AC-22; a duplicate within the batch; each flag maps to a `NeedsReviewReason`.
-- [ ] **M3-06 Create batch** · S · Deps: M3-05
+- [x] **M3-06 Create batch** · S · Deps: M3-05
   `CreateImportBatch`: parse, validate, flag, and store the batch and rows with counts.
   *Tests:* the counts are correct; nothing is written to `questions` at this stage.
-- [ ] **M3-07 Approve and reject rows** · M · Deps: M3-06, M2-07
+- [x] **M3-07 Approve and reject rows** · M · Deps: M3-06, M2-07
   `ApproveImportRows` (one transaction per call: source defaulting to private, passages, questions, choices, tags, media, provenance; status `draft` or `needs_review`) and `RejectImportRows`.
   *Tests:* AC-23; rows with errors can't be approved; an approved row links to its question; a missing answer key leads to `needs_review` with no `is_correct` choice; nothing is ever `published` by an import; a rollback on failure leaves no partial records.
-- [ ] **M3-08 `cse:import` command** · M · Deps: M3-07
+- [x] **M3-08 `cse:import` command** · M · Deps: M3-07
   `php artisan cse:import {path} {--dry-run} {--approve-valid}`. Media is read from `content/staged/`. It prints a summary table of errors and flags for each row.
   *Tests:* a dry run writes nothing; a normal run creates a pending batch; `--approve-valid` creates draft items only; media files are copied and validated; the exit code is non-zero on a file-level error.
-- [ ] **M3-09 ImportBatchResource and ImportWizard** · M · Deps: M3-07
+- [x] **M3-09 ImportBatchResource and ImportWizard** · M · Deps: M3-07
   A Filament page: upload JSON or CSV, then a preview table (row number, stem excerpt, errors, flags, duplicate link), then select rows and approve or reject. Media rows get the flag "attach in editor". The batch list shows status and counts.
   *Tests:* upload through a Livewire test; error rows can't be selected; approve and reject update the counts; a user gets a 403.
 

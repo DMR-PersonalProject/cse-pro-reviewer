@@ -27,9 +27,7 @@ class DuplicateDetector
             return null;
         }
 
-        $threshold = (float) $this->settings->get(SettingKey::DuplicateSimilarityThreshold);
-        $minLengthRatio = $this->minLengthRatio($threshold);
-        $needleLength = mb_strlen($needle);
+        $threshold = $this->threshold();
         $bestId = null;
         $bestSimilarity = 0.0;
 
@@ -41,22 +39,38 @@ class DuplicateDetector
             ->lazyById(500);
 
         foreach ($candidates as $candidate) {
-            $length = mb_strlen($candidate->stem_normalized);
+            $similarity = $this->similarity($needle, $candidate->stem_normalized, $threshold);
 
-            if ($length === 0 || min($length, $needleLength) / max($length, $needleLength) < $minLengthRatio) {
-                continue;
-            }
-
-            similar_text($needle, $candidate->stem_normalized, $percent);
-            $similarity = $percent / 100;
-
-            if ($similarity >= $threshold && $similarity > $bestSimilarity) {
+            if ($similarity !== null && $similarity > $bestSimilarity) {
                 $bestId = $candidate->id;
                 $bestSimilarity = $similarity;
             }
         }
 
         return $bestId === null ? null : new DuplicateMatch(Question::findOrFail($bestId), round($bestSimilarity, 4));
+    }
+
+    public function threshold(): float
+    {
+        return (float) $this->settings->get(SettingKey::DuplicateSimilarityThreshold);
+    }
+
+    /**
+     * Similarity (0..1) of two normalized stems when it reaches the threshold, otherwise null.
+     */
+    public function similarity(string $normalizedA, string $normalizedB, float $threshold): ?float
+    {
+        $lengthA = mb_strlen($normalizedA);
+        $lengthB = mb_strlen($normalizedB);
+
+        if ($lengthA === 0 || $lengthB === 0 || min($lengthA, $lengthB) / max($lengthA, $lengthB) < $this->minLengthRatio($threshold)) {
+            return null;
+        }
+
+        similar_text($normalizedA, $normalizedB, $percent);
+        $similarity = $percent / 100;
+
+        return $similarity >= $threshold ? $similarity : null;
     }
 
     /**

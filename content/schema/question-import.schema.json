@@ -1,0 +1,109 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "question-import.schema.json",
+  "title": "CSE Reviewer question import, version 1",
+  "description": "Staged JSON read by `php artisan cse:import` and the admin import wizard (plan §8.2). Codes for subtest and topic are checked against the database, not this file.",
+  "type": "object",
+  "required": ["schema_version", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": 1 },
+    "batch": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string" },
+        "default_source": { "$ref": "#/$defs/source" }
+      }
+    },
+    "passages": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/passage" }
+    },
+    "items": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/item" }
+    }
+  },
+  "$defs": {
+    "subtest": { "enum": ["verbal", "numerical", "analytical", "general_info"] },
+    "language": { "enum": ["en", "fil"] },
+    "source": {
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "type": { "enum": ["reviewer", "book", "website", "original", "other"], "default": "other" },
+        "visibility": { "enum": ["private", "public"], "default": "private", "description": "A new source is always created private; public only gives a warning (FR-M6)." }
+      }
+    },
+    "media": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["path"],
+        "additionalProperties": false,
+        "properties": {
+          "path": { "type": "string", "description": "Relative to content/staged/. PNG, JPG or WebP, at most 2 MB." },
+          "alt": { "type": ["string", "null"], "description": "What the image shows. Missing alt text is flagged." }
+        }
+      }
+    },
+    "passage": {
+      "type": "object",
+      "required": ["ref", "subtest", "topic"],
+      "additionalProperties": false,
+      "properties": {
+        "ref": { "type": "string", "minLength": 1, "description": "Unique within the file." },
+        "subtest": { "$ref": "#/$defs/subtest" },
+        "topic": { "type": "string" },
+        "language": { "$ref": "#/$defs/language", "default": "en" },
+        "title": { "type": ["string", "null"] },
+        "body": { "type": ["string", "null"], "description": "Markdown." },
+        "media": { "$ref": "#/$defs/media" }
+      }
+    },
+    "item": {
+      "type": "object",
+      "required": ["subtest", "topic", "stem", "choices"],
+      "additionalProperties": false,
+      "properties": {
+        "subtest": { "$ref": "#/$defs/subtest" },
+        "topic": { "type": "string" },
+        "passage_ref": { "type": ["string", "null"] },
+        "language": { "$ref": "#/$defs/language", "default": "en" },
+        "stem": { "type": "string", "minLength": 1, "description": "Markdown." },
+        "choices": { "type": "array", "minItems": 2, "maxItems": 5, "items": { "type": "string" } },
+        "answer": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Ea-e]$",
+          "description": "Letter of the correct choice in the order given. null when the source has no key: never guess one."
+        },
+        "explanation": { "type": ["string", "null"] },
+        "difficulty": { "enum": ["easy", "medium", "hard", null] },
+        "tags": { "type": "array", "items": { "type": "string" } },
+        "lock_choice_order": { "type": "boolean", "default": false },
+        "media": { "$ref": "#/$defs/media" },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "file": { "type": ["string", "null"] },
+            "page": { "type": ["integer", "string", "null"] },
+            "notes": { "type": ["string", "null"] }
+          }
+        },
+        "extraction": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+            "needs_review": { "type": "boolean", "default": false },
+            "notes": { "type": ["string", "null"] }
+          }
+        }
+      }
+    }
+  }
+}

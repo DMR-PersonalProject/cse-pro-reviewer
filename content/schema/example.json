@@ -1,0 +1,89 @@
+{
+  "schema_version": 1,
+  "batch": {
+    "name": "example-mixed-4",
+    "default_source": { "name": "Original — import example", "type": "original", "visibility": "private" }
+  },
+  "passages": [
+    {
+      "ref": "p1",
+      "subtest": "verbal",
+      "topic": "reading_comprehension",
+      "language": "en",
+      "title": "The Saturday Reading Corner",
+      "body": "Every Saturday morning, volunteers in a small town open a reading corner in the covered court. Children borrow donated books, and older students read aloud to the younger ones. At first only a dozen children came. After the volunteers asked parents to sign up as readers too, attendance tripled within three months.",
+      "media": []
+    }
+  ],
+  "items": [
+    {
+      "subtest": "numerical",
+      "topic": "number_sequences",
+      "passage_ref": null,
+      "language": "en",
+      "stem": "What comes next: 2, 6, 12, 20, __?",
+      "choices": ["28", "30", "32", "36"],
+      "answer": "B",
+      "explanation": "The differences increase by 2 (4, 6, 8), so the next difference is 10: 20 + 10 = 30.",
+      "difficulty": "easy",
+      "tags": ["differences"],
+      "lock_choice_order": false,
+      "media": [],
+      "provenance": { "file": "example.json", "page": 1, "notes": "" },
+      "extraction": { "confidence": 1.0, "needs_review": false, "notes": "" }
+    },
+    {
+      "subtest": "verbal",
+      "topic": "reading_comprehension",
+      "passage_ref": "p1",
+      "language": "en",
+      "stem": "What most likely caused attendance at the reading corner to rise?",
+      "choices": [
+        "Parents joined as readers",
+        "The town bought new books",
+        "The corner moved to the school",
+        "Classes were cancelled on Saturdays"
+      ],
+      "answer": "A",
+      "explanation": "Attendance tripled after the volunteers asked parents to sign up as readers.",
+      "difficulty": "easy",
+      "tags": ["cause-and-effect"],
+      "lock_choice_order": false,
+      "media": [],
+      "provenance": { "file": "example.json", "page": 1, "notes": "" },
+      "extraction": { "confidence": 1.0, "needs_review": false, "notes": "" }
+    },
+    {
+      "subtest": "analytical",
+      "topic": "word_analogy",
+      "passage_ref": null,
+      "language": "en",
+      "stem": "HAMMER : CARPENTER :: SCALPEL : __",
+      "choices": ["Surgeon", "Hospital", "Knife", "Patient"],
+      "answer": "A",
+      "explanation": "A hammer is a tool a carpenter uses; a scalpel is a tool a surgeon uses.",
+      "difficulty": "easy",
+      "tags": ["tool-user"],
+      "lock_choice_order": false,
+      "media": [],
+      "provenance": { "file": "example.json", "page": 2, "notes": "" },
+      "extraction": { "confidence": 1.0, "needs_review": false, "notes": "" }
+    },
+    {
+      "subtest": "general_info",
+      "topic": "philippine_constitution",
+      "passage_ref": null,
+      "language": "en",
+      "stem": "Under the 1987 Constitution, how long is the term of the President?",
+      "choices": ["Four years", "Five years", "Six years", "Seven years"],
+      "answer": null,
+      "explanation": null,
+      "difficulty": "medium",
+      "tags": [],
+      "lock_choice_order": true,
+      "media": [],
+      "provenance": { "file": "example.json", "page": 2, "notes": "Demo row: the key and explanation are left out on purpose to show the needs_review flags." },
+      "extraction": { "confidence": 0.7, "needs_review": true, "notes": "Answer key page not provided." }
+    }
+  ]
+}

@@ -25,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
     'subtest_id', 'topic_id', 'passage_id', 'passage_position', 'source_id',
     'stem', 'explanation', 'difficulty', 'language', 'status', 'needs_review_reasons',
     'lock_choice_order', 'extraction_confidence', 'source_file', 'source_page', 'source_notes',
-    'published_at', 'archived_at',
+    'published_at', 'archived_at', 'import_batch_id',
 ])]
 class Question extends Model
 {
@@ -111,6 +111,14 @@ class Question extends Model
     public function correctChoice(): ?Choice
     {
         return $this->choices->firstWhere('is_correct', true);
+    }
+
+    /**
+     * @return BelongsTo<ImportBatch, $this>
+     */
+    public function importBatch(): BelongsTo
+    {
+        return $this->belongsTo(ImportBatch::class);
     }
 
     /**

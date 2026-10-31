@@ -1,0 +1,4 @@
+subtest,topic,language,stem,choice_a,choice_b,choice_c,choice_d,choice_e,answer,explanation,difficulty,tags,source_file,source_page,notes,confidence
+numerical,basic_operations,en,What is 15% of 240?,24,30,36,40,,C,10% of 240 is 24 and 5% is 12; 24 + 12 = 36.,easy,percent,example.csv,1,,1.0
+verbal,word_meaning,en,Choose the word closest in meaning to METICULOUS.,Careful,Careless,Quick,Generous,,A,Meticulous means showing great attention to detail.,medium,synonyms|adjectives,example.csv,1,,1.0
+general_info,environment,en,Which law sets the national program for ecological solid waste management?,R.A. 8749,R.A. 9003,R.A. 9275,R.A. 9729,,B,"R.A. 9003 is the Ecological Solid Waste Management Act of 2000. (R.A. 8749 is the Clean Air Act, R.A. 9275 the Clean Water Act and R.A. 9729 the Climate Change Act.)",medium,laws,example.csv,2,,1.0
