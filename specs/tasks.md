@@ -196,7 +196,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-03 Assembler (individual)** · M · Deps: M4-02
   `TestAssembler` for one subtest: selection units, an even topic split with shortfall fill, passage fitting, a seeded shuffle, and a shortfall report.
   *Tests:* AC-5 (20 distinct items from the topic); AC-9 (passage items together and in order); the same seed gives the same order; the shortfall is reported correctly.
-- [ ] **M4-04 Choice shuffler and snapshot builder** · S · Deps: M4-03
+- [x] **M4-04 Choice shuffler and snapshot builder** · S · Deps: M4-03
   `ChoiceShuffler` (honors `lock_choice_order`, assigns A–E) and `SnapshotBuilder`.
   *Tests:* AC-11; the snapshot holds the stem, passage, choices in shown order, explanation and source visibility; `correct_key` matches the shuffled position.
 - [ ] **M4-05 Clock and scorer** · S · Deps: M4-01
