@@ -6,7 +6,7 @@
             <p class="font-medium">{{ __('You already have a test in progress.') }}</p>
             <p class="text-muted">{{ __('Resume it, or abandon it to start a new one. An abandoned test stays in your history and is never ranked.') }}</p>
             <div class="flex flex-wrap gap-3">
-                <a href="{{ url('/attempts/'.$this->active->id) }}" class="rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Resume') }}</a>
+                <a href="{{ route('attempts.show', $this->active) }}" class="rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Resume') }}</a>
                 <button type="button" wire:click="abandonActive" wire:confirm="{{ __('Abandon the test in progress?') }}"
                         class="rounded border border-line px-4 py-2 font-medium">{{ __('Abandon') }}</button>
             </div>

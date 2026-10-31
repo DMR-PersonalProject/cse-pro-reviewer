@@ -120,7 +120,7 @@ class ConfigureIndividual extends Component
         );
 
         if ($result->attempt !== null) {
-            $this->redirect('/attempts/'.$result->attempt->id);
+            $this->redirect(route('attempts.show', $result->attempt));
 
             return;
         }

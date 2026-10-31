@@ -214,7 +214,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-09 Configure individual test** · M · Deps: M4-06
   `Tests\ConfigureIndividual` at `/practice`: subtest, topics, count, timing; available-count and duration preview; a shortfall offer.
   *Tests:* the preview shows 23 min for 20 items; a count above what's available offers the shorter test; study and untimed show no duration.
-- [ ] **M4-10 Runner: server side** · M · Deps: M4-08
+- [x] **M4-10 Runner: server side** · M · Deps: M4-08
   `Attempt\Runner`: `#[Locked]` ID, the current item as `#[Computed]`, actions (`select`, `toggleFlag`, `goTo`, `next`, `prev`, `submit`, `timeUp`), guard on every action, and the navigator array.
   *Tests:* **AC-10a** (HTML and Livewire payload checked for timed, untimed and study attempts); a user can't open someone else's attempt (403); an early `timeUp()` is ignored and the correct `remainingMs` is returned; an expired attempt redirects to results on any action; AC-10.
 - [ ] **M4-11 Runner: UI components** · M · Deps: M4-10, M2-04
