@@ -14,7 +14,7 @@
         ])>
             <input type="radio" id="{{ $id }}" name="choice-{{ $item->position }}" value="{{ $choice['key'] }}"
                    @checked($item->selected_key === $choice['key'])
-                   wire:change="select('{{ $choice['key'] }}')" class="mt-1.5">
+                   x-on:change="$store.autosave.save({{ $item->position }}, '{{ $choice['key'] }}')" class="mt-1.5">
             <label for="{{ $id }}" class="flex-1">
                 <span class="font-semibold">{{ $choice['key'] }}.</span>
                 {{ $choice['body'] }}

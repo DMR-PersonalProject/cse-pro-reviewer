@@ -7,7 +7,7 @@
     $flagged = collect($this->navigator)->where('flagged', true)->count();
     $clock = $this->clock();
 @endphp
-<div class="mx-auto max-w-6xl space-y-6" x-data x-init="$store.keyboard.bind($wire)"
+<div class="mx-auto max-w-6xl space-y-6" x-data x-init="$store.keyboard.bind($wire); $store.autosave.start($wire, {{ $attempt->id }})"
      x-on:keydown.window="$store.keyboard.handle($event)">
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h1 class="text-lg font-semibold">

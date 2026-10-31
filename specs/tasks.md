@@ -226,7 +226,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-13 Timer** · M · Deps: M4-10
   An Alpine `clock` store using `remainingMs` from each response and `performance.now()`; live announcements at 10 and 1 minutes; `timeUp()` at 0; `wire:poll.60s` resync; untimed shows elapsed time.
   *Tests:* AC-6 (travel forward 5 minutes, reload: the remaining time comes from the server); the live region exists with `aria-live="polite"`.
-- [ ] **M4-14 Autosave queue and offline** · M · Deps: M4-13
+- [x] **M4-14 Autosave queue and offline** · M · Deps: M4-13
   An Alpine queue: optimistic UI, a localStorage stash, retry with backoff, an offline banner, and replay on load.
   *Tests:* a replayed answer within grace is saved; one past grace is rejected, and the results page shows the "not saved" count. Manual offline check.
 - [ ] **M4-15 Minimal results page** · S · Deps: M4-08

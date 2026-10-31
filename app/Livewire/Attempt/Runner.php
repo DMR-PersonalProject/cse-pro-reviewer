@@ -97,17 +97,30 @@ class Runner extends Component
 
     public function select(string $key, SaveAnswer $save, RevealStudyAnswer $reveal): void
     {
+        $this->answer($this->position, $key, $save, $reveal);
+    }
+
+    /**
+     * The autosave queue's call: the position travels with the answer, so a stashed answer
+     * replays to the right item. The server decides whether it is still accepted (plan §4.1).
+     * False means the attempt has ended: the client keeps the answer stashed so the results
+     * page can count it as not saved.
+     */
+    public function answer(int $position, string $key, SaveAnswer $save, RevealStudyAnswer $reveal): bool
+    {
         if (! $this->guard()) {
-            return;
+            return false;
         }
 
         try {
             $this->attempt->timing === AttemptTiming::Study
-                ? $reveal->handle($this->user, $this->attempt, $this->position, $key)
-                : $save->handle($this->user, $this->attempt, $this->position, $key);
+                ? $reveal->handle($this->user, $this->attempt, $position, $key)
+                : $save->handle($this->user, $this->attempt, $position, $key);
         } catch (AnswerRefused $e) {
             $this->notice = $e->getMessage();
         }
+
+        return true;
     }
 
     public function toggleFlag(ToggleFlag $toggle): void
@@ -226,7 +239,7 @@ class Runner extends Component
 
     private function toResults(): void
     {
-        $this->redirect('/attempts/'.$this->attemptId.'/results');
+        $this->redirect(route('results.show', $this->attemptId));
     }
 
     public function render(): View

@@ -103,10 +103,21 @@ it('AC-12: pressing B saves the second shown choice', function () {
 it('binds the keyboard store and lists every key in the help dialog', function () {
     $html = livewire(Runner::class, ['attempt' => uiAttempt($this->user)])->html();
 
-    expect($html)->toContain('x-init="$store.keyboard.bind($wire)"')
+    expect($html)->toContain('$store.keyboard.bind($wire)')
         ->toContain('<dialog id="keyboard-help"');
 
     foreach (['1', '5', 'A', 'E', '←', '→', 'F', 'N', '?'] as $key) {
         expect($html)->toContain('<kbd>'.$key.'</kbd>');
     }
+});
+
+it('sends choices through the autosave queue and has the offline states', function () {
+    $attempt = uiAttempt($this->user);
+    $html = livewire(Runner::class, ['attempt' => $attempt])->html();
+
+    expect($html)->toContain('$store.autosave.start($wire, '.$attempt->id.')')
+        ->toContain('x-on:change="$store.autosave.save(1, \'A\')"')
+        ->not->toContain('wire:change')
+        ->toContain(__('Offline — answers will sync'))
+        ->toContain('role="alert"');
 });
