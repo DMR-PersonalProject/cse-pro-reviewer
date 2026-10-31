@@ -6,7 +6,8 @@
     $unanswered = collect($this->navigator)->where('answered', false)->count();
     $flagged = collect($this->navigator)->where('flagged', true)->count();
 @endphp
-<div class="mx-auto max-w-6xl space-y-6">
+<div class="mx-auto max-w-6xl space-y-6" x-data x-init="$store.keyboard.bind($wire)"
+     x-on:keydown.window="$store.keyboard.handle($event)">
     <div class="flex flex-wrap items-center justify-between gap-3">
         <h1 class="text-lg font-semibold">
             {{ $attempt->subtest?->name ?? $attempt->mode->label() }}
@@ -27,7 +28,7 @@
 
         <div class="space-y-4">
             <x-attempt.stem :snapshot="$item->snapshot" />
-            <x-attempt.choices :item="$item" :revealed="$revealed" :locked="$item->revealed_at !== null" />
+            <x-attempt.choices id="choices" :item="$item" :revealed="$revealed" :locked="$item->revealed_at !== null" />
 
             @if ($revealed)
                 <section aria-label="{{ __('Explanation') }}" class="rounded border border-line bg-surface p-4">
@@ -43,13 +44,13 @@
     </div>
 
     <div class="flex flex-wrap gap-2">
-        <button type="button" wire:click="prev" @disabled($position === 1)
+        <button type="button" x-on:click="$store.keyboard.go('prev')" @disabled($position === 1)
                 class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Previous') }}</button>
         <button type="button" wire:click="toggleFlag" aria-pressed="{{ $item->flagged ? 'true' : 'false' }}"
                 class="rounded border border-line px-4 py-2 aria-pressed:border-danger">
             {{ $item->flagged ? __('Unflag') : __('Flag for review') }}
         </button>
-        <button type="button" wire:click="next" @disabled($position === $attempt->item_count)
+        <button type="button" x-on:click="$store.keyboard.go('next')" @disabled($position === $attempt->item_count)
                 class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Next') }}</button>
         <button type="button" wire:click="submit"
                 wire:confirm="{{ __('Submit now? :unanswered unanswered and :flagged flagged.', ['unanswered' => $unanswered, 'flagged' => $flagged]) }}"
@@ -57,4 +58,9 @@
     </div>
 
     <x-attempt.navigator :entries="$this->navigator" :current="$position" />
+
+    <button type="button" x-on:click="document.getElementById('keyboard-help').showModal()" class="text-sm underline">
+        {{ __('Keyboard shortcuts') }}
+    </button>
+    <x-attempt.keyboard-help />
 </div>

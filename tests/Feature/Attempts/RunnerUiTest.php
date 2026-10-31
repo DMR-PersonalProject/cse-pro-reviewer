@@ -86,3 +86,27 @@ it('shows the save indicator and the navigator', function () {
         ->assertSeeHtml('aria-label="'.__('Items').'"')
         ->assertSeeHtml('aria-current="step"');
 });
+
+it('AC-12: pressing B saves the second shown choice', function () {
+    $attempt = uiAttempt($this->user);
+    $second = $attempt->answers()->first()->snapshot['choices'][1]['key'];
+
+    $html = livewire(Runner::class, ['attempt' => $attempt])->html();
+    // The keyboard store clicks the second radio inside #choices, which sends its value.
+    expect($html)->toContain('id="choices"')
+        ->toMatch('/<input type="radio" id="choice-1-'.$second.'"[^>]*value="'.$second.'"/');
+
+    livewire(Runner::class, ['attempt' => $attempt])->call('select', $second);
+    expect($attempt->answers()->first()->selected_key)->toBe('B');
+});
+
+it('binds the keyboard store and lists every key in the help dialog', function () {
+    $html = livewire(Runner::class, ['attempt' => uiAttempt($this->user)])->html();
+
+    expect($html)->toContain('x-init="$store.keyboard.bind($wire)"')
+        ->toContain('<dialog id="keyboard-help"');
+
+    foreach (['1', '5', 'A', 'E', '←', '→', 'F', 'N', '?'] as $key) {
+        expect($html)->toContain('<kbd>'.$key.'</kbd>');
+    }
+});

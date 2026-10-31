@@ -220,7 +220,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-11 Runner: UI components** · M · Deps: M4-10, M2-04
   Blade components for the stem, passage (two-column at large widths), choices (`fieldset` with radios), media, scrolling data tables, the navigator panel, and the save indicator.
   *Tests:* the choices render as a radio group with labels; a selected choice is checked after reload; the table wrapper has `role="region"` and a label; images have alt text.
-- [ ] **M4-12 Keyboard store** · S · Deps: M4-11
+- [x] **M4-12 Keyboard store** · S · Deps: M4-11
   An Alpine `keyboard` store: `1–5`/`A–E`, `←/→`, `F`, `N`; ignored while typing in inputs; focus moves to the stem on navigation.
   *Tests:* AC-12 at the server level (selecting `B` saves the second shown choice); keys are listed in the help dialog markup. Manual keyboard check in What to try.
 - [ ] **M4-13 Timer** · M · Deps: M4-10

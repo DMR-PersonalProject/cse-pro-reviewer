@@ -11,7 +11,7 @@
                 @foreach ($group as $entry)
                     @php($state = $entry['answered'] ? __('answered') : __('unanswered'))
                     <li>
-                        <button type="button" wire:click="goTo({{ $entry['position'] }})"
+                        <button type="button" x-on:click="$store.keyboard.go('goTo', {{ $entry['position'] }})"
                                 data-flagged="{{ (int) $entry['flagged'] }}"
                                 aria-label="{{ __('Item :position, :state', ['position' => $entry['position'], 'state' => $state]).($entry['flagged'] ? ', '.__('flagged') : '') }}"
                                 @if ($entry['position'] === $current) aria-current="step" @endif
