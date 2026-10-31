@@ -36,6 +36,14 @@ class MarkdownRenderer
             return '';
         }
 
-        return trim($this->converter->convert($markdown)->getContent());
+        $html = trim($this->converter->convert($markdown)->getContent());
+
+        // Wide tables scroll inside a labelled, focusable box (FR-T1). Raw HTML is stripped,
+        // so every <table> here came from Markdown.
+        return str_replace(
+            ['<table>', '</table>'],
+            ['<div role="region" aria-label="'.e(__('Data table')).'" tabindex="0" class="overflow-x-auto"><table>', '</table></div>'],
+            $html,
+        );
     }
 }

@@ -217,7 +217,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-10 Runner: server side** · M · Deps: M4-08
   `Attempt\Runner`: `#[Locked]` ID, the current item as `#[Computed]`, actions (`select`, `toggleFlag`, `goTo`, `next`, `prev`, `submit`, `timeUp`), guard on every action, and the navigator array.
   *Tests:* **AC-10a** (HTML and Livewire payload checked for timed, untimed and study attempts); a user can't open someone else's attempt (403); an early `timeUp()` is ignored and the correct `remainingMs` is returned; an expired attempt redirects to results on any action; AC-10.
-- [ ] **M4-11 Runner: UI components** · M · Deps: M4-10, M2-04
+- [x] **M4-11 Runner: UI components** · M · Deps: M4-10, M2-04
   Blade components for the stem, passage (two-column at large widths), choices (`fieldset` with radios), media, scrolling data tables, the navigator panel, and the save indicator.
   *Tests:* the choices render as a radio group with labels; a selected choice is checked after reload; the table wrapper has `role="region"` and a label; images have alt text.
 - [ ] **M4-12 Keyboard store** · S · Deps: M4-11

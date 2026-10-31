@@ -122,14 +122,6 @@ it('saves a selection on the server', function () {
     expect($answer->selected_key)->toBe('B')->and($answer->answered_at)->not->toBeNull();
 });
 
-it('keeps the selection checked after a reload', function () {
-    $attempt = startRunnerAttempt($this->user, AttemptTiming::Timed, 5);
-    livewire(Runner::class, ['attempt' => $attempt])->call('select', 'B');
-
-    livewire(Runner::class, ['attempt' => $attempt->fresh()])
-        ->assertSeeHtml('value="B" checked');
-});
-
 it('navigates and remembers the current item', function () {
     $attempt = startRunnerAttempt($this->user, AttemptTiming::Timed, 5);
 

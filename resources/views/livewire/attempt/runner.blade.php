@@ -1,47 +1,60 @@
 @php
+    $attempt = $this->attempt;
     $item = $this->item;
     $revealed = $this->mayReveal($item);
+    $passage = $item->snapshot['passage'] ?? null;
+    $unanswered = collect($this->navigator)->where('answered', false)->count();
+    $flagged = collect($this->navigator)->where('flagged', true)->count();
 @endphp
-<div class="mx-auto max-w-5xl space-y-6">
-    <h1 class="text-lg font-semibold">
-        {{ __('Item :position of :total', ['position' => $position, 'total' => $this->attempt->item_count]) }}
-    </h1>
+<div class="mx-auto max-w-6xl space-y-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+        <h1 class="text-lg font-semibold">
+            {{ $attempt->subtest?->name ?? $attempt->mode->label() }}
+            <span class="text-muted">·</span>
+            {{ __('Item :position of :total', ['position' => $position, 'total' => $attempt->item_count]) }}
+        </h1>
+        <x-attempt.save-indicator />
+    </div>
 
     @if ($notice)
-        <p role="alert" class="rounded border border-line bg-surface px-3 py-2 text-sm">{{ $notice }}</p>
+        <p role="alert" class="rounded border border-danger px-3 py-2 text-sm text-danger">{{ $notice }}</p>
     @endif
 
-    <x-markdown :text="$item->snapshot['stem']" />
+    <div @class(['grid gap-6', 'lg:grid-cols-2' => $passage])>
+        @if ($passage)
+            <x-attempt.passage :passage="$passage" />
+        @endif
 
-    <fieldset>
-        <legend class="sr-only">{{ __('Choices') }}</legend>
-        @foreach ($item->snapshot['choices'] as $choice)
-            <label class="flex items-start gap-2" wire:key="choice-{{ $position }}-{{ $choice['key'] }}">
-                <input type="radio" name="choice" value="{{ $choice['key'] }}" @checked($item->selected_key === $choice['key'])
-                       wire:click="select('{{ $choice['key'] }}')">
-                <span>{{ $choice['key'] }}. {{ $choice['body'] }}</span>
-                @if ($revealed && $item->correct_key === $choice['key'])
-                    <strong>{{ __('Correct answer') }}</strong>
-                @endif
-            </label>
-        @endforeach
-    </fieldset>
+        <div class="space-y-4">
+            <x-attempt.stem :snapshot="$item->snapshot" />
+            <x-attempt.choices :item="$item" :revealed="$revealed" :locked="$item->revealed_at !== null" />
 
-    @if ($revealed)
-        <x-markdown :text="$item->snapshot['explanation'] ?? __('No explanation yet')" />
-    @endif
-
-    <nav aria-label="{{ __('Items') }}" class="flex flex-wrap gap-1">
-        @foreach ($this->navigator as $entry)
-            <button type="button" wire:click="goTo({{ $entry['position'] }})" data-flagged="{{ (int) $entry['flagged'] }}"
-                    @if ($entry['position'] === $position) aria-current="step" @endif>{{ $entry['position'] }}</button>
-        @endforeach
-    </nav>
-
-    <div class="flex gap-2">
-        <button type="button" wire:click="prev">{{ __('Previous') }}</button>
-        <button type="button" wire:click="toggleFlag">{{ __('Flag') }}</button>
-        <button type="button" wire:click="next">{{ __('Next') }}</button>
-        <button type="button" wire:click="submit">{{ __('Submit') }}</button>
+            @if ($revealed)
+                <section aria-label="{{ __('Explanation') }}" class="rounded border border-line bg-surface p-4">
+                    <h2 class="mb-1 text-sm font-medium">{{ __('Explanation') }}</h2>
+                    @if (filled($item->snapshot['explanation'] ?? null))
+                        <x-markdown :text="$item->snapshot['explanation']" />
+                    @else
+                        <p class="text-sm text-muted">{{ __('No explanation yet') }}</p>
+                    @endif
+                </section>
+            @endif
+        </div>
     </div>
+
+    <div class="flex flex-wrap gap-2">
+        <button type="button" wire:click="prev" @disabled($position === 1)
+                class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Previous') }}</button>
+        <button type="button" wire:click="toggleFlag" aria-pressed="{{ $item->flagged ? 'true' : 'false' }}"
+                class="rounded border border-line px-4 py-2 aria-pressed:border-danger">
+            {{ $item->flagged ? __('Unflag') : __('Flag for review') }}
+        </button>
+        <button type="button" wire:click="next" @disabled($position === $attempt->item_count)
+                class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Next') }}</button>
+        <button type="button" wire:click="submit"
+                wire:confirm="{{ __('Submit now? :unanswered unanswered and :flagged flagged.', ['unanswered' => $unanswered, 'flagged' => $flagged]) }}"
+                class="ml-auto rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Submit') }}</button>
+    </div>
+
+    <x-attempt.navigator :entries="$this->navigator" :current="$position" />
 </div>
