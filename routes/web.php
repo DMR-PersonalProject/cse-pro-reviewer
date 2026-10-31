@@ -4,6 +4,7 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\SignIn;
 use App\Livewire\Dashboard;
 use App\Livewire\Profile\Edit as ProfileEdit;
+use App\Livewire\Tests\ConfigureIndividual;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,6 +19,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('/profile', ProfileEdit::class)->name('profile');
+    Route::get('/practice', ConfigureIndividual::class)->name('practice');
 
     Route::post('/logout', function (Request $request) {
         Auth::guard('web')->logout();

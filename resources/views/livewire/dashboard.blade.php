@@ -9,5 +9,5 @@
         </div>
     @endif
 
-    <p class="text-muted">{{ __('Practice tests and the mock exam are coming soon.') }}</p>
+    <a href="{{ route('practice') }}" class="inline-block rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Practice a subtest') }}</a>
 </div>

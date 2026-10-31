@@ -211,7 +211,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-08 Finalize** · M · Deps: M4-07
   `FinalizeAttempt` (transaction, `lockForUpdate`, idempotent, results plus subtest scores, time used, suspicious flag from config), `FinalizeExpiredAttempts::forUser()`, and the `cse:finalize-expired` command plus its schedule.
   *Tests:* AC-7; AC-8 (two calls → one result, same payload); the time used is capped at the deadline; the suspicious flag is set under the threshold and not set when the threshold is 0; the command finalizes only expired timed attempts.
-- [ ] **M4-09 Configure individual test** · M · Deps: M4-06
+- [x] **M4-09 Configure individual test** · M · Deps: M4-06
   `Tests\ConfigureIndividual` at `/practice`: subtest, topics, count, timing; available-count and duration preview; a shortfall offer.
   *Tests:* the preview shows 23 min for 20 items; a count above what's available offers the shorter test; study and untimed show no duration.
 - [ ] **M4-10 Runner: server side** · M · Deps: M4-08

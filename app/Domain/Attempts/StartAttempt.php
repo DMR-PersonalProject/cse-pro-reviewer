@@ -71,7 +71,7 @@ final class StartAttempt
                 'is_partial' => $isPartial,
                 'status' => AttemptStatus::InProgress,
                 'started_at' => now(),
-                'deadline_at' => $timing === AttemptTiming::Timed ? now()->addMinutes($this->minutes($assembly->count(), $config)) : null,
+                'deadline_at' => $timing === AttemptTiming::Timed ? now()->addMinutes(self::durationMinutes($assembly->count(), $config['total_minutes'], array_sum($config['item_split']))) : null,
                 'seed' => $seed,
             ]);
 
@@ -124,14 +124,10 @@ final class StartAttempt
     }
 
     /**
-     * ⌈total_minutes × n ÷ total_items⌉ (FR-G1), in integers.
-     *
-     * @param  array<string, mixed>  $config
+     * ⌈total_minutes × n ÷ total_items⌉ (FR-G1), in integers. Public for the setup page preview.
      */
-    private function minutes(int $items, array $config): int
+    public static function durationMinutes(int $items, int $totalMinutes, int $totalItems): int
     {
-        $total = array_sum($config['item_split']);
-
-        return intdiv($config['total_minutes'] * $items + $total - 1, $total);
+        return intdiv($totalMinutes * $items + $totalItems - 1, $totalItems);
     }
 }
