@@ -1,0 +1,36 @@
+Decisions log. Append new rows at the bottom. Check this file before design choices.
+
+| Date | Decision | Status |
+|---|---|---|
+| 2026-10-27 | Spec-driven workflow; no implementation before `approved: start M1` | Accepted |
+| 2026-10-27 | Per-subtest item distribution is configurable, defaults unverified | Accepted |
+| 2026-10-27 | Two roles (`admin`, `user`) from day one; extensible | Accepted |
+| 2026-10-27 | Imported content is draft until admin review; provenance tracked per item | Accepted |
+| 2026-10-27 | Q1: item split 50/40/40/40, editable, labeled "unverified" | Accepted |
+| 2026-10-27 | Q2: optional user PIN; email/password nullable for later upgrade | Accepted |
+| 2026-10-27 | Q3: rating = correct ÷ 170 × 100; store per-subtest % as well | Accepted |
+| 2026-10-27 | Q4: Filament for admin only; user app on plain Livewire | Accepted |
+| 2026-10-27 | Q5: local-only, SQLite; code must be MySQL/PostgreSQL portable | Accepted |
+| 2026-10-27 | Q6: private/public source flag, imports default to private | Accepted |
+| 2026-10-27 | Q7: English UI, i18n-ready for Filipino | Accepted |
+| 2026-10-27 | Q8: Laravel Herd for local setup | Accepted |
+| 2026-10-27 | Study mode (instant answer and explanation) is in MVP | Accepted |
+| 2026-10-27 | Constitution approved. Snapshot answers instead of "never delete"; hard delete with typed confirmation | Accepted |
+| 2026-10-27 | Spec approved. Suspicious flag is for review only (no auto-exclude) | Accepted |
+| 2026-10-27 | Setting `leaderboard_include_private` (default OFF); constitution §5/§6 amended | Accepted |
+| 2026-10-27 | Similarity, lockout and suspicious thresholds are DB settings | Accepted |
+| 2026-10-27 | Takedown purge option (#9) and PIN required for leaderboard (#10) in MVP | Accepted |
+| 2026-10-27 | Plan approved. #15 accepted: full suite on MySQL and PostgreSQL in M7, before any deploy | Accepted |
+| 2026-10-27 | Study mode: server reveals one item's key only after that item is submitted; study never counts on leaderboard (AC-10a, AC-16c) | Accepted |
+| 2026-10-31 | M2-16: `DatabaseSeeder` no longer uses `WithoutModelEvents` (seeded stems must be normalized and duplicate-checked). Seed items live in `database/seeders/data/sample_content.php`; the abstract-reasoning PNG is drawn with GD at seed time. Suggestions #19 (throttle current-PIN checks) and #20 (edit full name/email) added | Accepted |
+| 2026-10-31 | M2-13 (user chose): promote asks for email + admin password (replaces PIN); demote clears password; reset PIN = clear it (user accounts only, confirm first); no own-role change; last active admin can't be demoted/deactivated/deleted; role change, deactivate and PIN reset end sessions (DB session rows + remember token); no secrets in audit. `User::leaderboardEligible()` scope = account part of FR-L2. Spec FR-I6 updated | Accepted |
+| 2026-10-30 | M2-09: possible duplicates stored in `questions.duplicate_of_question_id` + `duplicate_similarity` (user chose real columns), recomputed on every stem or subtest change; editor saves never change status. Plan §3.2 + ERD updated | Accepted |
+| 2026-10-30 | M2-01 topic codes (user chose proposed): snake_case of the topic names; symbolic logic + abstract reasoning is one topic `abstract_reasoning`; GI uses `ra_6713`, `peace_human_rights`, `environment`. Listed in plan §3.2 | Accepted |
+| 2026-10-30 | M1 approved, merged to `main`, tagged `m1-done`, pushed to private `origin`. #17 accepted as M2-17; #16 stays proposed; old CLAUDE.md copies stay in history | Accepted |
+| 2026-10-30 | CLAUDE.md was wiped by `git switch main` (old main tracked it) and restored from `95f2aac` plus this session's edits; compare with the user's own backup | Note |
+| 2026-10-30 | M1-13: theme shared via Filament's localStorage key `filament:theme:mode` (plan said `theme`); `theme` cookie unencrypted, re-synced from localStorage by the head script; toggle uses `window.cseTheme` from that script instead of an Alpine store; `POST /logout` added for the header | Accepted |
+| 2026-10-30 | M1-12: admin password rule is Laravel `Password::defaults()` (min 8); inactive admins are signed out (not 403) via `AuthenticateAdmin`; ~~changing a PIN does not need the current PIN (spec literal, #17 proposes it)~~ (superseded by M2-17: changing a PIN now requires the current PIN) | Accepted (PIN part superseded) |
+| 2026-10-30 | M1-07 setting ranges (user chose proposed): split 1–100 each (total not forced), minutes 10–600, passing 0–100 (2 dp), repeat 0–20, grace 0–60 s, suspicious 0–60 s; recorded in spec FR-C1 | Accepted |
+| 2026-10-30 | `CLAUDE.md` is local-only (gitignored, untracked); old copy stays in `d90dcc1`; user backs it up at each milestone stop | Accepted |
+| 2026-10-30 | Git workflow adopted (see section); git initialized on `main` before scaffolding; `content/staged/` is gitignored | Accepted |
+| 2026-10-27 | Clarifications approved. Mock uses one 190-min clock; no SVG (PNG/JPG/WebP only, validated); other open questions use defaults | Accepted |

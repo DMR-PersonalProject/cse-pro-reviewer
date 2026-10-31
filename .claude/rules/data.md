@@ -1,0 +1,12 @@
+---
+paths:
+  - "database/**"
+  - "app/Models/**"
+  - "app/Domain/**"
+---
+- Eloquent/query builder only; JSON columns via casts. MySQL/PostgreSQL portable.
+- Attempt answers snapshot the question (text, passage, choices, correct answer, explanation). Results and review read snapshots only. `question_id` is nullable with `nullOnDelete`. Hard delete needs typed confirmation.
+- Scoring: rating = correct / total items x 100. Store each subtest % and the formula version.
+- Leaderboard: IGN only, never full name. Only users with a PIN. Automatic checks flag; only admins hide. Study-mode attempts never count. Private-source items never count unless setting `leaderboard_include_private`.
+- Users: optional PIN, hashed, in the nullable `password` column; `email` nullable for now.
+- Settings are DB-backed, validated and cached. Admin actions go through `Audit::record`; never log a PIN, password or hash.
