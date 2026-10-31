@@ -144,7 +144,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M3 — Content import pipeline
 
-- [ ] **M3-00 Rate-limit the current-PIN check (suggestion #19)** · S · Deps: M2-17
+- [x] **M3-00 Rate-limit the current-PIN check (suggestion #19)** · S · Deps: M2-17
   Throttle the current-PIN check in `SetPin` and `RemovePin` (profile change and remove forms) per user, like sign-in (FR-I4, same lockout settings).
   *Tests:* repeated wrong current PINs get locked out on both forms; the right PIN after the lockout window works; a successful check clears the counter.
 - [ ] **M3-01 Content folder and docs** · S · Deps: M2 done
