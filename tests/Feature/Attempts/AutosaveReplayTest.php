@@ -143,7 +143,10 @@ describe('results replay', function () {
 });
 
 it('counts nothing while the attempt is still in progress', function () {
+    // The page itself redirects an open attempt, so open it ended and then reopen the attempt.
+    $this->attempt->update(['status' => AttemptStatus::Submitted]);
     $component = livewire(Show::class, ['attempt' => $this->attempt]);
+    $this->attempt->update(['status' => AttemptStatus::InProgress]);
 
     $component->call('replay', [['position' => 2, 'key' => 'B']])->assertSet('unsaved', null);
 

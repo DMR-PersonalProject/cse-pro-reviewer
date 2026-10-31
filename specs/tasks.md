@@ -229,7 +229,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-14 Autosave queue and offline** · M · Deps: M4-13
   An Alpine queue: optimistic UI, a localStorage stash, retry with backoff, an offline banner, and replay on load.
   *Tests:* a replayed answer within grace is saved; one past grace is rejected, and the results page shows the "not saved" count. Manual offline check.
-- [ ] **M4-15 Minimal results page** · S · Deps: M4-08
+- [x] **M4-15 Minimal results page** · S · Deps: M4-08
   `Results\Show` (first version): GR or %, pass/fail or "target 80%", time used, a link to review (review itself comes in M6).
   *Tests:* the owner sees it; others get a 403; an in-progress attempt redirects to the runner.
 - [ ] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
