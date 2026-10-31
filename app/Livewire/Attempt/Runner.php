@@ -199,15 +199,9 @@ class Runner extends Component
         ];
     }
 
-    /**
-     * mm:ss, or h:mm:ss from one hour; the clock store uses the same format.
-     */
     public function clockText(int $ms): string
     {
-        $seconds = intdiv($ms, 1000);
-        $text = sprintf('%02d:%02d', intdiv($seconds % 3600, 60), $seconds % 60);
-
-        return $seconds >= 3600 ? intdiv($seconds, 3600).':'.$text : $text;
+        return AttemptClock::format(intdiv($ms, 1000));
     }
 
     /**

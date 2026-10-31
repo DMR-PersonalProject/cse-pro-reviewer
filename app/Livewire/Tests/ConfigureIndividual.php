@@ -4,6 +4,7 @@ namespace App\Livewire\Tests;
 
 use App\Domain\Assembly\ItemPool;
 use App\Domain\Attempts\AbandonAttempt;
+use App\Domain\Attempts\FinalizeExpiredAttempts;
 use App\Domain\Attempts\StartAttempt;
 use App\Domain\Settings\SettingKey;
 use App\Domain\Settings\Settings;
@@ -37,8 +38,11 @@ class ConfigureIndividual extends Component
     /** Items available after a start was refused for a shortfall (FR-G7). */
     public ?int $shortfallAvailable = null;
 
-    public function mount(): void
+    public function mount(FinalizeExpiredAttempts $sweep): void
     {
+        // An expired attempt must not block a new start with the resume-or-abandon prompt.
+        $sweep->forUser($this->user);
+
         $this->subtestId = $this->subtests->first()?->id;
     }
 

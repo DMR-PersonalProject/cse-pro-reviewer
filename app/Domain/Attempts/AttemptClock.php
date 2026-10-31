@@ -70,6 +70,16 @@ final class AttemptClock
         return $attempt->deadline_at !== null && now()->greaterThanOrEqualTo($attempt->deadline_at);
     }
 
+    /**
+     * mm:ss, or h:mm:ss from one hour; the clock store uses the same format.
+     */
+    public static function format(int $seconds): string
+    {
+        $text = sprintf('%02d:%02d', intdiv($seconds % 3600, 60), $seconds % 60);
+
+        return $seconds >= 3600 ? intdiv($seconds, 3600).':'.$text : $text;
+    }
+
     private function graceEnd(Attempt $attempt): Carbon
     {
         return $attempt->deadline_at->copy()->addSeconds((int) ($attempt->config['grace_seconds'] ?? 0));

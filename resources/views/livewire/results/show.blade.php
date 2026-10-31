@@ -35,7 +35,7 @@
 
         <dl class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm">
             <dt class="text-muted">{{ __('Time used') }}</dt>
-            <dd class="tabular-nums">{{ $this->timeText($result->time_used_seconds) }}</dd>
+            <dd class="tabular-nums">{{ \App\Domain\Attempts\AttemptClock::format($result->time_used_seconds) }}</dd>
             <dt class="text-muted">{{ __('Ended') }}</dt>
             <dd>{{ $result->end_reason->label() }}</dd>
         </dl>

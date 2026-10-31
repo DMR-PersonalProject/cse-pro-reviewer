@@ -54,13 +54,6 @@ class Show extends Component
         return $this->attempt->mode === AttemptMode::Individual;
     }
 
-    public function timeText(int $seconds): string
-    {
-        $text = sprintf('%02d:%02d', intdiv($seconds % 3600, 60), $seconds % 60);
-
-        return $seconds >= 3600 ? intdiv($seconds, 3600).':'.$text : $text;
-    }
-
     /**
      * Counts the stashed answers the server refused (spec: offline edge case). Read-only: it
      * never writes an answer, a score or a status. Only the owner, only once the attempt has

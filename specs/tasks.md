@@ -232,7 +232,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-15 Minimal results page** · S · Deps: M4-08
   `Results\Show` (first version): GR or %, pass/fail or "target 80%", time used, a link to review (review itself comes in M6).
   *Tests:* the owner sees it; others get a 403; an in-progress attempt redirects to the runner.
-- [ ] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
+- [x] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
   A resume card with the time left; a "resume or abandon" prompt when starting a new test; lazy finalization on load.
   *Tests:* an expired attempt is finalized when the dashboard loads; abandoning sets the status and frees the slot.
 - [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
