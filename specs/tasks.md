@@ -150,7 +150,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-01 Content folder and docs** · S · Deps: M2 done
   Create `content/{inbox,staged,staged/media,schema}`, `content/README.md` (naming, what to send, what Claude does with each type of file, the never-guess rule, privacy and copyright note), `schema/question-import.schema.json`, `schema/example.json` and `schema/example.csv`.
   *Tests:* none yet; M3-03 and M3-04 validate both example files.
-- [ ] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
+- [x] **M3-02 Import tables** · S · Deps: M3-01 (also adds `questions.import_batch_id`, deferred from M2-03)
   Migrations and models for `import_batches` and `import_rows`.
   *Tests:* rows cascade with their batch; `decision` defaults to `pending`.
 - [ ] **M3-03 Parser** · M · Deps: M3-02
