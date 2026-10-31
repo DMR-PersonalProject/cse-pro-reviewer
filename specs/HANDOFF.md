@@ -1,6 +1,6 @@
 # Handoff (overwrite each session, max 20 lines)
 Updated: 2026-10-31
-- Stopped after M4-13 (not a milestone stop). Branch: m4-individual-tests. Full suite: 621 green.
+- PAUSED after M4-13 (not a milestone stop). Branch: m4-individual-tests. Full suite: 621 green.
 - Done and ticked: M4-01..13. This session: M4-09 setup page /practice (3c2ea5f), M4-10 Runner server side (a325be5), M4-11 runner Blade components (212d527), M4-12 keyboard store (8b5973b), M4-13 clock store (fe0783c).
 - Runner: `App\Livewire\Attempt\Runner` at /attempts/{attempt} (route `attempts.show`). Every action calls `guard()` (owner, in progress, `AttemptClock::guard`); ended attempts redirect to `/attempts/{id}/results`, which doesn't exist yet (M4-15 adds `Results\Show`; switch the path to a named route then).
 - JS: resources/js/keyboard.js (`$store.keyboard`, `go()` focuses #stem) and resources/js/clock.js (`$store.clock`, listens to `clock-sync`). Run `npm run build` after JS/Blade class changes.
