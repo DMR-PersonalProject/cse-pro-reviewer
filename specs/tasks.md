@@ -205,7 +205,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-06 Start attempt** · M · Deps: M4-04, M4-05
   `StartAttempt`: duration ⌈190 × n ÷ 170⌉, `config` snapshot, `has_private_items`, `is_partial`, `is_standard`, all answer rows in one transaction, and the one-active-attempt guard (user row lock).
   *Tests:* AC-5 (23-minute deadline); a second start while one is in progress is refused with a "resume or abandon" result; settings changed after the start don't affect the attempt (FR-C2); `is_standard` is true only for a full-length, unfiltered, timed test.
-- [ ] **M4-07 Answer actions** · S · Deps: M4-06
+- [x] **M4-07 Answer actions** · S · Deps: M4-06
   `SaveAnswer`, `ToggleFlag`, `AbandonAttempt`, `RevealStudyAnswer` (in study mode, select, lock and reveal happen in one step).
   *Tests:* a save after deadline plus grace is rejected; saving to someone else's attempt is refused; in study mode, re-selecting a revealed item is refused (AC-10); an abandoned attempt can't take answers.
 - [ ] **M4-08 Finalize** · M · Deps: M4-07
