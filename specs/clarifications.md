@@ -30,7 +30,7 @@ Answering an item here means: change its status, update `spec.md` if the behavio
 | A-2 | Subtests appear in the order V → N → A → GI, with free navigation across the whole mock | FR-G2, FR-T3 | Paper exams allow free movement | Spec change |
 | A-3 | Within a subtest, items are spread evenly across topics, and any shortfall is filled from other topics in the same subtest | FR-G2 | No official topic weighting exists | Spec change; topic weights could later become a setting |
 | A-4 | No target English/Filipino ratio inside Verbal; the mix follows what's in the bank | FR-G2 | No official ratio known | Add a setting later |
-| A-5 | Unanswered = wrong, no penalty for wrong answers, GR rounded half-up to 2 decimals | FR-S1, FR-S3 | Matches how CSC results are commonly reported | Formula version `v2` |
+| A-5 | Unanswered = wrong, no penalty for wrong answers, GR rounded half-up to 2 decimals | FR-S1, FR-S3 | Matches how CSC results are commonly reported | Ship as a new formula version (`v2`); current formula is `v1` (FR-S3) |
 | A-6 | Timed attempts can't be paused; the clock runs while the tab is closed | FR-T5 | Realistic practice | Spec change |
 | A-7 | One attempt in progress per user; starting a new one asks to resume or abandon | FR-G9 | Simpler state, no orphaned timers | Spec change |
 | A-8 | Autosave grace of 10 s after the deadline | FR-T6 | Covers network latency without giving extra answering time | Setting |

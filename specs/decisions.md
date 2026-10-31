@@ -34,3 +34,4 @@ Decisions log. Append new rows at the bottom. Check this file before design choi
 | 2026-10-30 | `CLAUDE.md` is local-only (gitignored, untracked); old copy stays in `d90dcc1`; user backs it up at each milestone stop | Accepted |
 | 2026-10-30 | Git workflow adopted (see section); git initialized on `main` before scaffolding; `content/staged/` is gitignored | Accepted |
 | 2026-10-27 | Clarifications approved. Mock uses one 190-min clock; no SVG (PNG/JPG/WebP only, validated); other open questions use defaults | Accepted |
+| 2026-10-31 | Formula version check: current GR formula is `v1` (spec glossary + FR-S3, plan `GeneralRatingV1`, clarifications R-3/O-4); no scoring code yet (M5). A-5 "To change" cell reworded: `v2` is what a future formula change would ship as, not the current formula | Accepted |
