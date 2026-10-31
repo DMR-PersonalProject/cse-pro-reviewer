@@ -190,7 +190,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-01 Attempt schema** · M · Deps: M3 done
   Migrations, models, factories and enums for `attempts`, `attempt_answers` (`question_id` **nullOnDelete**), `attempt_results` and `attempt_subtest_scores`; `AttemptPolicy`.
   *Tests:* deleting a question nulls `question_id` and keeps the snapshot; the policy lets the owner update an in-progress attempt only; an admin can view.
-- [ ] **M4-02 Item pool** · M · Deps: M4-01
+- [x] **M4-02 Item pool** · M · Deps: M4-01
   `ItemPool`: published items only, private sources only for admins, subtest and topic filters, and the fresh/seen split over the last N attempts (from settings).
   *Tests:* draft, needs-review and archived items are excluded; a private item is visible to an admin but not a user; a repeat is avoided when alternatives exist and used, oldest first, when they don't.
 - [ ] **M4-03 Assembler (individual)** · M · Deps: M4-02
