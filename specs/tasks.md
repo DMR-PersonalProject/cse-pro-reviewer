@@ -156,7 +156,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-03 Parser** · M · Deps: M3-02
   `ImportParser` with JSON (schema v1, passages with `ref`) and CSV (header check, `|` tags) variants that produce normalized row arrays.
   *Tests:* both example files parse; malformed JSON, a wrong `schema_version` and a missing CSV header give a file-level error; row numbers are kept.
-- [ ] **M3-04 Row validator** · M · Deps: M3-03, M2-05
+- [x] **M3-04 Row validator** · M · Deps: M3-03, M2-05
   `RowValidator` covering every error in plan §8.3, including media type and size checked through `MediaValidator`.
   *Tests:* AC-21 (1 choice), AC-21a (SVG and > 2 MB), unknown topic, an answer that doesn't match a choice, an unknown `passage_ref`, a duplicate `ref`; the example files have 0 errors.
 - [ ] **M3-05 Row flagger** · M · Deps: M3-04, M2-06
