@@ -159,7 +159,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-04 Row validator** · M · Deps: M3-03, M2-05
   `RowValidator` covering every error in plan §8.3, including media type and size checked through `MediaValidator`.
   *Tests:* AC-21 (1 choice), AC-21a (SVG and > 2 MB), unknown topic, an answer that doesn't match a choice, an unknown `passage_ref`, a duplicate `ref`; the example files have 0 errors.
-- [ ] **M3-05 Row flagger** · M · Deps: M3-04, M2-06
+- [x] **M3-05 Row flagger** · M · Deps: M3-04, M2-06
   `RowFlagger`: missing key, missing explanation, low confidence (< 0.8), media missing, missing alt text, possible duplicate (against the bank **and** within the batch), and flags set by the extractor.
   *Tests:* AC-20 (no correct choice is set); AC-22; a duplicate within the batch; each flag maps to a `NeedsReviewReason`.
 - [ ] **M3-06 Create batch** · S · Deps: M3-05
