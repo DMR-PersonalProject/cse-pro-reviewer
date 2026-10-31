@@ -171,7 +171,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-08 `cse:import` command** · M · Deps: M3-07
   `php artisan cse:import {path} {--dry-run} {--approve-valid}`. Media is read from `content/staged/`. It prints a summary table of errors and flags for each row.
   *Tests:* a dry run writes nothing; a normal run creates a pending batch; `--approve-valid` creates draft items only; media files are copied and validated; the exit code is non-zero on a file-level error.
-- [ ] **M3-09 ImportBatchResource and ImportWizard** · M · Deps: M3-07
+- [x] **M3-09 ImportBatchResource and ImportWizard** · M · Deps: M3-07
   A Filament page: upload JSON or CSV, then a preview table (row number, stem excerpt, errors, flags, duplicate link), then select rows and approve or reject. Media rows get the flag "attach in editor". The batch list shows status and counts.
   *Tests:* upload through a Livewire test; error rows can't be selected; approve and reject update the counts; a user gets a 403.
 
