@@ -208,7 +208,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-07 Answer actions** · S · Deps: M4-06
   `SaveAnswer`, `ToggleFlag`, `AbandonAttempt`, `RevealStudyAnswer` (in study mode, select, lock and reveal happen in one step).
   *Tests:* a save after deadline plus grace is rejected; saving to someone else's attempt is refused; in study mode, re-selecting a revealed item is refused (AC-10); an abandoned attempt can't take answers.
-- [ ] **M4-08 Finalize** · M · Deps: M4-07
+- [x] **M4-08 Finalize** · M · Deps: M4-07
   `FinalizeAttempt` (transaction, `lockForUpdate`, idempotent, results plus subtest scores, time used, suspicious flag from config), `FinalizeExpiredAttempts::forUser()`, and the `cse:finalize-expired` command plus its schedule.
   *Tests:* AC-7; AC-8 (two calls → one result, same payload); the time used is capped at the deadline; the suspicious flag is set under the threshold and not set when the threshold is 0; the command finalizes only expired timed attempts.
 - [ ] **M4-09 Configure individual test** · M · Deps: M4-06

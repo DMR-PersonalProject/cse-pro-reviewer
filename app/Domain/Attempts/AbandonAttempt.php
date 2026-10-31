@@ -6,24 +6,22 @@ namespace App\Domain\Attempts;
 
 use App\Enums\AttemptStatus;
 use App\Models\Attempt;
+use App\Models\AttemptResult;
 use App\Models\User;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Ends an attempt the user gave up on (FR-G9). It stays in history and never ranks.
+ * Ends an attempt the user gave up on (FR-G9). It keeps a result with the abandoned end
+ * reason (FR-S4) and never ranks.
  */
 final class AbandonAttempt
 {
-    public function handle(User $user, Attempt $attempt): Attempt
+    public function __construct(private readonly FinalizeAttempt $finalize) {}
+
+    public function handle(User $user, Attempt $attempt): AttemptResult
     {
-        return DB::transaction(function () use ($user, $attempt) {
-            $locked = Attempt::query()->lockForUpdate()->findOrFail($attempt->id);
-            Gate::forUser($user)->authorize('update', $locked);
+        Gate::forUser($user)->authorize('update', $attempt->fresh());
 
-            $locked->update(['status' => AttemptStatus::Abandoned, 'finalized_at' => now()]);
-
-            return $locked;
-        });
+        return $this->finalize->handle($attempt, AttemptStatus::Abandoned);
     }
 }

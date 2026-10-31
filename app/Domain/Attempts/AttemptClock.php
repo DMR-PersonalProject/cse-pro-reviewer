@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Attempts;
 
+use App\Enums\AttemptStatus;
 use App\Models\Attempt;
 use Illuminate\Support\Carbon;
 
@@ -13,6 +14,23 @@ use Illuminate\Support\Carbon;
  */
 final class AttemptClock
 {
+    public function __construct(private readonly FinalizeAttempt $finalize) {}
+
+    /**
+     * Lazy finalization: an expired attempt is finalized as timeout. True means the caller
+     * must stop and show the result.
+     */
+    public function guard(Attempt $attempt): bool
+    {
+        if (! $this->isExpired($attempt)) {
+            return false;
+        }
+
+        $this->finalize->handle($attempt, AttemptStatus::Timeout);
+
+        return true;
+    }
+
     /**
      * Milliseconds left, never negative; null when the attempt has no deadline.
      */
