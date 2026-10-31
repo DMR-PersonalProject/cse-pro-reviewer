@@ -235,7 +235,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
   A resume card with the time left; a "resume or abandon" prompt when starting a new test; lazy finalization on load.
   *Tests:* an expired attempt is finalized when the dashboard loads; abandoning sets the status and frees the slot.
-- [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
+- [x] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
   Add "Also remove this content from past attempts" to `DeleteQuestion` and `DeleteSource` (FR-Q5a): replace the snapshot content, set `purged_at`, remove media files referenced only by snapshots, and record an audit entry.
   *Tests:* AC-15 at the data level (the score is unchanged, the content is a placeholder, `purged_at` is set); without purge the snapshot stays intact; the audit `meta` records whether a purge was done.
 
