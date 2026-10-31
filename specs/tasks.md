@@ -162,7 +162,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-05 Row flagger** · M · Deps: M3-04, M2-06
   `RowFlagger`: missing key, missing explanation, low confidence (< 0.8), media missing, missing alt text, possible duplicate (against the bank **and** within the batch), and flags set by the extractor.
   *Tests:* AC-20 (no correct choice is set); AC-22; a duplicate within the batch; each flag maps to a `NeedsReviewReason`.
-- [ ] **M3-06 Create batch** · S · Deps: M3-05
+- [x] **M3-06 Create batch** · S · Deps: M3-05
   `CreateImportBatch`: parse, validate, flag, and store the batch and rows with counts.
   *Tests:* the counts are correct; nothing is written to `questions` at this stage.
 - [ ] **M3-07 Approve and reject rows** · M · Deps: M3-06, M2-07
