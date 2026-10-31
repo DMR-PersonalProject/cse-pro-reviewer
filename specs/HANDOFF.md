@@ -1,12 +1,12 @@
 # Handoff (overwrite each session, max 20 lines)
 Updated: 2026-10-31
-- PAUSED after M4-13 (not a milestone stop). Branch: m4-individual-tests. Full suite: 621 green.
-- Done and ticked: M4-01..13. This session: M4-09 setup page /practice (3c2ea5f), M4-10 Runner server side (a325be5), M4-11 runner Blade components (212d527), M4-12 keyboard store (8b5973b), M4-13 clock store (fe0783c).
-- Runner: `App\Livewire\Attempt\Runner` at /attempts/{attempt} (route `attempts.show`). Every action calls `guard()` (owner, in progress, `AttemptClock::guard`); ended attempts redirect to `/attempts/{id}/results`, which doesn't exist yet (M4-15 adds `Results\Show`; switch the path to a named route then).
-- JS: resources/js/keyboard.js (`$store.keyboard`, `go()` focuses #stem) and resources/js/clock.js (`$store.clock`, listens to `clock-sync`). Run `npm run build` after JS/Blade class changes.
-- Components: resources/views/components/attempt/{stem,passage,choices,media,navigator,save-indicator,keyboard-help,clock}.blade.php.
-- Save indicator is wire:loading only; M4-14 adds the Alpine queue, localStorage stash and offline state (select currently fires via `wire:change`).
-- Decisions for M4-09..13 logged in specs/decisions.md.
-- Next: M4-14 autosave queue, then M4-15 results, M4-16 dashboard resume/abandon + lazy sweep, M4-17 purge.
-- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. Bash has no php: run php/pint in PowerShell.
-- At the M4 stop: full suite, 10-line summary, What to try (M4) checklist in specs/tasks.md, wait for `approved: start M5`.
+- M4 MILESTONE STOP after M4-17. Branch: m4-individual-tests (not merged, tagged or pushed). Full suite: 657 green.
+- Waiting for the exact reply `approved: start M5`. Then: merge --no-ff into main, tag m4-done, push main + tag, create m5-mock-exam.
+- This session: M4-14 autosave queue (de99d88), M4-15 results page (bc4c53a), M4-16 dashboard resume/abandon + sweep (3c81bc9), M4-17 delete with purge (438c79e).
+- Autosave: resources/js/autosave.js (`$store.autosave`, stash `attempt:{id}:pending`). Choices call `save(position, key)`, which calls Runner `answer(position, key)`. That returns false once the attempt has ended, so the stash is kept for the results page.
+- Results: `App\Livewire\Results\Show` at /attempts/{id}/results (`results.show`). `replay()` is read-only and counts the not-saved answers once. The review link appears when a `results.review` route exists (M6).
+- Purge: `DeleteQuestion::handle(..., purge)` / `DeleteSource`. The placeholder is `DeleteQuestion::PLACEHOLDER`, and `purged_at` is set; the M6 review should show its translated notice based on `purged_at`. The checkbox lives in `TypedDeleteAction` (`purgeLabel`).
+- Time format helper: `AttemptClock::format(seconds)`.
+- Decisions for M4-14..17 are logged in specs/decisions.md.
+- The "What to try (M4)" checklist in specs/tasks.md is for manual checks; it is not ticked by the agent.
+- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. Bash has no php or python: run php/pint in PowerShell.
