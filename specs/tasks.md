@@ -165,7 +165,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M3-06 Create batch** · S · Deps: M3-05
   `CreateImportBatch`: parse, validate, flag, and store the batch and rows with counts.
   *Tests:* the counts are correct; nothing is written to `questions` at this stage.
-- [ ] **M3-07 Approve and reject rows** · M · Deps: M3-06, M2-07
+- [x] **M3-07 Approve and reject rows** · M · Deps: M3-06, M2-07
   `ApproveImportRows` (one transaction per call: source defaulting to private, passages, questions, choices, tags, media, provenance; status `draft` or `needs_review`) and `RejectImportRows`.
   *Tests:* AC-23; rows with errors can't be approved; an approved row links to its question; a missing answer key leads to `needs_review` with no `is_correct` choice; nothing is ever `published` by an import; a rollback on failure leaves no partial records.
 - [ ] **M3-08 `cse:import` command** · M · Deps: M3-07
