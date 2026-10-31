@@ -80,7 +80,7 @@ Roles are a `role` column backed by an enum and enforced through policies and ga
 - FR-M4. A row becomes `needs_review` automatically when: there is no answer key, no explanation, a duplicate is suspected, extraction confidence is below 0.8, media is referenced but missing, or the source row says `needs_review`. The reasons are stored.
 - FR-M4a. Media is validated by real file type (not just the extension) and size, both on admin upload and on import. A row that references SVG or any other unsupported or oversized file gets a row error.
 - FR-M5. A missing answer key is never filled in by guessing, either by Claude during extraction or by the app.
-- FR-M6. Every imported item gets a source. If none is given, the batch's default source is used, and its visibility is **private**.
+- FR-M6. Every imported item gets a source. If none is given, the batch's default source is used. A source created by an import is always **private**, even if the file asks for public: the preview shows a warning and the request is audited, but the import doesn't fail. An existing source with the same name is reused unchanged; an import never changes a source's visibility.
 - FR-M7. Raw files go in `content/inbox/` (gitignored) and extracted JSON in `content/staged/`. Claude never writes directly to the database from raw files; everything goes through staged JSON and validation.
 
 ### 4.4 Test generation (FR-G)

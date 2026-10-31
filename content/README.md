@@ -54,7 +54,8 @@ For every item Claude records `provenance` (file, page) and `extraction` (`confi
 - Admin: **Import** in `/admin` accepts JSON or CSV (no media files; rows with images get the flag
   "attach in editor").
 - Rows with errors can't be approved. Approved rows become `draft`, or `needs_review` with the reasons
-  stored, under the file's source. With no source given, a **private** source is used.
+  stored, under the file's source. A source created by an import is always **private**, even if
+  the file says `public` (you get a warning). An existing source with the same name is reused as it is.
 - Publishing happens later, item by item, in the question editor.
 
 ## 5. Format
@@ -65,7 +66,8 @@ JSON (`schema/question-import.schema.json`, version 1) supports passages and med
 - `answer` is a letter (`A`–`E`) matching the order of `choices`, or `null`.
 - `passage_ref` must match a passage `ref` in the same file; refs must be unique.
 - `media[].path` is relative to `content/staged/`: PNG, JPG or WebP by real file type, at most 2 MB.
-  SVG is refused. Every image needs `alt` text.
+  SVG is refused. Every image needs `alt` text: an image without it is not attached and the item
+  is flagged, and the alt text is never made up to pass the check.
 - Subtest and topic codes must exist in the database.
 
 CSV (`schema/example.csv`) is for single items without passages or media. Header, in this order:
@@ -82,6 +84,6 @@ is flagged like `null` in JSON.
 - Raw files and staged output stay on your machine: `inbox/` and `staged/` are gitignored. Never
   commit them or any uploaded media.
 - Material from commercial reviewers is usually copyrighted. Imports land in a **private** source,
-  whose items don't count on the leaderboard unless an admin turns that on. Only mark a source public if you wrote the
-  items or have the right to share them.
+  whose items don't count on the leaderboard unless an admin turns that on. Only make a source
+  public (in `/admin`, after import) if you wrote the items or have the right to share them.
 - Don't put personal data (names, IDs, contact details) in staged files.

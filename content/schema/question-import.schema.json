@@ -35,7 +35,7 @@
       "properties": {
         "name": { "type": "string", "minLength": 1 },
         "type": { "enum": ["reviewer", "book", "website", "original", "other"], "default": "other" },
-        "visibility": { "enum": ["private", "public"], "default": "private" }
+        "visibility": { "enum": ["private", "public"], "default": "private", "description": "A new source is always created private; public only gives a warning (FR-M6)." }
       }
     },
     "media": {
