@@ -30,4 +30,14 @@ class Topic extends Model
     {
         return $this->hasMany(Question::class);
     }
+
+    /**
+     * Answer rows keep their topic after the question is deleted (progress accuracy).
+     *
+     * @return HasMany<AttemptAnswer, $this>
+     */
+    public function attemptAnswers(): HasMany
+    {
+        return $this->hasMany(AttemptAnswer::class);
+    }
 }

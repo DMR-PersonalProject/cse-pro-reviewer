@@ -8,6 +8,8 @@
             @auth
                 <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif
                    class="hover:underline aria-[current=page]:font-semibold">{{ __('Dashboard') }}</a>
+                <a href="{{ route('progress') }}" @if (request()->routeIs('progress')) aria-current="page" @endif
+                   class="hover:underline aria-[current=page]:font-semibold">{{ __('Progress') }}</a>
                 <a href="{{ route('profile') }}" @if (request()->routeIs('profile')) aria-current="page" @endif
                    class="hover:underline aria-[current=page]:font-semibold">{{ __('Profile') }}</a>
                 <form method="POST" action="{{ route('logout') }}">

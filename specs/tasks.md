@@ -290,7 +290,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M6-02 Answer review** · M · Deps: M6-01
   `Results\Review` from snapshots only, with all/wrong/flagged/unanswered filters as `#[Url]` parameters, paginated, and notes for "removed from bank" and "Content removed (takedown)".
   *Tests:* AC-14; AC-15 at the UI level (both the deleted and the purged case); filters return the right items.
-- [ ] **M6-03 Progress page** · M · Deps: M6-01
+- [x] **M6-03 Progress page** · M · Deps: M6-01
   History (date, mode, subtest, score, status) and accuracy per topic across completed attempts, including those that reference deleted questions.
   *Tests:* the topic accuracy maths over factory attempts; abandoned attempts are excluded from accuracy and listed as abandoned.
 - [x] **M6-04 Eligibility scope** · M · Deps: M6-01

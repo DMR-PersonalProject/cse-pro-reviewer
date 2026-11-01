@@ -5,6 +5,7 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\SignIn;
 use App\Livewire\Dashboard;
 use App\Livewire\Profile\Edit as ProfileEdit;
+use App\Livewire\Progress\Index as ProgressIndex;
 use App\Livewire\Results\Review as ResultsReview;
 use App\Livewire\Results\Show as ResultsShow;
 use App\Livewire\Tests\ConfigureIndividual;
@@ -28,6 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/attempts/{attempt}', Runner::class)->name('attempts.show');
     Route::get('/attempts/{attempt}/results', ResultsShow::class)->name('results.show');
     Route::get('/attempts/{attempt}/review', ResultsReview::class)->name('results.review');
+    Route::get('/progress', ProgressIndex::class)->name('progress');
 
     Route::post('/logout', function (Request $request) {
         Auth::guard('web')->logout();
