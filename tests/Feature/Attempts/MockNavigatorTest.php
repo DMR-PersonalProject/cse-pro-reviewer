@@ -78,3 +78,45 @@ it('AC-10a: the mock navigator payload has no answer data', function () {
             ->not->toContain(__('Correct answer'));
     }
 });
+
+it('M5-05: the submit dialog counts unanswered and flagged items and points to the first of each', function () {
+    $component = livewire(Runner::class, ['attempt' => $this->attempt])
+        ->call('select', 'A')
+        ->call('goTo', 2)->call('select', 'B')->call('toggleFlag')
+        ->call('goTo', 60)->call('toggleFlag')
+        ->call('confirmSubmit');
+
+    expect($component->get('confirmingSubmit'))->toBeTrue()
+        ->and($component->instance()->submitSummary)->toBe([
+            'unanswered' => 168, 'flagged' => 2, 'firstUnanswered' => 3, 'firstFlagged' => 2,
+        ]);
+
+    $component->assertSee(__(':count unanswered', ['count' => 168]))
+        ->assertSee(__(':count flagged', ['count' => 2]));
+});
+
+it('M5-05: going to an item from the dialog closes it', function () {
+    livewire(Runner::class, ['attempt' => $this->attempt])
+        ->call('confirmSubmit')
+        ->call('goTo', 1)
+        ->assertSet('confirmingSubmit', false);
+});
+
+it('M5-05: cancelling leaves the attempt in progress', function () {
+    livewire(Runner::class, ['attempt' => $this->attempt])
+        ->call('confirmSubmit')
+        ->call('cancelSubmit')
+        ->assertSet('confirmingSubmit', false)
+        ->assertNoRedirect();
+
+    expect($this->attempt->fresh()->isInProgress())->toBeTrue();
+});
+
+it('M5-05: confirming finalizes the attempt', function () {
+    livewire(Runner::class, ['attempt' => $this->attempt])
+        ->call('confirmSubmit')
+        ->call('submit')
+        ->assertRedirect('/attempts/'.$this->attempt->id.'/results');
+
+    expect($this->attempt->fresh()->isInProgress())->toBeFalse();
+});

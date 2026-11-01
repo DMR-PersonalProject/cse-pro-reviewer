@@ -36,6 +36,9 @@ class Runner extends Component
     /** Why the last action was refused, shown to the user. */
     public ?string $notice = null;
 
+    /** The submit dialog is open (M5-05). */
+    public bool $confirmingSubmit = false;
+
     public function mount(Attempt $attempt, FinalizeExpiredAttempts $sweep): void
     {
         abort_unless($attempt->user_id === Auth::id(), 403);
@@ -159,6 +162,7 @@ class Runner extends Component
         }
 
         $this->position = $position;
+        $this->confirmingSubmit = false;
         $this->attempt->update(['current_position' => $position]);
     }
 
@@ -170,6 +174,37 @@ class Runner extends Component
     public function prev(): void
     {
         $this->goTo($this->position - 1);
+    }
+
+    /**
+     * Opens the submit dialog; the round trip renders counts from saved answers (M5-05).
+     */
+    public function confirmSubmit(): void
+    {
+        $this->confirmingSubmit = $this->guard();
+    }
+
+    public function cancelSubmit(): void
+    {
+        $this->confirmingSubmit = false;
+    }
+
+    /**
+     * @return array{unanswered: int, flagged: int, firstUnanswered: ?int, firstFlagged: ?int}
+     */
+    #[Computed]
+    public function submitSummary(): array
+    {
+        $entries = collect($this->navigator);
+        $unanswered = $entries->where('answered', false);
+        $flagged = $entries->where('flagged', true);
+
+        return [
+            'unanswered' => $unanswered->count(),
+            'flagged' => $flagged->count(),
+            'firstUnanswered' => $unanswered->first()['position'] ?? null,
+            'firstFlagged' => $flagged->first()['position'] ?? null,
+        ];
     }
 
     public function submit(FinalizeAttempt $finalize): void
@@ -240,7 +275,7 @@ class Runner extends Component
     private function guard(): bool
     {
         $this->notice = null;
-        unset($this->attempt, $this->item, $this->navigator, $this->navigatorGroups);
+        unset($this->attempt, $this->item, $this->navigator, $this->navigatorGroups, $this->submitSummary);
 
         abort_unless($this->attempt->user_id === $this->user->id, 403);
 

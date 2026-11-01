@@ -265,7 +265,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M5-04 Navigator for 170 items** · M · Deps: M5-03
   Grouped by subtest with counts (answered / flagged / total), a "flagged only" and "unanswered only" filter, and jumping by click or Enter; usable on mobile (drawer).
   *Tests:* the navigator data has 170 entries with the right subtest groups; `goTo` works across subtests; the payload has no answer data (AC-10a check reused).
-- [ ] **M5-05 Submit confirmation** · S · Deps: M5-04
+- [x] **M5-05 Submit confirmation** · S · Deps: M5-04
   A dialog with the unanswered and flagged counts and buttons to go to the first unanswered or first flagged item.
   *Tests:* the counts are right; confirming finalizes the attempt; cancelling leaves it in progress.
 - [x] **M5-06 Assembly performance** · S · Deps: M5-01
