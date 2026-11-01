@@ -39,6 +39,39 @@
             <dt class="text-muted">{{ __('Ended') }}</dt>
             <dd>{{ $result->end_reason->label() }}</dd>
         </dl>
+
+        <p class="text-sm @if ($this->ineligibleReason) text-muted @endif">
+            {{ $this->ineligibleReason?->label() ?? __('Counts toward the leaderboard') }}
+        </p>
+
+        @foreach ([
+            ['heading' => __('By subtest'), 'label' => __('Subtest'), 'rows' => $this->subtestRows->map(fn ($score) => ['name' => $score->subtest?->name ?? __('Unknown subtest'), 'correct' => $score->correct, 'total' => $score->total, 'percent' => $score->percent])],
+            ['heading' => __('By topic'), 'label' => __('Topic'), 'rows' => $this->topicRows],
+        ] as $table)
+            <section aria-label="{{ $table['heading'] }}" class="space-y-2">
+                <h2 class="text-sm font-medium">{{ $table['heading'] }}</h2>
+                <div class="overflow-x-auto" role="region" aria-label="{{ $table['heading'] }}" tabindex="0">
+                    <table class="w-full text-sm">
+                        <thead>
+                            <tr class="border-b border-line text-left">
+                                <th scope="col" class="py-1 font-medium">{{ $table['label'] }}</th>
+                                <th scope="col" class="py-1 text-right font-medium">{{ __('Correct') }}</th>
+                                <th scope="col" class="py-1 text-right font-medium">{{ __('Score') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($table['rows'] as $row)
+                                <tr class="border-b border-line">
+                                    <td class="py-1">{{ $row['name'] }}</td>
+                                    <td class="py-1 text-right tabular-nums">{{ $row['correct'] }} / {{ $row['total'] }}</td>
+                                    <td class="py-1 text-right tabular-nums">{{ $row['percent'] }}%</td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        @endforeach
     @endif
 
     <div class="flex flex-wrap gap-2">

@@ -3,9 +3,15 @@
 namespace App\Livewire\Results;
 
 use App\Domain\Attempts\AttemptClock;
+use App\Domain\Leaderboard\Eligibility;
+use App\Domain\Leaderboard\IneligibleReason;
 use App\Enums\AttemptMode;
 use App\Models\Attempt;
+use App\Models\AttemptSubtestScore;
+use App\Models\Topic;
 use App\Models\User;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
@@ -43,7 +49,47 @@ class Show extends Component
     #[Computed]
     public function attempt(): Attempt
     {
-        return Attempt::query()->with(['result', 'subtest'])->findOrFail($this->attemptId);
+        return Attempt::query()->with(['result', 'subtest', 'user', 'subtestScores.subtest'])->findOrFail($this->attemptId);
+    }
+
+    /**
+     * Stored subtest scores in exam order.
+     *
+     * @return Collection<int, AttemptSubtestScore>
+     */
+    #[Computed]
+    public function subtestRows(): Collection
+    {
+        return $this->attempt->subtestScores->sortBy(fn (AttemptSubtestScore $score) => $score->subtest?->position)->values();
+    }
+
+    /**
+     * The stored topic breakdown with topic names, in taxonomy order. Only names come from live data.
+     *
+     * @return list<array{name: string, correct: int, total: int, percent: string}>
+     */
+    #[Computed]
+    public function topicRows(): array
+    {
+        $breakdown = $this->attempt->result->topic_breakdown ?? [];
+        $topics = Topic::query()->with('subtest')->whereIn('id', array_keys($breakdown))->get()->keyBy('id');
+
+        return collect($breakdown)
+            ->map(fn (array $row, int|string $id) => [
+                'name' => $topics[$id]->name ?? __('Unknown topic'),
+                'order' => [$topics[$id]->subtest->position ?? PHP_INT_MAX, $topics[$id]->position ?? PHP_INT_MAX],
+                ...$row,
+            ])
+            ->sortBy('order')
+            ->map(fn (array $row) => Arr::except($row, 'order'))
+            ->values()
+            ->all();
+    }
+
+    #[Computed]
+    public function ineligibleReason(): ?IneligibleReason
+    {
+        return app(Eligibility::class)->reason($this->attempt);
     }
 
     /**

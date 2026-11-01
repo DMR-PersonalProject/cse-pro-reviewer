@@ -284,7 +284,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M6 — Results, review, progress and leaderboard
 
-- [ ] **M6-01 Full results page** · M · Deps: M5 done
+- [x] **M6-01 Full results page** · M · Deps: M5 done
   GR, pass/fail, subtest and topic tables, time used, and the **eligibility reason** ("Not on leaderboard: study mode", "…set a PIN", "…partial", "…private items").
   *Tests:* the breakdown matches the stored snapshot; each eligibility reason renders for its case.
 - [ ] **M6-02 Answer review** · M · Deps: M6-01
