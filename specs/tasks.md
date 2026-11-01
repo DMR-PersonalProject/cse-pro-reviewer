@@ -320,7 +320,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M7 — Polish, accessibility and portability
 
-- [ ] **M7-01 Contrast tests** · S · Deps: M6 done
+- [x] **M7-01 Contrast tests** · S · Deps: M6 done
   A unit test that reads the token values and checks AA contrast (4.5:1 for text, 3:1 for UI and focus) in both themes. Fix any failing tokens.
   *Tests:* the contrast test itself.
 - [ ] **M7-02 Keyboard and screen reader pass** · M · Deps: M7-01
