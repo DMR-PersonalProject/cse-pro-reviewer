@@ -259,7 +259,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M5-02 Partial mock** · S · Deps: M5-01
   A bank shortfall reports the counts for each subtest; the user can start a partial mock (`is_partial`, never standard).
   *Tests:* FR-G7; a partial mock is not standard and the flag is stored; the preview message lists the counts for each subtest.
-- [ ] **M5-03 Configure mock** · S · Deps: M5-02
+- [x] **M5-03 Configure mock** · S · Deps: M5-02
   `Tests\ConfigureMock` at `/mock`: timed (one 190-minute clock) or untimed, the split shown with an "unverified" label, availability, and the partial warning.
   *Tests:* timed sets a 190-minute deadline; no time limit for each subtest exists; the "unverified" label is rendered.
 - [ ] **M5-04 Navigator for 170 items** · M · Deps: M5-03

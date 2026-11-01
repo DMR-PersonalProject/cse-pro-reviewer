@@ -7,6 +7,7 @@ use App\Livewire\Dashboard;
 use App\Livewire\Profile\Edit as ProfileEdit;
 use App\Livewire\Results\Show as ResultsShow;
 use App\Livewire\Tests\ConfigureIndividual;
+use App\Livewire\Tests\ConfigureMock;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', Dashboard::class)->name('dashboard');
     Route::get('/profile', ProfileEdit::class)->name('profile');
     Route::get('/practice', ConfigureIndividual::class)->name('practice');
+    Route::get('/mock', ConfigureMock::class)->name('mock');
     Route::get('/attempts/{attempt}', Runner::class)->name('attempts.show');
     Route::get('/attempts/{attempt}/results', ResultsShow::class)->name('results.show');
 
