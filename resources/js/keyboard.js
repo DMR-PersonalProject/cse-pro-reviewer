@@ -47,7 +47,7 @@ document.addEventListener('alpine:init', () => {
                 ArrowLeft: () => this.go('prev'),
                 ArrowRight: () => this.go('next'),
                 F: () => this.wire.toggleFlag(),
-                N: () => document.getElementById('navigator')?.focus(),
+                N: () => { window.dispatchEvent(new CustomEvent('navigator-open')); requestAnimationFrame(() => document.getElementById('navigator')?.focus()) },
                 '?': () => document.getElementById('keyboard-help')?.showModal(),
             }
 

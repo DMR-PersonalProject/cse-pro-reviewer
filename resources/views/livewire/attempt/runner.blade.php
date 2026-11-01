@@ -3,8 +3,6 @@
     $item = $this->item;
     $revealed = $this->mayReveal($item);
     $passage = $item->snapshot['passage'] ?? null;
-    $unanswered = collect($this->navigator)->where('answered', false)->count();
-    $flagged = collect($this->navigator)->where('flagged', true)->count();
     $clock = $this->clock();
 @endphp
 <div class="mx-auto max-w-6xl space-y-6" x-data x-init="$store.keyboard.bind($wire); $store.autosave.start($wire, {{ $attempt->id }})"
@@ -58,12 +56,15 @@
         </button>
         <button type="button" x-on:click="$store.keyboard.go('next')" @disabled($position === $attempt->item_count)
                 class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Next') }}</button>
-        <button type="button" wire:click="submit"
-                wire:confirm="{{ __('Submit now? :unanswered unanswered and :flagged flagged.', ['unanswered' => $unanswered, 'flagged' => $flagged]) }}"
+        <button type="button" wire:click="confirmSubmit"
                 class="ml-auto rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Submit') }}</button>
     </div>
 
-    <x-attempt.navigator :entries="$this->navigator" :current="$position" />
+    @if ($confirmingSubmit)
+        <x-attempt.submit-dialog :summary="$this->submitSummary" />
+    @endif
+
+    <x-attempt.navigator :groups="$this->navigatorGroups" :current="$position" />
 
     <button type="button" x-on:click="document.getElementById('keyboard-help').showModal()" class="text-sm underline">
         {{ __('Keyboard shortcuts') }}
