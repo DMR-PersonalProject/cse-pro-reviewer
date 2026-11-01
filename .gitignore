@@ -36,9 +36,6 @@ auth.json
 /public/hot
 /public/js/filament
 
-# Local-only agent memory (back it up manually)
-/CLAUDE.md
-
 # Source material (yours, never committed)
 /content/inbox/
 /content/staged/

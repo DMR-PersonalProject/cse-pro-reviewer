@@ -15,15 +15,12 @@ class RecountImportBatch
 {
     public function handle(ImportBatch $batch): void
     {
-        $counts = $batch->rows()->reorder()
-            ->selectRaw('decision, count(*) as aggregate')
-            ->groupBy('decision')
-            ->pluck('aggregate', 'decision');
+        $count = fn (ImportRowDecision $decision): int => $batch->rows()->reorder()->where('decision', $decision)->count();
 
         $batch->forceFill([
-            'approved_rows' => (int) ($counts[ImportRowDecision::Approved->value] ?? 0),
-            'rejected_rows' => (int) ($counts[ImportRowDecision::Rejected->value] ?? 0),
-            'status' => ($counts[ImportRowDecision::Pending->value] ?? 0) > 0
+            'approved_rows' => $count(ImportRowDecision::Approved),
+            'rejected_rows' => $count(ImportRowDecision::Rejected),
+            'status' => $count(ImportRowDecision::Pending) > 0
                 ? ImportBatchStatus::Pending
                 : ImportBatchStatus::Completed,
         ])->save();

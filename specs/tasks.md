@@ -9,7 +9,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - **Tests:** written first and failing before the code (constitution §3). AC-x refers to `spec.md`.
 - Each milestone ends with **What to try** (your manual check) and a **STOP**. After the stop I summarize in under 10 lines and wait.
 - **Git** (full rules in `CLAUDE.md` → Git workflow): each milestone runs on its own branch (`m1-foundation`, `m2-question-bank`, …). One Conventional Commit per task or small group, task ID in the scope, e.g. `feat(M2-04): add question model and factory`. Tests and Pint green before every commit. On `approved: start M(n+1)` the finished branch is merged into `main` (merge commit), tagged `m<n>-done`, and the next branch is created. No remote pushes without your say-so.
-- **`CLAUDE.md` is local-only** (gitignored since 2026-10-30): never stage it and never rely on it being in the repo. Anything that must survive a fresh clone (versions, decisions that change the build) also goes into `specs/` or `SUGGESTIONS.md`, which stay tracked. Every milestone STOP includes a reminder to back up `CLAUDE.md` manually. Careful: checking out a commit older than `9654f68` (which still tracks it) silently overwrites the local file; back it up first.
+- **`CLAUDE.md` is tracked** (again since 2026-11-01): changes to it are committed like any other file.
 
 ---
 
@@ -61,7 +61,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M1-15 (optional) Set up GitHub remote and push** · S · Deps: your say-so (done 2026-10-30: https://github.com/DMR-PersonalProject/cse-pro-reviewer, private; `main` + `m1-done` pushed)
   Only when you ask: create a **private** repo `cse-pro-reviewer` with `gh repo create cse-pro-reviewer --private --source . --remote origin` (or manual steps if `gh` isn't available), push `main` and all tags. From then on, push only after each milestone approval.
   *Tests:* `git remote -v` shows `origin`; `gh repo view cse-pro-reviewer --json visibility` reports `PRIVATE`.
-  *Note:* `CLAUDE.md` is gitignored, so a fresh clone won't have it. You'd recreate it from `specs/` (constitution, plan, tasks) and the decisions in `clarifications.md`/`SUGGESTIONS.md`, or from your manual backup. Before pushing, decide about the old `CLAUDE.md` copy still in commit `d90dcc1` (history is not rewritten unless you say so). Optional: add `docs/CLAUDE.example.md`, a copy with no private details, as a template in the repo. Only created if you ask.
+  *Note:* `CLAUDE.md` is gitignored, so a fresh clone won't have it. (Superseded 2026-11-01: `CLAUDE.md` is tracked again.) Before pushing, decide about the old `CLAUDE.md` copy still in commit `d90dcc1` (history is not rewritten unless you say so). Optional: add `docs/CLAUDE.example.md`, a copy with no private details, as a template in the repo. Only created if you ask.
 
 **What to try (M1)**
 - [ ] Open http://cse.test, register with a username, IGN and full name and no PIN; you land on the dashboard and see the PIN nudge.
@@ -71,7 +71,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Tab through the start page: the skip link is visible and focus is always visible.
 - [ ] `composer test` and `composer lint` are green.
 
-**⏸ STOP — wait for `approved: start M2`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — wait for `approved: start M2`.**
 
 ---
 
@@ -138,7 +138,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Hard-delete a test question: typing the wrong ID is refused; then check the audit log.
 - [ ] Switch the admin panel to dark mode and back.
 
-**⏸ STOP — wait for `approved: start M3`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — wait for `approved: start M3`.**
 
 ---
 
@@ -181,7 +181,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] In `/admin`, upload `example.csv`, check the errors on a broken row, approve the valid rows, and confirm they arrive as draft or needs-review under a **private** source.
 - [ ] Optional: drop a small real file in `content/inbox/`, ask me to extract it, and walk the whole flow.
 
-**⏸ STOP — wait for `approved: start M4`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — wait for `approved: start M4`.**
 
 ---
 
@@ -247,7 +247,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Close the tab on a short timed test, wait past the deadline, open the dashboard: it is finalized as timeout.
 - [ ] Try starting a second test while one is in progress: you get the resume-or-abandon prompt.
 
-**⏸ STOP — wait for `approved: start M5`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — wait for `approved: start M5`.**
 
 ---
 
@@ -278,31 +278,31 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Submit with items unanswered: the dialog counts them correctly.
 - [ ] Change the split in admin settings, start a new mock, and check the new counts (then change it back).
 
-**⏸ STOP — wait for `approved: start M6`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — wait for `approved: start M6`.**
 
 ---
 
 ## M6 — Results, review, progress and leaderboard
 
-- [ ] **M6-01 Full results page** · M · Deps: M5 done
+- [x] **M6-01 Full results page** · M · Deps: M5 done
   GR, pass/fail, subtest and topic tables, time used, and the **eligibility reason** ("Not on leaderboard: study mode", "…set a PIN", "…partial", "…private items").
   *Tests:* the breakdown matches the stored snapshot; each eligibility reason renders for its case.
-- [ ] **M6-02 Answer review** · M · Deps: M6-01
+- [x] **M6-02 Answer review** · M · Deps: M6-01
   `Results\Review` from snapshots only, with all/wrong/flagged/unanswered filters as `#[Url]` parameters, paginated, and notes for "removed from bank" and "Content removed (takedown)".
   *Tests:* AC-14; AC-15 at the UI level (both the deleted and the purged case); filters return the right items.
-- [ ] **M6-03 Progress page** · M · Deps: M6-01
+- [x] **M6-03 Progress page** · M · Deps: M6-01
   History (date, mode, subtest, score, status) and accuracy per topic across completed attempts, including those that reference deleted questions.
   *Tests:* the topic accuracy maths over factory attempts; abandoned attempts are excluded from accuracy and listed as abandoned.
-- [ ] **M6-04 Eligibility scope** · M · Deps: M6-01
+- [x] **M6-04 Eligibility scope** · M · Deps: M6-01
   `Eligibility` as a query scope plus a per-attempt reason resolver (FR-L2).
   *Tests:* AC-16 (setting OFF, then ON, then OFF), AC-16a (PIN), **AC-16c (study mode never)**, untimed never, partial never, hidden never, inactive user never, non-standard length never.
-- [ ] **M6-05 Leaderboard query** · M · Deps: M6-04
+- [x] **M6-05 Leaderboard query** · M · Deps: M6-04
   `LeaderboardQuery` for the full-mock board and each subtest board, with all-time and weekly periods (Asia/Manila week), best attempt per user via `ROW_NUMBER()`, and tie-breakers.
   *Tests:* AC-17, AC-18; the subtest board uses `attempt_subtest_scores`; the selected columns don't include `full_name`; the arch rule allows raw SQL only in this class.
-- [ ] **M6-06 Leaderboard page** · S · Deps: M6-05
+- [x] **M6-06 Leaderboard page** · S · Deps: M6-05
   `Leaderboard\Index`, public, with the board and period in the URL and an empty state.
   *Tests:* AC-19 (no full name in the HTML); switching board and period works; a guest can view it.
-- [ ] **M6-07 Moderation** · M · Deps: M6-04
+- [x] **M6-07 Moderation** · M · Deps: M6-04
   `AttemptResource`: read-only details, a "suspicious" filter and badge, and hide/unhide with a required reason and an audit entry.
   *Tests:* AC-16b (a suspicious attempt is still listed until hidden); hiding without a reason fails; hide then unhide restores the entry; both write audit rows; a user gets a 403.
 
@@ -314,7 +314,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Turn on "Include private sources in leaderboard" with your own material, see your rank, then turn it off.
 - [ ] Hide an entry in admin with a reason, check it's gone, then check the audit log.
 
-**⏸ STOP — wait for `approved: start M7`.** Reminder at this stop: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — wait for `approved: start M7`.**
 
 ---
 
@@ -348,4 +348,4 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] Let your session expire during a test, sign back in, and resume.
 - [ ] Read the portability results in `CLAUDE.md`.
 
-**⏸ STOP — MVP complete. Wait for your review; next phases come from `SUGGESTIONS.md`.** Reminder: back up your local `CLAUDE.md` manually (it is gitignored).
+**⏸ STOP — MVP complete. Wait for your review; next phases come from `SUGGESTIONS.md`.**
