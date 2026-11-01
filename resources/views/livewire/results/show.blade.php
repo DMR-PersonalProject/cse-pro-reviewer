@@ -75,10 +75,7 @@
     @endif
 
     <div class="flex flex-wrap gap-2">
-        {{-- The item review arrives in M6; the link appears once its route exists. --}}
-        @if (Route::has('results.review'))
-            <a href="{{ route('results.review', $attempt) }}" class="rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Review answers') }}</a>
-        @endif
+        <a href="{{ route('results.review', $attempt) }}" class="rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Review answers') }}</a>
         <a href="{{ route('practice') }}" class="rounded border border-line px-4 py-2">{{ __('Practice again') }}</a>
         <a href="{{ route('dashboard') }}" class="rounded border border-line px-4 py-2">{{ __('Dashboard') }}</a>
     </div>

@@ -287,7 +287,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M6-01 Full results page** · M · Deps: M5 done
   GR, pass/fail, subtest and topic tables, time used, and the **eligibility reason** ("Not on leaderboard: study mode", "…set a PIN", "…partial", "…private items").
   *Tests:* the breakdown matches the stored snapshot; each eligibility reason renders for its case.
-- [ ] **M6-02 Answer review** · M · Deps: M6-01
+- [x] **M6-02 Answer review** · M · Deps: M6-01
   `Results\Review` from snapshots only, with all/wrong/flagged/unanswered filters as `#[Url]` parameters, paginated, and notes for "removed from bank" and "Content removed (takedown)".
   *Tests:* AC-14; AC-15 at the UI level (both the deleted and the purged case); filters return the right items.
 - [ ] **M6-03 Progress page** · M · Deps: M6-01
