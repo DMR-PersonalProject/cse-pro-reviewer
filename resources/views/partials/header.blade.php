@@ -5,6 +5,8 @@
         </a>
 
         <nav aria-label="{{ __('Main') }}" class="flex flex-wrap items-center gap-4 text-sm">
+            <a href="{{ route('leaderboard') }}" @if (request()->routeIs('leaderboard')) aria-current="page" @endif
+               class="hover:underline aria-[current=page]:font-semibold">{{ __('Leaderboard') }}</a>
             @auth
                 <a href="{{ route('dashboard') }}" @if (request()->routeIs('dashboard')) aria-current="page" @endif
                    class="hover:underline aria-[current=page]:font-semibold">{{ __('Dashboard') }}</a>

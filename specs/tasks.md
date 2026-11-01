@@ -299,7 +299,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M6-05 Leaderboard query** · M · Deps: M6-04
   `LeaderboardQuery` for the full-mock board and each subtest board, with all-time and weekly periods (Asia/Manila week), best attempt per user via `ROW_NUMBER()`, and tie-breakers.
   *Tests:* AC-17, AC-18; the subtest board uses `attempt_subtest_scores`; the selected columns don't include `full_name`; the arch rule allows raw SQL only in this class.
-- [ ] **M6-06 Leaderboard page** · S · Deps: M6-05
+- [x] **M6-06 Leaderboard page** · S · Deps: M6-05
   `Leaderboard\Index`, public, with the board and period in the URL and an empty state.
   *Tests:* AC-19 (no full name in the HTML); switching board and period works; a guest can view it.
 - [ ] **M6-07 Moderation** · M · Deps: M6-04

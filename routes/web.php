@@ -4,6 +4,7 @@ use App\Livewire\Attempt\Runner;
 use App\Livewire\Auth\Register;
 use App\Livewire\Auth\SignIn;
 use App\Livewire\Dashboard;
+use App\Livewire\Leaderboard\Index as LeaderboardIndex;
 use App\Livewire\Profile\Edit as ProfileEdit;
 use App\Livewire\Progress\Index as ProgressIndex;
 use App\Livewire\Results\Review as ResultsReview;
@@ -15,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/privacy', 'privacy')->name('privacy');
+Route::get('/leaderboard', LeaderboardIndex::class)->name('leaderboard');
 
 Route::middleware('guest')->group(function () {
     Route::get('/start', Register::class)->name('start');
