@@ -329,7 +329,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M7-03 Mobile and 320 px pass** · S · Deps: M7-02
   Check every page at 320, 375 and 768 px; no horizontal scroll except inside tables; touch targets ≥ 24 px.
   *Tests:* none automated beyond markup checks; findings recorded in the checklist.
-- [ ] **M7-04 Empty, error and edge states** · S · Deps: M7-02
+- [x] **M7-04 Empty, error and edge states** · S · Deps: M7-02
   No published items, an empty bank for a topic, offline, 403/404/419 (session expired during a test → re-login keeps the attempt), import with 0 valid rows.
   *Tests:* each state renders its message; after a 419 the user can sign back in and resume the same attempt.
 - [ ] **M7-05 Performance check** · S · Deps: M7-02

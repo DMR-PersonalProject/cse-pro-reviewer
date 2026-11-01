@@ -67,6 +67,10 @@ class CseImport extends Command
             'id' => $batch->id, 'total' => $batch->total_rows, 'valid' => $batch->valid_rows,
         ]));
 
+        if ($batch->valid_rows === 0) {
+            $this->components->warn(__('No rows can be approved: every row has errors. Fix the file and upload it again.'));
+        }
+
         if ($this->option('approve-valid')) {
             $result = $approve->handle($batch, $batch->rows->reject->hasErrors()->modelKeys());
             $this->components->info(__('Approved :count rows.', ['count' => $result->approved]));
