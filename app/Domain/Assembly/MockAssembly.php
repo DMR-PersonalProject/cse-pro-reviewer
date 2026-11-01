@@ -39,4 +39,12 @@ final readonly class MockAssembly
     {
         return max(0, $this->requested() - $this->count());
     }
+
+    /**
+     * @return array<string, array{available: int, requested: int}>
+     */
+    public function subtestCounts(): array
+    {
+        return array_map(fn (AssemblyResult $part) => ['available' => $part->count(), 'requested' => $part->requested], $this->parts);
+    }
 }

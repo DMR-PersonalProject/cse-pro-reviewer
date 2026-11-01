@@ -16,5 +16,7 @@ final readonly class StartResult
         public ?Attempt $attempt = null,
         public ?Attempt $active = null,
         public ?int $available = null,
+        /** @var array<string, array{available: int, requested: int}> a short mock, by subtest code in order */
+        public array $subtests = [],
     ) {}
 }

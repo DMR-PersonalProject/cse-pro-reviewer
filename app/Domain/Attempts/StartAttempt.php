@@ -84,10 +84,12 @@ final class StartAttempt
 
     /**
      * A combined mock (FR-G2): the configured split, one clock for the whole exam.
+     *
+     * @param  bool  $allowShortfall  start a partial mock (the user accepted the offer, FR-G7)
      */
-    public function mock(User $user, AttemptTiming $timing): StartResult
+    public function mock(User $user, AttemptTiming $timing, bool $allowShortfall = false): StartResult
     {
-        return DB::transaction(function () use ($user, $timing) {
+        return DB::transaction(function () use ($user, $timing, $allowShortfall) {
             User::query()->whereKey($user->id)->lockForUpdate()->first();
 
             $active = Attempt::query()->where('user_id', $user->id)->where('status', AttemptStatus::InProgress)->first();
@@ -100,9 +102,11 @@ final class StartAttempt
             $seed = random_int(1, 2_147_483_647);
             $assembly = $this->assembler->assembleMock($user, $config['item_split'], $seed);
 
-            if ($assembly->shortfall() > 0) {
-                return new StartResult(available: $assembly->count());
+            if ($assembly->count() === 0 || ($assembly->shortfall() > 0 && ! $allowShortfall)) {
+                return new StartResult(available: $assembly->count(), subtests: $assembly->subtestCounts());
             }
+
+            $isPartial = $assembly->shortfall() > 0;
 
             $attempt = Attempt::create([
                 'user_id' => $user->id,
@@ -110,11 +114,11 @@ final class StartAttempt
                 'timing' => $timing,
                 'item_count' => $assembly->count(),
                 'config' => $config,
-                'is_standard' => $timing === AttemptTiming::Timed,
-                'is_partial' => false,
+                'is_standard' => $timing === AttemptTiming::Timed && ! $isPartial,
+                'is_partial' => $isPartial,
                 'status' => AttemptStatus::InProgress,
                 'started_at' => now(),
-                'deadline_at' => $timing === AttemptTiming::Timed ? now()->addMinutes($config['total_minutes']) : null,
+                'deadline_at' => $timing === AttemptTiming::Timed ? now()->addMinutes(self::durationMinutes($assembly->count(), $config['total_minutes'], $assembly->requested())) : null,
                 'seed' => $seed,
             ]);
 
