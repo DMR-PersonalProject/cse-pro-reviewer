@@ -63,7 +63,7 @@
                 class="ml-auto rounded bg-accent px-4 py-2 font-medium text-on-accent">{{ __('Submit') }}</button>
     </div>
 
-    <x-attempt.navigator :entries="$this->navigator" :current="$position" />
+    <x-attempt.navigator :groups="$this->navigatorGroups" :current="$position" />
 
     <button type="button" x-on:click="document.getElementById('keyboard-help').showModal()" class="text-sm underline">
         {{ __('Keyboard shortcuts') }}

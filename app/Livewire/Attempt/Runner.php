@@ -13,6 +13,7 @@ use App\Enums\AttemptStatus;
 use App\Enums\AttemptTiming;
 use App\Models\Attempt;
 use App\Models\AttemptAnswer;
+use App\Models\Subtest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
@@ -82,6 +83,27 @@ class Runner extends Component
                 'answered' => $answer->selected_key !== null,
                 'flagged' => $answer->flagged,
                 'subtest' => $answer->subtest_id,
+            ])
+            ->all();
+    }
+
+    /**
+     * Navigator entries grouped by subtest in exam order, with counts per group (M5-04).
+     *
+     * @return list<array{name: string, answered: int, flagged: int, total: int, entries: list<array{position: int, answered: bool, flagged: bool, subtest: int}>}>
+     */
+    #[Computed]
+    public function navigatorGroups(): array
+    {
+        $entries = collect($this->navigator)->groupBy('subtest');
+
+        return Subtest::query()->whereIn('id', $entries->keys())->orderBy('position')->get(['id', 'name'])
+            ->map(fn (Subtest $subtest) => [
+                'name' => $subtest->name,
+                'answered' => $entries[$subtest->id]->where('answered', true)->count(),
+                'flagged' => $entries[$subtest->id]->where('flagged', true)->count(),
+                'total' => $entries[$subtest->id]->count(),
+                'entries' => $entries[$subtest->id]->values()->all(),
             ])
             ->all();
     }
@@ -218,7 +240,7 @@ class Runner extends Component
     private function guard(): bool
     {
         $this->notice = null;
-        unset($this->attempt, $this->item, $this->navigator);
+        unset($this->attempt, $this->item, $this->navigator, $this->navigatorGroups);
 
         abort_unless($this->attempt->user_id === $this->user->id, 403);
 

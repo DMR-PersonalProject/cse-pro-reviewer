@@ -262,7 +262,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M5-03 Configure mock** · S · Deps: M5-02
   `Tests\ConfigureMock` at `/mock`: timed (one 190-minute clock) or untimed, the split shown with an "unverified" label, availability, and the partial warning.
   *Tests:* timed sets a 190-minute deadline; no time limit for each subtest exists; the "unverified" label is rendered.
-- [ ] **M5-04 Navigator for 170 items** · M · Deps: M5-03
+- [x] **M5-04 Navigator for 170 items** · M · Deps: M5-03
   Grouped by subtest with counts (answered / flagged / total), a "flagged only" and "unanswered only" filter, and jumping by click or Enter; usable on mobile (drawer).
   *Tests:* the navigator data has 170 entries with the right subtest groups; `goTo` works across subtests; the payload has no answer data (AC-10a check reused).
 - [ ] **M5-05 Submit confirmation** · S · Deps: M5-04
