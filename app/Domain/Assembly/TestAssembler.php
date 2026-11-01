@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Domain\Assembly;
 
 use App\Models\Question;
+use App\Models\Subtest;
 use App\Models\Topic;
+use App\Models\User;
 use Random\Engine\Mt19937;
 use Random\Randomizer;
 
@@ -22,7 +24,6 @@ final class TestAssembler
         $randomizer = new Randomizer(new Mt19937($request->seed));
 
         $pool = $this->pool->build($request->user, [$request->subtestId], $request->topicIds);
-        $candidates = $this->drawOrder($this->units($pool), $randomizer);
 
         $topicIds = Topic::query()
             ->where('subtest_id', $request->subtestId)
@@ -32,16 +33,54 @@ final class TestAssembler
             ->pluck('id')
             ->all();
 
+        return $this->pick($this->units($pool), $topicIds, $request->count, $randomizer);
+    }
+
+    /**
+     * A combined mock (FR-G2): each subtest gets its quota from `$split`, subtests in position order.
+     *
+     * @param  array<string, int>  $split  subtest code => item count (the attempt's config)
+     */
+    public function assembleMock(User $user, array $split, int $seed): MockAssembly
+    {
+        $randomizer = new Randomizer(new Mt19937($seed));
+        $subtests = Subtest::query()->whereIn('code', array_keys($split))->with('topics')->orderBy('position')->orderBy('id')->get();
+        $units = collect($this->units($this->pool->build($user, $subtests->modelKeys())))
+            ->groupBy(fn (SelectionUnit $unit) => $unit->questions->first()->subtest_id);
+
+        $parts = [];
+
+        foreach ($subtests as $subtest) {
+            $parts[$subtest->code] = $this->pick(
+                $units->get($subtest->id, collect())->all(),
+                $subtest->topics->modelKeys(),
+                $split[$subtest->code],
+                $randomizer,
+            );
+        }
+
+        return new MockAssembly($parts);
+    }
+
+    /**
+     * Fills the topic quotas of one subtest, then any shortfall from its other topics.
+     *
+     * @param  list<SelectionUnit>  $units
+     * @param  list<int>  $topicIds  in position order
+     */
+    private function pick(array $units, array $topicIds, int $count, Randomizer $randomizer): AssemblyResult
+    {
+        $candidates = $this->drawOrder($units, $randomizer);
         $chosen = [];
 
-        foreach ($this->quotas($request->count, $topicIds) as $topicId => $quota) {
+        foreach ($this->quotas($count, $topicIds) as $topicId => $quota) {
             $this->fill($candidates, $chosen, $quota, fn (SelectionUnit $unit) => $unit->topicId === $topicId);
         }
 
         // A topic that ran short is made up from the other topics (A-3).
-        $this->fill($candidates, $chosen, $request->count - $this->size($chosen), fn () => true);
+        $this->fill($candidates, $chosen, $count - $this->size($chosen), fn () => true);
 
-        return new AssemblyResult($randomizer->shuffleArray($chosen), $request->count);
+        return new AssemblyResult($randomizer->shuffleArray($chosen), $count);
     }
 
     /**

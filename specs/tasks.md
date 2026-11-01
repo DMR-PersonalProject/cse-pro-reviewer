@@ -253,7 +253,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M5 — Combined mock exam
 
-- [ ] **M5-01 Assembler (combined)** · M · Deps: M4 done
+- [x] **M5-01 Assembler (combined)** · M · Deps: M4 done
   Quotas per subtest from the attempt's `config`, fixed subtest order, an even topic split with shortfall fill within the subtest, and passage fitting.
   *Tests:* with a full bank, 170 items split 50/40/40/40 in V→N→A→GI order; a changed split setting is reflected in new mocks only; within each subtest the topics are balanced ±1.
 - [ ] **M5-02 Partial mock** · S · Deps: M5-01
