@@ -326,7 +326,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M7-02 Keyboard and screen reader pass** · M · Deps: M7-01
   A full run with keyboard only and with NVDA (Windows) on start → test → submit → results → review → leaderboard. Fix focus order, labels and announcements, and record findings in `specs/a11y-checklist.md`.
   *Tests:* regression tests for each fix (labels, ARIA attributes, focus targets); browser tests if the Pest browser plugin is compatible (optional).
-- [ ] **M7-03 Mobile and 320 px pass** · S · Deps: M7-02
+- [x] **M7-03 Mobile and 320 px pass** · S · Deps: M7-02
   Check every page at 320, 375 and 768 px; no horizontal scroll except inside tables; touch targets ≥ 24 px.
   *Tests:* none automated beyond markup checks; findings recorded in the checklist.
 - [ ] **M7-04 Empty, error and edge states** · S · Deps: M7-02

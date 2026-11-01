@@ -137,3 +137,10 @@ it('keeps the flag button label fixed and reports the state through aria-pressed
     expect($component->html())->toMatch('/aria-pressed="true"[^>]*>\s*'.preg_quote(__('Flag for review'), '/').'\s*</')
         ->not->toContain(__('Unflag'));
 });
+
+it('wraps long unbroken text in the stem and choices instead of widening the page at 320 px (M7-03)', function () {
+    $html = livewire(Runner::class, ['attempt' => uiAttempt($this->user)])->html();
+
+    expect($html)->toContain('class="prose max-w-none break-words')
+        ->toContain('<label for="choice-1-A" class="min-w-0 flex-1 break-words">');
+});

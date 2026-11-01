@@ -28,4 +28,15 @@ Markup audit by Claude on 2026-11-01. NVDA itself can't be run from here: the �
 
 ## Mobile and 320 px (M7-03)
 
-See the section below once M7-03 is done.
+Markup audit by Claude on 2026-11-01 (no device run from here: ⏳ rows are yours, at 320, 375 and 768 px in DevTools or on your phone).
+
+| Area | Finding | Status |
+|---|---|---|
+| All pages | Viewport meta set; `main` has a 16 px gutter; header and nav `flex-wrap` | ✅ |
+| Tables (results, progress, leaderboard, mock plan, Markdown tables) | Scroll inside their own labelled region, not the page | ✅ |
+| Images | `max-w-full h-auto` with width/height set | ✅ |
+| Passages | `max-w-[70ch]`; runner goes two-column only at `lg` | ✅ |
+| Long unbroken text (number series, URLs) in stems, choices, review | Could widen the page: the choice `label` is a flex child without `min-w-0`. Now `min-w-0 break-words`; Markdown and review choices `break-words` | 🔧 `RunnerUiTest` |
+| Touch targets | Buttons and selects ≥ 28 px tall; navigator items 36 px; text links (header, "Keyboard shortcuts", table links) are under 24 px tall but spaced ≥ 16 px apart (WCAG 2.5.8 spacing exception) | ✅ |
+| Dialogs | `w-full max-w-md`, UA max-width keeps a margin at 320 px | ✅ |
+| Every page at 320 / 375 / 768 px | No horizontal page scroll | ⏳ |
