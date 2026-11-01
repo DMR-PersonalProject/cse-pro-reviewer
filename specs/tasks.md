@@ -302,7 +302,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M6-06 Leaderboard page** · S · Deps: M6-05
   `Leaderboard\Index`, public, with the board and period in the URL and an empty state.
   *Tests:* AC-19 (no full name in the HTML); switching board and period works; a guest can view it.
-- [ ] **M6-07 Moderation** · M · Deps: M6-04
+- [x] **M6-07 Moderation** · M · Deps: M6-04
   `AttemptResource`: read-only details, a "suspicious" filter and badge, and hide/unhide with a required reason and an audit entry.
   *Tests:* AC-16b (a suspicious attempt is still listed until hidden); hiding without a reason fails; hide then unhide restores the entry; both write audit rows; a user gets a 403.
 
