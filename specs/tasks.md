@@ -268,7 +268,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M5-05 Submit confirmation** · S · Deps: M5-04
   A dialog with the unanswered and flagged counts and buttons to go to the first unanswered or first flagged item.
   *Tests:* the counts are right; confirming finalizes the attempt; cancelling leaves it in progress.
-- [ ] **M5-06 Assembly performance** · S · Deps: M5-01
+- [x] **M5-06 Assembly performance** · S · Deps: M5-01
   A factory-built bank of 5,000 items; assembling 170 takes ≤ 2 s (NFR-2). Fix indexes or queries if not.
   *Tests:* a performance test in the `perf` group (excluded from the default run, run before closing M5).
 
