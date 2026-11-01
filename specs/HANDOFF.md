@@ -1,10 +1,12 @@
 # Handoff (overwrite each session, max 20 lines)
 Updated: 2026-10-31
-- Branch: m3-content-import (from main). M3-00 to M3-09 done and ticked. Full suite: 496 tests green.
-- STOP: waiting for `approved: start M4`. Not merged, tagged or pushed yet.
-- Done this session: formula version aligned (v1; A-5 reworded, 6ee37ee); M3-00 current-PIN throttle; content/ docs + schema + examples; import tables, parser, validator, flagger, batch, approve/reject, `cse:import`, Filament Imports (upload, preview, approve/reject).
-- Decisions logged 2026-10-31: batch `meta` json; `missing_alt_text` maps to MissingMedia (details in row and item notes, alt text never generated); imported sources always private, `public` gives a warning + audit, same-name source reused unchanged (FR-M6 updated); 5 MB upload; test memory 512M.
-- Suggestions: #21 proposed (separate MissingAltText reason). #16, #18, #20 still proposed.
-- Imports never publish; missing keys stay null and the item is needs_review with no correct choice.
-- On approval: merge --no-ff into main, tag m3-done, push main + tag, create m4-individual-tests, start M4 tasks in specs/tasks.md.
-- What to try (M3) is in specs/tasks.md under M3.
+- M4 MILESTONE STOP after M4-17. Branch: m4-individual-tests (not merged, tagged or pushed). Full suite: 657 green.
+- Waiting for the exact reply `approved: start M5`. Then: merge --no-ff into main, tag m4-done, push main + tag, create m5-mock-exam.
+- This session: M4-14 autosave queue (de99d88), M4-15 results page (bc4c53a), M4-16 dashboard resume/abandon + sweep (3c81bc9), M4-17 delete with purge (438c79e).
+- Autosave: resources/js/autosave.js (`$store.autosave`, stash `attempt:{id}:pending`). Choices call `save(position, key)`, which calls Runner `answer(position, key)`. That returns false once the attempt has ended, so the stash is kept for the results page.
+- Results: `App\Livewire\Results\Show` at /attempts/{id}/results (`results.show`). `replay()` is read-only and counts the not-saved answers once. The review link appears when a `results.review` route exists (M6).
+- Purge: `DeleteQuestion::handle(..., purge)` / `DeleteSource`. The placeholder is `DeleteQuestion::PLACEHOLDER`, and `purged_at` is set; the M6 review should show its translated notice based on `purged_at`. The checkbox lives in `TypedDeleteAction` (`purgeLabel`).
+- Time format helper: `AttemptClock::format(seconds)`.
+- Decisions for M4-14..17 are logged in specs/decisions.md.
+- The "What to try (M4)" checklist in specs/tasks.md is for manual checks; it is not ticked by the agent.
+- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. Bash has no php or python: run php/pint in PowerShell.

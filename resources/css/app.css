@@ -7,6 +7,11 @@
 /* Dark mode follows the `dark` class on <html> (FR-U1), not the media query. */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* Alpine hides these until it has started. */
+[x-cloak] {
+    display: none !important;
+}
+
 /*
  * Design tokens (FR-U2): one accent (indigo, matching the admin panel), defined for both themes.
  * Contrast pairs used together: ink/muted on canvas and surface, on-accent on accent.

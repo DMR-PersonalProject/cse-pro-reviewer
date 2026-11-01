@@ -14,7 +14,7 @@ use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Hard delete needs the item ID typed in (M2-11).
+ * Hard delete needs the item ID typed in (M2-11), with the optional purge (M4-17).
  */
 class EditQuestion extends EditRecord
 {
@@ -30,9 +30,10 @@ class EditQuestion extends EditRecord
             QuestionActions::unarchive(),
             TypedDeleteAction::make(
                 expected: fn (Question $record) => (string) $record->id,
-                delete: fn (Question $record, string $typed) => app(DeleteQuestion::class)->handle($record, $typed),
+                delete: fn (Question $record, string $typed, bool $purge) => app(DeleteQuestion::class)->handle($record, $typed, $purge),
                 what: __('the item ID'),
                 redirectTo: QuestionResource::getUrl('index'),
+                purgeLabel: __('Also remove this content from past attempts'),
             ),
         ];
     }

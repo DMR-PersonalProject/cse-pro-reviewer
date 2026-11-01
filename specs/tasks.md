@@ -187,55 +187,55 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M4 — Individual tests
 
-- [ ] **M4-01 Attempt schema** · M · Deps: M3 done
+- [x] **M4-01 Attempt schema** · M · Deps: M3 done
   Migrations, models, factories and enums for `attempts`, `attempt_answers` (`question_id` **nullOnDelete**), `attempt_results` and `attempt_subtest_scores`; `AttemptPolicy`.
   *Tests:* deleting a question nulls `question_id` and keeps the snapshot; the policy lets the owner update an in-progress attempt only; an admin can view.
-- [ ] **M4-02 Item pool** · M · Deps: M4-01
+- [x] **M4-02 Item pool** · M · Deps: M4-01
   `ItemPool`: published items only, private sources only for admins, subtest and topic filters, and the fresh/seen split over the last N attempts (from settings).
   *Tests:* draft, needs-review and archived items are excluded; a private item is visible to an admin but not a user; a repeat is avoided when alternatives exist and used, oldest first, when they don't.
-- [ ] **M4-03 Assembler (individual)** · M · Deps: M4-02
+- [x] **M4-03 Assembler (individual)** · M · Deps: M4-02
   `TestAssembler` for one subtest: selection units, an even topic split with shortfall fill, passage fitting, a seeded shuffle, and a shortfall report.
   *Tests:* AC-5 (20 distinct items from the topic); AC-9 (passage items together and in order); the same seed gives the same order; the shortfall is reported correctly.
-- [ ] **M4-04 Choice shuffler and snapshot builder** · S · Deps: M4-03
+- [x] **M4-04 Choice shuffler and snapshot builder** · S · Deps: M4-03
   `ChoiceShuffler` (honors `lock_choice_order`, assigns A–E) and `SnapshotBuilder`.
   *Tests:* AC-11; the snapshot holds the stem, passage, choices in shown order, explanation and source visibility; `correct_key` matches the shuffled position.
-- [ ] **M4-05 Clock and scorer** · S · Deps: M4-01
+- [x] **M4-05 Clock and scorer** · S · Deps: M4-01
   `AttemptClock` (remaining time, grace, guard) and `Scorer` v1 (GR, subtest and topic percentages, pass check in integer hundredths).
   *Tests:* AC-13 (136/170 → 80.00 pass, 135/170 → 79.41 fail); an unanswered item counts as wrong; `remainingMs` is never negative; grace boundaries at exactly +10 s and +11 s.
-- [ ] **M4-06 Start attempt** · M · Deps: M4-04, M4-05
+- [x] **M4-06 Start attempt** · M · Deps: M4-04, M4-05
   `StartAttempt`: duration ⌈190 × n ÷ 170⌉, `config` snapshot, `has_private_items`, `is_partial`, `is_standard`, all answer rows in one transaction, and the one-active-attempt guard (user row lock).
   *Tests:* AC-5 (23-minute deadline); a second start while one is in progress is refused with a "resume or abandon" result; settings changed after the start don't affect the attempt (FR-C2); `is_standard` is true only for a full-length, unfiltered, timed test.
-- [ ] **M4-07 Answer actions** · S · Deps: M4-06
+- [x] **M4-07 Answer actions** · S · Deps: M4-06
   `SaveAnswer`, `ToggleFlag`, `AbandonAttempt`, `RevealStudyAnswer` (in study mode, select, lock and reveal happen in one step).
   *Tests:* a save after deadline plus grace is rejected; saving to someone else's attempt is refused; in study mode, re-selecting a revealed item is refused (AC-10); an abandoned attempt can't take answers.
-- [ ] **M4-08 Finalize** · M · Deps: M4-07
+- [x] **M4-08 Finalize** · M · Deps: M4-07
   `FinalizeAttempt` (transaction, `lockForUpdate`, idempotent, results plus subtest scores, time used, suspicious flag from config), `FinalizeExpiredAttempts::forUser()`, and the `cse:finalize-expired` command plus its schedule.
   *Tests:* AC-7; AC-8 (two calls → one result, same payload); the time used is capped at the deadline; the suspicious flag is set under the threshold and not set when the threshold is 0; the command finalizes only expired timed attempts.
-- [ ] **M4-09 Configure individual test** · M · Deps: M4-06
+- [x] **M4-09 Configure individual test** · M · Deps: M4-06
   `Tests\ConfigureIndividual` at `/practice`: subtest, topics, count, timing; available-count and duration preview; a shortfall offer.
   *Tests:* the preview shows 23 min for 20 items; a count above what's available offers the shorter test; study and untimed show no duration.
-- [ ] **M4-10 Runner: server side** · M · Deps: M4-08
+- [x] **M4-10 Runner: server side** · M · Deps: M4-08
   `Attempt\Runner`: `#[Locked]` ID, the current item as `#[Computed]`, actions (`select`, `toggleFlag`, `goTo`, `next`, `prev`, `submit`, `timeUp`), guard on every action, and the navigator array.
   *Tests:* **AC-10a** (HTML and Livewire payload checked for timed, untimed and study attempts); a user can't open someone else's attempt (403); an early `timeUp()` is ignored and the correct `remainingMs` is returned; an expired attempt redirects to results on any action; AC-10.
-- [ ] **M4-11 Runner: UI components** · M · Deps: M4-10, M2-04
+- [x] **M4-11 Runner: UI components** · M · Deps: M4-10, M2-04
   Blade components for the stem, passage (two-column at large widths), choices (`fieldset` with radios), media, scrolling data tables, the navigator panel, and the save indicator.
   *Tests:* the choices render as a radio group with labels; a selected choice is checked after reload; the table wrapper has `role="region"` and a label; images have alt text.
-- [ ] **M4-12 Keyboard store** · S · Deps: M4-11
+- [x] **M4-12 Keyboard store** · S · Deps: M4-11
   An Alpine `keyboard` store: `1–5`/`A–E`, `←/→`, `F`, `N`; ignored while typing in inputs; focus moves to the stem on navigation.
   *Tests:* AC-12 at the server level (selecting `B` saves the second shown choice); keys are listed in the help dialog markup. Manual keyboard check in What to try.
-- [ ] **M4-13 Timer** · M · Deps: M4-10
+- [x] **M4-13 Timer** · M · Deps: M4-10
   An Alpine `clock` store using `remainingMs` from each response and `performance.now()`; live announcements at 10 and 1 minutes; `timeUp()` at 0; `wire:poll.60s` resync; untimed shows elapsed time.
   *Tests:* AC-6 (travel forward 5 minutes, reload: the remaining time comes from the server); the live region exists with `aria-live="polite"`.
-- [ ] **M4-14 Autosave queue and offline** · M · Deps: M4-13
+- [x] **M4-14 Autosave queue and offline** · M · Deps: M4-13
   An Alpine queue: optimistic UI, a localStorage stash, retry with backoff, an offline banner, and replay on load.
   *Tests:* a replayed answer within grace is saved; one past grace is rejected, and the results page shows the "not saved" count. Manual offline check.
-- [ ] **M4-15 Minimal results page** · S · Deps: M4-08
+- [x] **M4-15 Minimal results page** · S · Deps: M4-08
   `Results\Show` (first version): GR or %, pass/fail or "target 80%", time used, a link to review (review itself comes in M6).
   *Tests:* the owner sees it; others get a 403; an in-progress attempt redirects to the runner.
-- [ ] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
+- [x] **M4-16 Dashboard resume and abandon** · S · Deps: M4-09, M4-15
   A resume card with the time left; a "resume or abandon" prompt when starting a new test; lazy finalization on load.
   *Tests:* an expired attempt is finalized when the dashboard loads; abandoning sets the status and frees the slot.
-- [ ] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
+- [x] **M4-17 Delete with purge** · M · Deps: M2-11, M4-01 (also: M2-11 deletes media rows but keeps image files; add the cleanup that deletes files no snapshot references, and removes referenced ones only on purge)
   Add "Also remove this content from past attempts" to `DeleteQuestion` and `DeleteSource` (FR-Q5a): replace the snapshot content, set `purged_at`, remove media files referenced only by snapshots, and record an audit entry.
   *Tests:* AC-15 at the data level (the score is unchanged, the content is a placeholder, `purged_at` is set); without purge the snapshot stays intact; the audit `meta` records whether a purge was done.
 

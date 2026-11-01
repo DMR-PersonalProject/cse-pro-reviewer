@@ -49,6 +49,13 @@ it('renders a Markdown table as a table', function () {
         ->toContain('<td align="right">150</td>');
 });
 
+it('wraps a table in a labelled scrolling region', function () {
+    $html = $this->markdown->render("| A |\n|---|\n| 1 |");
+
+    expect($html)->toContain('<div role="region" aria-label="'.__('Data table').'" tabindex="0" class="overflow-x-auto"><table>')
+        ->toEndWith('</table></div>');
+});
+
 it('returns an empty string for empty input', function (?string $input) {
     expect($this->markdown->render($input))->toBe('');
 })->with([null, '', '   ']);

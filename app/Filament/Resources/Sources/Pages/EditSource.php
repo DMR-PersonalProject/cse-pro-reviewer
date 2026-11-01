@@ -20,9 +20,10 @@ class EditSource extends EditRecord
         return [
             TypedDeleteAction::make(
                 expected: fn (Source $record) => $record->name,
-                delete: fn (Source $record, string $typed) => app(DeleteSource::class)->handle($record, $typed),
+                delete: fn (Source $record, string $typed, bool $purge) => app(DeleteSource::class)->handle($record, $typed, $purge),
                 what: __('the source name'),
                 redirectTo: SourceResource::getUrl('index'),
+                purgeLabel: __('Also remove this content from past attempts'),
             ),
         ];
     }
