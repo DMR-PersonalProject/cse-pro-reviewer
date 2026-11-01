@@ -1,13 +1,11 @@
 # Handoff (overwrite each session, max 20 lines)
 Updated: 2026-11-01
-- M5 MILESTONE STOP. Branch: m5-mock-exam (not merged, tagged or pushed). Waiting for `approved: start M6`.
-- Done: M5-01 (4e65860), M5-02 (05d5351), M5-03 (de6117a), M5-04 (503297e), M5-05 (5a0f767), M5-06 (ea19e43).
-- Full suite green (680 tests); perf group green (`php artisan test --compact --group=perf`).
-- On approval: merge `--no-ff` into main, tag `m5-done`, push main + tag, create `m6-results-leaderboard`.
-- Runner: `navigatorGroups` (computed) gives per-subtest name/answered/flagged/total/entries in subtest `position` order.
-  Filters (all / flagged / unanswered) and the mobile drawer are Alpine-only in `components/attempt/navigator`; `N` opens the drawer.
-- Submit: `confirmSubmit()` / `cancelSubmit()` toggle `$confirmingSubmit`; `submitSummary` (computed) has counts and first positions.
-  Dialog is `components/attempt/submit-dialog` (native `<dialog>`, Escape = cancel). `goTo` closes it.
-- Mock: `TestAssembler::assembleMock`, `StartAttempt::mock(user, timing, allowShortfall)`, setup at /mock (`ConfigureMock`).
-- Mock tests: tests/Feature/Attempts/MockNavigatorTest.php, StartMockTest.php, Assembly/MockAssemblerTest.php.
-- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. No python in Bash. Bash has no php: run php/pint in PowerShell.
+- M6 in progress on branch `m6-results-leaderboard` (M5 merged, tagged `m5-done`, pushed).
+- M6 groups: G1 = M6-04, M6-01, M6-02, M6-03 (done); G2 = M6-05, M6-06, M6-07 (next).
+- Done: M6-04 (294f510), M6-01 (6bac9bd), M6-02 (0a7ae04), M6-03 (a40f3ea).
+- `Domain\Leaderboard\Eligibility`: `apply(Builder)` scope (qualified `attempts.*` columns) + `reason(Attempt)` → `IneligibleReason` enum (labels shown on results).
+- Results: `Results\Show` has subtest/topic tables + eligibility line; `Results\Review` at `results.review` (`#[Url] filter`, 20/page, snapshot only).
+- Progress: `Progress\Index` at `/progress`; `Topic::attemptAnswers` relation for accuracy `withCount`s.
+- Next: M6-05 `LeaderboardQuery` (only raw SQL allowed: ROW_NUMBER window; build on `Eligibility::apply`), test-first.
+- Tests: tests/Feature/Leaderboard/EligibilityTest.php, tests/Feature/Results/{ResultsBreakdown,Review,Progress}Test.php.
+- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. Bash has no php: run php/pint in PowerShell.
