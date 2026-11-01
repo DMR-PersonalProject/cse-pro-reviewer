@@ -332,7 +332,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M7-04 Empty, error and edge states** · S · Deps: M7-02
   No published items, an empty bank for a topic, offline, 403/404/419 (session expired during a test → re-login keeps the attempt), import with 0 valid rows.
   *Tests:* each state renders its message; after a 419 the user can sign back in and resume the same attempt.
-- [ ] **M7-05 Performance check** · S · Deps: M7-02
+- [x] **M7-05 Performance check** · S · Deps: M7-02
   Seed 5,000 items and 200 attempts; measure moving between items (≤ 200 ms), autosave (≤ 300 ms), assembly (≤ 2 s) and leaderboard; fix N+1 queries and add missing indexes.
   *Tests:* `perf` group thresholds; a query-count assertion on the runner render (no N+1).
 - [ ] **M7-06 Portability run (#15)** · M · Deps: M7-05
