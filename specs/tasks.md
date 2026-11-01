@@ -293,7 +293,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [ ] **M6-03 Progress page** · M · Deps: M6-01
   History (date, mode, subtest, score, status) and accuracy per topic across completed attempts, including those that reference deleted questions.
   *Tests:* the topic accuracy maths over factory attempts; abandoned attempts are excluded from accuracy and listed as abandoned.
-- [ ] **M6-04 Eligibility scope** · M · Deps: M6-01
+- [x] **M6-04 Eligibility scope** · M · Deps: M6-01
   `Eligibility` as a query scope plus a per-attempt reason resolver (FR-L2).
   *Tests:* AC-16 (setting OFF, then ON, then OFF), AC-16a (PIN), **AC-16c (study mode never)**, untimed never, partial never, hidden never, inactive user never, non-standard length never.
 - [ ] **M6-05 Leaderboard query** · M · Deps: M6-04
