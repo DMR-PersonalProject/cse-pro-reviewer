@@ -338,7 +338,7 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 - [x] **M7-06 Portability run (#15)** · M · Deps: M7-05
   Run the full suite once on MySQL 8 and once on PostgreSQL 15+ (Herd services, a portable install, or Docker, whichever is simplest at the time). Record the results and fix any engine-specific failures. **Required before any deploy.**
   *Tests:* the full suite is green on SQLite, MySQL and PostgreSQL; the run is recorded in the `CLAUDE.md` Decisions log.
-- [ ] **M7-07 Docs final** · S · Deps: M7-06
+- [x] **M7-07 Docs final** · S · Deps: M7-06
   Finalize the `CLAUDE.md` commands and versions, add a `README.md` (setup, first admin, import workflow), and mark all done tasks.
   *Tests:* a fresh clone followed by the README steps reaches a working app (manual).
 
