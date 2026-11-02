@@ -18,6 +18,9 @@ Exam: 170 items, 3h10m, pass = general rating >= 80.00. The per-subtest split is
 - Format: `vendor/bin/pint --dirty`
 - Reset DB with sample content: `php artisan migrate:fresh --seed`
 - Create admin: `php artisan cse:make-admin`
+- Import: `php artisan cse:import content/staged/<file>.json --dry-run` (drop `--dry-run` to create a pending batch)
+- Finalize expired timed attempts locally: `php artisan schedule:work`
+- Portability run: set DB_* in the PowerShell process env only (never .env), then the full suite. Last run: specs/decisions.md (M7-06)
 - PowerShell eats `^` and `|` in arguments (php.bat): pass test paths, not `--filter='a|b'`.
 
 ## Workflow rules

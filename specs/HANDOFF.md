@@ -1,10 +1,10 @@
 # Handoff (overwrite each session, max 20 lines)
-Updated: 2026-11-01
-- M6 complete on branch `m6-results-leaderboard`; milestone stop, waiting for `approved: start M7`. Not merged, tagged or pushed.
-- Done: M6-04 (294f510), M6-01 (6bac9bd), M6-02 (0a7ae04), M6-03 (a40f3ea), M6-05 (136fed4), M6-06 (0d20a26), M6-07 (e12df33). Full suite green (745).
-- `LeaderboardQuery::mock(Period)` / `subtest(Subtest, Period)`: two `ROW_NUMBER()` windows on `Eligibility::apply`; rows = rank, ign, score, time_used_seconds. `Period` enum (`all`, `week`, Manila Monday start).
-- `tests/Arch/RawSqlTest.php`: raw SQL only in `LeaderboardQuery`; no `full_name` in Leaderboard code/view. `RecountImportBatch` moved off `selectRaw`.
-- `Leaderboard\Index` at `/leaderboard` (public, header link), `#[Url] board` (`mock` or subtest code) and `period`.
-- Admin `AttemptResource`: read-only, Suspicious/Hidden badges and filters, hide/unhide via `SetAttemptHidden` (reason required, audited).
-- On approval: merge `--no-ff` into main, tag `m6-done`, push main + tag, create `m7-polish`.
-- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use sed or Edit. Bash has no php: run php/pint in PowerShell.
+Updated: 2026-11-02 (M7 milestone stop)
+- Branch `m7-polish`. M7-01..M7-07 done and committed. Not merged, tagged or pushed.
+- Waiting for the owner's OK to merge `m7-polish` into main (`--no-ff`), tag `m7-done`, push main + tag.
+- Fixes this session: `fix(import)` Check file did nothing (submit handler `upload` collided with Livewire's `$wire.upload` alias; renamed to `checkFile`, guard test added); `fix(auth)` admin sign-in landed on `/` when the user app had stored an intended URL (custom Filament LoginResponse keeps only panel URLs).
+- M7-06: full suite on MySQL 8.4.11 (scratch, 127.0.0.1:3308) 788/788 after fixing one test that assumed batch id 1. PostgreSQL skipped (owner decision). Server stopped; `C:\ai\scratch-dbs` can be deleted by the owner.
+- Full suite on SQLite: 788/788.
+- Owner's manual pass: specs/FINAL-CHECK.md (includes the ⏳ rows from specs/a11y-checklist.md).
+- After MVP: next phases come from SUGGESTIONS.md, only on the owner's request.
+- Don't edit text files with PowerShell Set-Content (BOM/UTF-8); use Edit. Bash has no php: run php/pint in PowerShell.

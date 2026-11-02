@@ -4,13 +4,14 @@ A practice app for the Philippine Civil Service Commission **Career Service Prof
 
 ## Status
 
-Personal project, in development, run locally only.
+Personal project, MVP complete, run locally only.
 
 | Milestone | State |
 |---|---|
-| M1 Foundation, roles and theming | Done |
-| M2 Question bank and admin | In progress |
-| M3–M7 Import pipeline, individual tests, mock exam, results and leaderboard, polish | Planned |
+| M1–M6 Foundation, question bank, import pipeline, individual tests, mock exam, results and leaderboard | Done |
+| M7 Polish, accessibility and portability | Done, awaiting review |
+
+The full suite passes on SQLite and MySQL 8.4. PostgreSQL has not been run yet; do that before deploying on it.
 
 ## Stack
 
@@ -42,6 +43,14 @@ herd link cse
 
 Open http://cse.test for the user app and http://cse.test/admin for the admin panel. There are no default accounts: users register at `/start`, and admins are created only with `cse:make-admin`.
 
+### First admin
+
+`php artisan cse:make-admin` asks for an email, username, IGN, full name and password. Sign in at http://cse.test/admin/login; it lands on `/admin`.
+
+### Timed attempts
+
+Timed attempts that run out while nobody has the page open are finalized by `cse:finalize-expired`, scheduled every minute. Locally, keep `php artisan schedule:work` running in a second terminal (attempts are also finalized when their owner next opens them).
+
 ## Common commands
 
 ```powershell
@@ -53,7 +62,15 @@ npm run dev                       # Vite dev server with hot reload
 npm run build                     # production assets
 ```
 
-`php artisan cse:import content/staged/<file>.json [--dry-run]` is planned for M3.
+## Import workflow
+
+Full guide: `content/README.md`.
+
+1. Put source material in `content/inbox/` (gitignored). Prepare it into a JSON or CSV file in `content/staged/` using the format in `content/schema/`. Missing answers or explanations are never guessed: those rows are flagged `needs_review`.
+2. Check the file: `php artisan cse:import content/staged/<file>.json --dry-run`.
+3. Create a pending batch: run the same command without `--dry-run`, or upload the file at **/admin → Imports → Upload questions → Check file** (no media files there; rows with images are flagged "attach in editor").
+4. Review the batch preview in `/admin` and approve rows. Approved rows become `draft` or `needs_review` under a private source. Nothing is published by an import.
+5. Publish items one by one from the question editor.
 
 ## MVP features
 
@@ -90,4 +107,6 @@ npm run build                     # production assets
 
 - `specs/`: constitution, spec, clarifications, plan and tasks (the source of truth for what gets built).
 - `SUGGESTIONS.md`: parked ideas and their status.
-- `CLAUDE.md` holds local-only working notes and is not in the repo.
+- `specs/decisions.md`: decisions log, including the portability runs.
+- `specs/FINAL-CHECK.md`: the end-to-end manual check.
+- `CLAUDE.md`: working rules and commands for Claude Code sessions.

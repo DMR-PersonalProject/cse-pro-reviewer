@@ -121,3 +121,26 @@ it('sends choices through the autosave queue and has the offline states', functi
         ->toContain(__('Offline — answers will sync'))
         ->toContain('role="alert"');
 });
+
+it('names the stem with the item number so moving to an item announces it (M7-02)', function () {
+    livewire(Runner::class, ['attempt' => uiAttempt($this->user)])
+        ->assertSeeHtml('<div id="stem" tabindex="-1" role="group" aria-label="'.__('Item :position of :total', ['position' => 1, 'total' => 1]).'"');
+});
+
+it('keeps the flag button label fixed and reports the state through aria-pressed (M7-02)', function () {
+    $component = livewire(Runner::class, ['attempt' => uiAttempt($this->user)]);
+
+    expect($component->html())->toMatch('/aria-pressed="false"[^>]*>\s*'.preg_quote(__('Flag for review'), '/').'\s*</');
+
+    $component->call('toggleFlag');
+
+    expect($component->html())->toMatch('/aria-pressed="true"[^>]*>\s*'.preg_quote(__('Flag for review'), '/').'\s*</')
+        ->not->toContain(__('Unflag'));
+});
+
+it('wraps long unbroken text in the stem and choices instead of widening the page at 320 px (M7-03)', function () {
+    $html = livewire(Runner::class, ['attempt' => uiAttempt($this->user)])->html();
+
+    expect($html)->toContain('class="prose max-w-none break-words')
+        ->toContain('<label for="choice-1-A" class="min-w-0 flex-1 break-words">');
+});

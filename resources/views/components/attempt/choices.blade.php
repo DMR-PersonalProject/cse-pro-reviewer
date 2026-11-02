@@ -15,7 +15,7 @@
             <input type="radio" id="{{ $id }}" name="choice-{{ $item->position }}" value="{{ $choice['key'] }}"
                    @checked($item->selected_key === $choice['key'])
                    x-on:change="$store.autosave.save({{ $item->position }}, '{{ $choice['key'] }}')" class="mt-1.5">
-            <label for="{{ $id }}" class="flex-1">
+            <label for="{{ $id }}" class="min-w-0 flex-1 break-words">
                 <span class="font-semibold">{{ $choice['key'] }}.</span>
                 {{ $choice['body'] }}
                 <x-attempt.media :items="$choice['media'] ?? []" />

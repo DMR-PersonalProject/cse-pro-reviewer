@@ -48,7 +48,7 @@
             ['heading' => __('By subtest'), 'label' => __('Subtest'), 'rows' => $this->subtestRows->map(fn ($score) => ['name' => $score->subtest?->name ?? __('Unknown subtest'), 'correct' => $score->correct, 'total' => $score->total, 'percent' => $score->percent])],
             ['heading' => __('By topic'), 'label' => __('Topic'), 'rows' => $this->topicRows],
         ] as $table)
-            <section aria-label="{{ $table['heading'] }}" class="space-y-2">
+            <section class="space-y-2">
                 <h2 class="text-sm font-medium">{{ $table['heading'] }}</h2>
                 <div class="overflow-x-auto" role="region" aria-label="{{ $table['heading'] }}" tabindex="0">
                     <table class="w-full text-sm">

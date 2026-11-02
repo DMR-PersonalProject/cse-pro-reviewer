@@ -68,7 +68,9 @@
                         <li>{{ __(':subtest: :available of :requested items', ['subtest' => $this->names[$code] ?? $code, 'available' => $counts['available'], 'requested' => $counts['requested']]) }}</li>
                     @endforeach
                 </ul>
-                @if (array_sum(array_column($shortfall, 'available')) > 0)
+                @if (array_sum(array_column($shortfall, 'available')) === 0)
+                    <p>{{ __('There are no published items yet. An admin needs to publish questions first.') }}</p>
+                @else
                     <p class="text-muted">{{ __('A partial mock is labeled "partial" and is never ranked.') }}</p>
                     <button type="button" wire:click="startPartial" class="rounded bg-accent px-4 py-2 font-medium text-on-accent">
                         {{ __('Start a partial mock') }}

@@ -41,7 +41,7 @@ function uploadedBatch(object $test): ImportBatch
             'numerical,basic_operations,en,Only one choice here?,24,,,,,A,,,,,,,',
             'verbal,word_meaning,en,Closest in meaning to METICULOUS?,Careful,Careless,,,,,,,,,,,',
         )])
-        ->call('upload')
+        ->call('checkFile')
         ->assertHasNoFormErrors();
 
     return ImportBatch::sole();
@@ -52,7 +52,7 @@ it('uploads a CSV into a pending batch and opens its preview', function () {
 
     livewire(ImportWizard::class)
         ->fillForm(['file' => UploadedFile::fake()->createWithContent('example.csv', file_get_contents(base_path('content/schema/example.csv')))])
-        ->call('upload')
+        ->call('checkFile')
         ->assertHasNoFormErrors()
         ->assertRedirect(ImportBatchResource::getUrl('view', ['record' => 1]));
 
@@ -69,7 +69,7 @@ it('shows a file-level error on the upload form', function () {
 
     livewire(ImportWizard::class)
         ->fillForm(['file' => UploadedFile::fake()->createWithContent('broken.json', '{"schema_version": 3, "items": []}')])
-        ->call('upload')
+        ->call('checkFile')
         ->assertHasFormErrors(['file']);
 
     expect(ImportBatch::count())->toBe(0);
@@ -84,7 +84,7 @@ it('flags media in an uploaded JSON as attach-in-editor', function () {
 
     livewire(ImportWizard::class)
         ->fillForm(['file' => UploadedFile::fake()->createWithContent('media.json', $json)])
-        ->call('upload')
+        ->call('checkFile')
         ->assertHasNoFormErrors();
 
     expect(array_column(ImportBatch::sole()->rows[0]->flags, 'code'))->toBe(['media_missing']);
@@ -170,7 +170,7 @@ it('shows the file’s warnings on the batch page', function () {
 
     livewire(ImportWizard::class)
         ->fillForm(['file' => UploadedFile::fake()->createWithContent('pub.json', $json)])
-        ->call('upload');
+        ->call('checkFile');
 
     livewire(ViewImportBatch::class, ['record' => ImportBatch::sole()->getRouteKey()])
         ->assertSee(__('The file asked for a public source; “:name” will be created as private.', ['name' => 'Reviewer X']), escape: false);
@@ -189,4 +189,17 @@ it('serves the pages to admins', function () {
     $this->get(ImportBatchResource::getUrl('index'))->assertOk();
     $this->get(ImportBatchResource::getUrl('upload'))->assertOk();
     $this->get(ImportBatchResource::getUrl('view', ['record' => $batch]))->assertOk();
+});
+
+it('submits the upload form to a server method, not a Livewire client alias', function () {
+    // Livewire maps $wire.<alias> to client helpers (e.g. "upload" is its file-upload API),
+    // so a submit handler with an alias name never reaches the server.
+    preg_match('/var aliases = \{(.*?)\};/s', file_get_contents(base_path('vendor/livewire/livewire/dist/livewire.esm.js')), $block);
+    preg_match_all('/"(\w+)":/', $block[1], $aliases);
+
+    $this->actingAs($this->admin);
+    preg_match('/wire:submit="(\w+)"/', livewire(ImportWizard::class)->html(), $handler);
+
+    expect($aliases[1])->toContain('upload')
+        ->and($aliases[1])->not->toContain($handler[1]);
 });

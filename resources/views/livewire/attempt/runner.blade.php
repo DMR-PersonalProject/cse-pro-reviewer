@@ -31,7 +31,8 @@
         @endif
 
         <div class="space-y-4">
-            <x-attempt.stem :snapshot="$item->snapshot" />
+            <x-attempt.stem :snapshot="$item->snapshot"
+                           :label="__('Item :position of :total', ['position' => $position, 'total' => $attempt->item_count])" />
             <x-attempt.choices id="choices" :item="$item" :revealed="$revealed" :locked="$item->revealed_at !== null" />
 
             @if ($revealed)
@@ -52,7 +53,7 @@
                 class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Previous') }}</button>
         <button type="button" wire:click="toggleFlag" aria-pressed="{{ $item->flagged ? 'true' : 'false' }}"
                 class="rounded border border-line px-4 py-2 aria-pressed:border-danger">
-            {{ $item->flagged ? __('Unflag') : __('Flag for review') }}
+            {{ __('Flag for review') }}
         </button>
         <button type="button" x-on:click="$store.keyboard.go('next')" @disabled($position === $attempt->item_count)
                 class="rounded border border-line px-4 py-2 disabled:opacity-50">{{ __('Next') }}</button>

@@ -15,14 +15,14 @@
 /*
  * Design tokens (FR-U2): one accent (indigo, matching the admin panel), defined for both themes.
  * Contrast pairs used together: ink/muted on canvas and surface, on-accent on accent.
- * M7-01 checks them against WCAG AA.
+ * tests/Unit/ContrastTest.php checks them against WCAG AA (line is a control border, so 3:1).
  */
 :root {
     --cse-canvas: #ffffff;
     --cse-surface: #f8fafc;
     --cse-ink: #0f172a;
     --cse-muted: #475569;
-    --cse-line: #cbd5e1;
+    --cse-line: #64748b;
     --cse-accent: #4338ca;
     --cse-on-accent: #ffffff;
     --cse-danger: #b91c1c;
@@ -35,7 +35,7 @@
     --cse-surface: #111827;
     --cse-ink: #e2e8f0;
     --cse-muted: #94a3b8;
-    --cse-line: #334155;
+    --cse-line: #64748b;
     --cse-accent: #a5b4fc;
     --cse-on-accent: #1e1b4b;
     --cse-danger: #fca5a5;

@@ -84,3 +84,12 @@ it('renders the eligibility reason for each case', function (array $attempt, arr
     'no PIN' => [[], ['password' => null], IneligibleReason::NoPin],
     'abandoned' => [['status' => AttemptStatus::Abandoned], [], IneligibleReason::NotCompleted],
 ]);
+
+it('labels each breakdown table region once, not twice (M7-02)', function () {
+    $attempt = scoredAttempt($this->user);
+
+    $html = $this->get(route('results.show', $attempt))->assertOk()->getContent();
+
+    expect(substr_count($html, 'aria-label="'.__('By subtest').'"'))->toBe(1)
+        ->and(substr_count($html, 'aria-label="'.__('By topic').'"'))->toBe(1);
+});

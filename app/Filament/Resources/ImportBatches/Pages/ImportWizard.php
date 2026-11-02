@@ -71,16 +71,16 @@ class ImportWizard extends Page
         return $schema->components([
             Form::make([EmbeddedSchema::make('form')])
                 ->id('form')
-                ->livewireSubmitHandler('upload')
+                ->livewireSubmitHandler('checkFile')
                 ->footer([
                     Actions::make([
-                        Action::make('upload')->label(__('Check file'))->submit('upload'),
+                        Action::make('checkFile')->label(__('Check file'))->submit('checkFile'),
                     ]),
                 ]),
         ]);
     }
 
-    public function upload(ImportParser $parser, CreateImportBatch $createBatch): void
+    public function checkFile(ImportParser $parser, CreateImportBatch $createBatch): void
     {
         $file = $this->form->getState()['file'];
         $file = is_array($file) ? reset($file) : $file;

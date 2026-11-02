@@ -320,25 +320,25 @@ Status: **approved** (M1 started 2026-10-30) · Implements `plan.md`.
 
 ## M7 — Polish, accessibility and portability
 
-- [ ] **M7-01 Contrast tests** · S · Deps: M6 done
+- [x] **M7-01 Contrast tests** · S · Deps: M6 done
   A unit test that reads the token values and checks AA contrast (4.5:1 for text, 3:1 for UI and focus) in both themes. Fix any failing tokens.
   *Tests:* the contrast test itself.
-- [ ] **M7-02 Keyboard and screen reader pass** · M · Deps: M7-01
+- [x] **M7-02 Keyboard and screen reader pass** · M · Deps: M7-01
   A full run with keyboard only and with NVDA (Windows) on start → test → submit → results → review → leaderboard. Fix focus order, labels and announcements, and record findings in `specs/a11y-checklist.md`.
   *Tests:* regression tests for each fix (labels, ARIA attributes, focus targets); browser tests if the Pest browser plugin is compatible (optional).
-- [ ] **M7-03 Mobile and 320 px pass** · S · Deps: M7-02
+- [x] **M7-03 Mobile and 320 px pass** · S · Deps: M7-02
   Check every page at 320, 375 and 768 px; no horizontal scroll except inside tables; touch targets ≥ 24 px.
   *Tests:* none automated beyond markup checks; findings recorded in the checklist.
-- [ ] **M7-04 Empty, error and edge states** · S · Deps: M7-02
+- [x] **M7-04 Empty, error and edge states** · S · Deps: M7-02
   No published items, an empty bank for a topic, offline, 403/404/419 (session expired during a test → re-login keeps the attempt), import with 0 valid rows.
   *Tests:* each state renders its message; after a 419 the user can sign back in and resume the same attempt.
-- [ ] **M7-05 Performance check** · S · Deps: M7-02
+- [x] **M7-05 Performance check** · S · Deps: M7-02
   Seed 5,000 items and 200 attempts; measure moving between items (≤ 200 ms), autosave (≤ 300 ms), assembly (≤ 2 s) and leaderboard; fix N+1 queries and add missing indexes.
   *Tests:* `perf` group thresholds; a query-count assertion on the runner render (no N+1).
-- [ ] **M7-06 Portability run (#15)** · M · Deps: M7-05
+- [x] **M7-06 Portability run (#15)** · M · Deps: M7-05
   Run the full suite once on MySQL 8 and once on PostgreSQL 15+ (Herd services, a portable install, or Docker, whichever is simplest at the time). Record the results and fix any engine-specific failures. **Required before any deploy.**
   *Tests:* the full suite is green on SQLite, MySQL and PostgreSQL; the run is recorded in the `CLAUDE.md` Decisions log.
-- [ ] **M7-07 Docs final** · S · Deps: M7-06
+- [x] **M7-07 Docs final** · S · Deps: M7-06
   Finalize the `CLAUDE.md` commands and versions, add a `README.md` (setup, first admin, import workflow), and mark all done tasks.
   *Tests:* a fresh clone followed by the README steps reaches a working app (manual).
 

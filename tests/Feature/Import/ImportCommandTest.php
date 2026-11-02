@@ -7,6 +7,7 @@ use App\Models\Media;
 use App\Models\Question;
 use App\Models\Source;
 use Database\Seeders\TaxonomySeeder;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
@@ -54,11 +55,11 @@ it('writes nothing on a dry run and prints a summary', function () {
 });
 
 it('creates a pending batch from a path relative to the project', function () {
-    $this->artisan('cse:import', ['path' => 'content/schema/example.json'])
-        ->expectsOutputToContain(__('Batch #:id created with :total rows (:valid valid). Review it in /admin.', ['id' => 1, 'total' => 4, 'valid' => 4]))
-        ->assertSuccessful();
+    expect(Artisan::call('cse:import', ['path' => 'content/schema/example.json']))->toBe(0);
 
     $batch = ImportBatch::sole();
+    // Use the real id: MySQL doesn't roll back auto-increment between tests.
+    expect(Artisan::output())->toContain(__('Batch #:id created with :total rows (:valid valid). Review it in /admin.', ['id' => $batch->id, 'total' => 4, 'valid' => 4]));
     expect($batch->status)->toBe(ImportBatchStatus::Pending)
         ->and($batch->user_id)->toBeNull()
         ->and($batch->rows()->count())->toBe(4)

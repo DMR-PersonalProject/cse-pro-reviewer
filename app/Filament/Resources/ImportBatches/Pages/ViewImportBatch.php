@@ -21,6 +21,13 @@ class ViewImportBatch extends ViewRecord
 {
     protected static string $resource = ImportBatchResource::class;
 
+    public function getSubheading(): ?string
+    {
+        return $this->record->valid_rows === 0
+            ? __('No rows can be approved: every row has errors. Fix the file and upload it again.')
+            : null;
+    }
+
     protected function getHeaderActions(): array
     {
         return [

@@ -60,7 +60,7 @@
                         @php($isCorrect = $choice['key'] === $item->correct_key)
                         @php($isSelected = $choice['key'] === $item->selected_key)
                         <li @class([
-                            'rounded border px-3 py-2',
+                            'rounded border px-3 py-2 break-words',
                             'border-accent' => $isCorrect,
                             'border-danger' => $isSelected && ! $isCorrect,
                             'border-line' => ! $isCorrect && ! ($isSelected && ! $isCorrect),
