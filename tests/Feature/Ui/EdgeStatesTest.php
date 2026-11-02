@@ -89,7 +89,7 @@ it('explains an import with 0 valid rows and offers only rejecting them', functi
             'subtest,topic,language,stem,choice_a,choice_b,choice_c,choice_d,choice_e,answer,explanation,difficulty,tags,source_file,source_page,notes,confidence',
             'numerical,basic_operations,en,Only one choice here?,24,,,,,A,,,,,,,',
         ]))])
-        ->call('upload')
+        ->call('checkFile')
         ->assertHasNoFormErrors();
 
     $batch = ImportBatch::sole();
