@@ -66,3 +66,29 @@ it('logs out a user deactivated mid-session on the next request', function () {
 
     $this->get(route('login'))->assertSee(__('This account has been deactivated. Ask an admin for help.'));
 });
+
+it('lands an admin on /admin even after the user app stored an intended URL', function () {
+    User::factory()->admin()->create(['email' => 'admin@example.com', 'password' => 'correct-horse']);
+    $this->get('/')->assertRedirect('/start');
+
+    livewire(Login::class)
+        ->fillForm(['email' => 'admin@example.com', 'password' => 'correct-horse'])
+        ->call('authenticate')
+        ->assertRedirect('/admin');
+});
+
+it('sends a signed-in admin from /admin/login to /admin', function () {
+    $this->actingAs(User::factory()->admin()->create())
+        ->get('/admin/login')
+        ->assertRedirect('/admin');
+});
+
+it('keeps an intended URL inside the panel after admin sign-in', function () {
+    User::factory()->admin()->create(['email' => 'admin@example.com', 'password' => 'correct-horse']);
+    session()->put('url.intended', url('/admin/questions'));
+
+    livewire(Login::class)
+        ->fillForm(['email' => 'admin@example.com', 'password' => 'correct-horse'])
+        ->call('authenticate')
+        ->assertRedirect('/admin/questions');
+});
